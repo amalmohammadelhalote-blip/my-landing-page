@@ -1,0 +1,25 @@
+{
+  "name": "energy-tracker-landing",
+  "version": "1.0.0",
+  "description": "Landing page for Energy Consumption Tracking App",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.13.6",
+    "lucide-react": "^0.575.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.6.0",
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.13.1",
+    "recharts": "^3.2.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.8"
+  }
+}
