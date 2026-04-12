@@ -42,6 +42,7 @@ export const deviceService = {
   toggleStatus: (id, status) => api.put(`/devices/${id}/status`, { status }),
   getHealth: (id, period) => api.get(`/devices/${id}/health`, { params: period ? { period } : {} }),
   getRecommendation: (id) => api.get(`/devices/${id}/recommendation`),
+
 };
 
 export const categoryService = {
@@ -56,10 +57,12 @@ export const homeService = {
   getDashboard: () => api.get('/dashboard'),
 };
 
-export const reportsService = {
-  getEnergyConsumption: (period) => api.get(`/reports/energy-consumption?period=${period}`),
-  getDevicePerformance: (period) => api.get(`/reports/device-performance?period=${period}`),
-  getDeviceBreakdown: () => api.get('/reports/device-breakdown'),
+
+export const readingService = {
+  getCurrent: () => api.get('/readings/current'),
+  getSummary: (period = 'month') => api.get('/readings/summary', { params: { period } }), // period: day, week, month, year
+  getMonthly: (deviceId, month) => api.get(`/readings/${deviceId}`, { params: { month } }),
+  postIoT: (data) => api.post('/readings/iot', data),
 };
 
 export const locationService = {
@@ -86,9 +89,23 @@ export const authService = {
   register: (data) => api.post('/auth/register', data),
   logout: () => api.post('/auth/logout'),
   refreshToken: () => api.post('/auth/refresh'),
-  forgotPassword: (data) => api.post('/auth/forgot-password', data),
-  resetPassword: (data) => api.post('/auth/reset-password', data),
-  verifyEmail: (data) => api.post('/auth/verify-email', data),
+  // --- MOCK AUTH FLOW FOR RESET PASSWORD ---
+  forgotPassword: (data) => new Promise((res) => {
+    setTimeout(() => res({ data: { status: "success", message: "Code sent to " + data.email } }), 1000);
+  }),
+  verifyResetCode: (data) => new Promise((res, rej) => {
+    setTimeout(() => {
+      // Allow "123456" or any 6-digit code for testing
+      if (data.resetCode?.length === 6) {
+        res({ data: { status: "success" } });
+      } else {
+        rej({ response: { data: { message: "Invalid code. Try 123456" } } });
+      }
+    }, 1000);
+  }),
+  resetPassword: (data) => new Promise((res) => {
+    setTimeout(() => res({ data: { status: "success" } }), 1000);
+  }),
 };
 
 

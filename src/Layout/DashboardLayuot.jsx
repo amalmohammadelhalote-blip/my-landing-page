@@ -37,20 +37,22 @@ const DashboardLayout = () => {
             <Home size={20} /> Home
           </NavLink>
 
-          <NavLink to="/dashboard/reports" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <BarChart2 size={20} /> Reports
-          </NavLink>
-
           <NavLink to="/dashboard/devices" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Smartphone size={20} /> Devices
+          </NavLink>
+
+          <NavLink to="/dashboard/reports" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+            <BarChart2 size={20} /> Reports
           </NavLink>
         </nav>
 
         <div className="sidebar-footer">
+          <div className="nav-item cursor-pointer">
+            <HelpCircle size={20} /> Help
+          </div>
           <NavLink to="/dashboard/profile" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <User size={20} /> My Profile
+            <Settings size={20} /> Settings
           </NavLink>
-          <div className="nav-item"><Settings size={20} /> Settings</div>
           <NavLink to="/logout" className="nav-item logout">
             <LogOut size={20} /> Log out
           </NavLink>

@@ -15,6 +15,7 @@ import Devices from "./pages/Devices";
 import Reports from "./pages/Reports";
 import DeviceDetails from "./pages/DeviceDetails";
 import Profile from "./pages/Profile";
+import AddDevice from "./pages/AddDevice";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
           <Route index element={<Navigate to="home" replace />} />
           <Route path="home" element={<Home />} />
           <Route path="devices" element={<Devices />} />
+          <Route path="devices/add" element={<AddDevice />} />
           <Route path="devices/:deviceId" element={<DeviceDetails />} />
           <Route path="reports" element={<Reports />} />
           <Route path="profile" element={<Profile />} />

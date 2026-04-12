@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Search, Tv, Bluetooth } from 'lucide-react';
 import { categoryService, deviceService, locationService } from '../api/services';
 import "./Devices.css";
+import "./AddDevice.css";
+import noDeviceImg from "../assets/no-device.png";
 
 const Devices = () => {
   const navigate = useNavigate();
@@ -36,17 +38,13 @@ const Devices = () => {
       .trim();
 
   const getConsumptionText = (device) => {
-    const raw = device?.consumption || device?.energyConsumption || device?.currentConsumption;
-    if (typeof raw === 'string' && raw.trim()) return raw;
+    const val = device?.lastReading?.todayConsumption;
 
-    const maxPower = device?.thresholds?.maxPower;
-    if (typeof maxPower === 'number') {
-      // لو maxPower كبير غالبا بيكون W -> نحوله ل kWh كقيمة عرضية
-      const kwh = maxPower >= 10 ? maxPower / 1000 : maxPower;
-      return `${kwh.toFixed(1)} Kwh`;
+    if (typeof val === 'number') {
+      return `${val.toFixed(3)} kWh`;
     }
 
-    return '0 Kwh';
+    return '0 kWh';
   };
 
   const toArray = (value) => {
@@ -179,6 +177,7 @@ const Devices = () => {
       });
     });
 
+
     return Array.from(deviceMap.values());
   };
 
@@ -187,69 +186,42 @@ const Devices = () => {
     return map;
   }, {});
 
+  const categoryMap = categories.reduce((map, category) => {
+    map[category._id || category.id] = category;
+    return map;
+  }, {});
+
+  const getDeviceCategory = (device) => {
+    // Handling both object and ID cases from API
+    const catObj = typeof device?.categoryId === 'object' ? device.categoryId : (categoryMap[device?.categoryId] || {});
+
+    return {
+      name: catObj?.name || 'Device',
+      icon: catObj?.categoryIcon || device?.categoryIcon || ''
+    };
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         setError('');
-        const [devicesResult, categoriesResult, locationsResult] = await Promise.allSettled([
+
+        const [devicesRes, categoriesRes, locationsRes] = await Promise.all([
           deviceService.getAll(),
           categoryService.getAll(),
           locationService.getAll(),
         ]);
 
-        console.log('Devices fetch result:', devicesResult);
-        console.log('Categories fetch result:', categoriesResult);
-        console.log('Locations fetch result:', locationsResult);
+        // ✅ أهم سطر
+        const devicesData = devicesRes?.data?.data || [];
 
-        const categoriesRes =
-          categoriesResult.status === 'fulfilled' ? categoriesResult.value : null;
-        const devicesRes =
-          devicesResult.status === 'fulfilled' ? devicesResult.value : null;
-        const locationsRes =
-          locationsResult.status === 'fulfilled' ? locationsResult.value : null;
+        setDevices(devicesData);
+        setCategories(categoriesRes?.data?.data || []);
+        setLocations(locationsRes?.data?.data || []);
 
-        const categoriesList = toArray(categoriesRes?.data?.data || categoriesRes?.data);
-        const locationsList = toArray(locationsRes?.data?.data || locationsRes?.data);
-        const apiDevices = toArray(
-          devicesRes?.data?.data?.devices ||
-          devicesRes?.data?.devices ||
-          devicesRes?.data?.data ||
-          devicesRes?.data
-        );
-
-        const devicesFromCategories = extractDevicesFromCategories(categoriesList);
-        const devicesFromCategoryDetails =
-          !apiDevices.length && !devicesFromCategories.length
-            ? await fetchDevicesFromCategoryDetails(categoriesList)
-            : [];
-
-        const deepDevices = extractDevicesDeep({
-          devicesPayload: devicesRes?.data,
-          categoriesPayload: categoriesRes?.data,
-          categoryDetailsPayload: devicesFromCategoryDetails,
-        });
-
-        const finalDevices = apiDevices.length
-          ? apiDevices
-          : devicesFromCategories.length
-            ? devicesFromCategories
-            : devicesFromCategoryDetails.length
-              ? devicesFromCategoryDetails
-              : deepDevices;
-
-        setDevices(finalDevices);
-        setCategories(categoriesList);
-        setLocations(locationsList);
-        setActiveSubFilter('All devices');
-
-        if (!finalDevices.length) {
-          setError('No devices returned from backend. Check token/role or API schema.');
-        } else if (devicesResult.status === 'rejected' && categoriesResult.status === 'fulfilled') {
-          setError('Devices endpoint unavailable, showing devices from categories.');
-        }
       } catch (err) {
-        setError(err?.response?.data?.message || 'Failed to load devices.');
+        setError('Failed to load devices');
       } finally {
         setLoading(false);
       }
@@ -278,7 +250,9 @@ const Devices = () => {
     }
   };
 
-  const locationFilters = ['All devices', 'Living room', 'Bed room', 'Kitchen'];
+  const locationFilters = ['All devices',
+    ...locations.map((l) => l.name).filter(Boolean)
+  ];
 
   const categoryFilters = [
     'All devices',
@@ -289,7 +263,8 @@ const Devices = () => {
 
   const filteredDevices = devices.filter((device) => {
     const normalizedName = normalize(device?.name);
-    const normalizedLocation = normalize(locationMap[device.location] || device.location || '');
+    const locName = locationMap[device.location] || locationMap[device.location?._id] || device.location?.name || device.location || '';
+    const normalizedLocation = normalize(locName);
     const normalizedSearch = normalize(search);
 
     const searchMatch =
@@ -305,7 +280,7 @@ const Devices = () => {
       return normalizedLocation === wanted || normalizedLocation.includes(wanted) || wanted.includes(normalizedLocation);
     }
 
-    const categoryName = device?.categoryId?.name || device?.category?.name || '';
+    const categoryName = getDeviceCategory(device).name;
     const normalizedCategory = normalize(categoryName);
     const wantedCategory = normalize(activeSubFilter);
     return (
@@ -315,7 +290,7 @@ const Devices = () => {
     );
   });
 
-  
+
   const renderedDevices = filteredDevices.length ? filteredDevices : devices;
 
   return (
@@ -323,9 +298,6 @@ const Devices = () => {
       <header className="top-header">
         <h1>Devices</h1>
         <div className="header-actions">
-          <button className="btn-primary" onClick={() => navigate('/dashboard/devices/add')}>
-            Add Device
-          </button>
           <div className="search-bar">
             <Search size={18} />
             <input
@@ -402,17 +374,10 @@ const Devices = () => {
                   }}
                 >
                   <div className="card-top-icons">
-                    <img
-                      src={device?.categoryId?.categoryIcon}
-                      alt="device icon"
-                      className="device-icon"
-                      onError={(e) => {
-                        e.target.style.display = 'none'; // hide if image fails
-                      }}
-                    />
                     <Bluetooth
-                      size={16}
-                      className={`bt-icon ${((device?.status || (device?.isOn ? 'ON' : 'OFF')) === 'ON') ? 'on' : 'off'}`}
+                      size={36}
+                      color={status === 'ON' ? '#22c55e' : '#94a3b8'}
+                      className={`bt-icon ${status === 'ON' ? 'on' : 'off'}`}
                     />
                   </div>
                   <div className="device-details">
@@ -445,7 +410,13 @@ const Devices = () => {
       )}
 
       {!loading && !devices.length && (
-        <p className="dashboard-empty">No devices found.</p>
+        <div className="empty-state">
+           <img src={noDeviceImg} alt="No devices" className="illustration" />
+           <h2>No device connect</h2>
+           <button className="confirm-btn btn-primary" onClick={() => navigate('/dashboard/devices/add')}>
+              Add New device
+           </button>
+        </div>
       )}
     </div>
   );

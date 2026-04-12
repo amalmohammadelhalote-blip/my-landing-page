@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail } from "lucide-react";
 import techBackground from "../assets/background4.jpg";
 import logo from "../assets/logo.png";
+import { authService } from "../api/services";
 import "./login.css";
-import axios from "axios";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
@@ -13,52 +13,36 @@ const ForgetPassword = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // 1. الـ baseURL الصحيح
-  const baseURL = "https://ecoshid-apis-production-0757.up.railway.app"; 
-  const API_URL =` ${baseURL}/auth/forgot-password`; 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setMessage("");
 
-    console.log("Sending request to:", API_URL, "with email:", email);
-
     try {
-      const response = await axios.post(` ${baseURL}/auth/forgot-password`, { email });
+      const response = await authService.forgotPassword({ email });
       
-      console.log("Full Response:", response);
-
-      // Response.status مش status code، ده object من السيرفر
-      if (response.data.status === "success") {
+      // Simple check for success from mock or real API
+      if (response && (response.data?.status === "success" || response.status === 200)) {
         setMessage("✅ Reset code sent! Check your email.");
-        console.log("Success! Navigating to confirm-email page with email:", email);
-
-        // تحويل لصفحة التأكيد مع إرسال الإيميل
-        navigate("/verify-code", { state: { email } });
+        setTimeout(() => {
+          navigate("/verify-code", { state: { email } });
+        }, 2000);
       } else {
-        // لو السيرفر رجع رسالة خطأ
-        const serverMsg = response.data.message || "Unknown server response";
-        setError(`❌ Server responded: ${serverMsg}`);
-        console.error("Server Error:", serverMsg);
+        setError("Failed to send code. Please verify your email and try again.");
       }
-
     } catch (err) {
-      console.error("Request Failed:", err);
+      // Improved error handling for 500 and other errors
+      const serverMsg = err.response?.data?.message;
+      const statusCode = err.response?.status;
 
-      if (err.response) {
-        console.error("Response Data:", err.response.data);
-        setError(err.response.data?.message || "❌ Something went wrong with the request");
-      } else if (err.request) {
-        // Request was made but no response
-        console.error("No Response received. Request object:", err.request);
-        setError("❌ No response from server. Check your connection or server status.");
+      if (statusCode === 500) {
+        setError("❌ Server Error (500). We're working on it! Please try again in a moment.");
+      } else if (serverMsg) {
+        setError(`❌ ${serverMsg}`);
       } else {
-        // Other errors
-        setError(`❌ Error: ${err.message}`);
+        setError("❌ Connection error. Please check your internet or try again later.");
       }
-
     } finally {
       setLoading(false);
     }

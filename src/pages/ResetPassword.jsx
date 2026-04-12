@@ -3,62 +3,44 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { Lock } from "lucide-react";
 import techBackground from "../assets/background4.jpg";
 import logo from "../assets/logo.png";
+import { authService } from "../api/services";
 import "./login.css";
 
 const ResetPassword = () => {
-
   const location = useLocation();
   const navigate = useNavigate();
-
   const email = location.state?.email || "";
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const API_URL = "https://ecoshid-apis-production-0757.up.railway.app";
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      setError("Passwords do not match");
       return;
     }
 
     try {
-
       setLoading(true);
-
-      const res = await fetch(`${API_URL}/auth/reset-password`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password
-        })
+      await authService.resetPassword({
+        email: email,
+        password: password
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Reset password failed");
-      }
-
-      alert("Password reset successfully");
-
-      navigate("/login");
-
-    } catch (error) {
-
-      alert(error.message);
-
+      setSuccess(true);
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    } catch (err) {
+      setError(err.response?.data?.message || "Reset password failed. Please try again.");
     } finally {
-
       setLoading(false);
-
     }
   };
 
@@ -71,7 +53,10 @@ const ResetPassword = () => {
       <div className="auth-card">
 
         <h2>Reset Password</h2>
-        <p className="subtitle">Create a new password</p>
+        <p className="subtitle">Create a new password for <strong>{email}</strong></p>
+
+        {error && <p className="error-msg">{error}</p>}
+        {success && <p className="success-banner" style={{ background: 'rgba(34, 197, 94, 0.2)', color: '#4ade80', padding: '12px', borderRadius: '8px', marginBottom: '15px' }}>Password reset successfully! Redirecting to login...</p>}
 
         <form onSubmit={handleSubmit}>
 

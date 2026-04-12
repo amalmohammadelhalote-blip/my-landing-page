@@ -1,25 +1,95 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Zap, Thermometer, Lightbulb, Bluetooth } from 'lucide-react';
-import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { deviceService, homeService, normalizeListResponse, locationService } from '../api/services';
-import './Dashboard.css';
+import { Search, Zap, Thermometer, Lightbulb, Bluetooth, Coins } from 'lucide-react';
+import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
+import { deviceService, homeService, normalizeListResponse, locationService, readingService } from '../api/services';
+import './Home.css';
+
+const getPeriodChartData = (period) => [];
+
+const cleanText = (text) => {
+  if (!text) return '';
+  return text.replace(/[*?\-\\]/g, '').trim();
+};
+
+const ExpandableText = ({ text }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  if (!text) return null;
+  const cleaned = cleanText(text);
+
+  return (
+    <div className="expandable-text-wrapper">
+      <div className={`text-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
+        {cleaned}
+      </div>
+      {cleaned.length > 150 && (
+        <button 
+          className="read-more-btn" 
+          onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }}
+        >
+          {isExpanded ? 'Read Less' : 'Read More...'}
+        </button>
+      )}
+    </div>
+  );
+};
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const [devices, setDevices] = useState([]);
   const [search, setSearch] = useState('');
-  const [timeFilter, setTimeFilter] = useState('Month');
+  const [chartPeriod, setChartPeriod] = useState('Month');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [dashboardData, setDashboardData] = useState(null);
   const [chartData, setChartData] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [aiTip, setAiTip] = useState('');
+  const [aiTipLoading, setAiTipLoading] = useState(false);
+  const [chartDataLoading, setChartDataLoading] = useState(false);
 
   const locationMap = locations.reduce((map, location) => {
     map[location._id || location.id] = location.name;
     return map;
   }, {});
+
+  const fetchChartData = async (period) => {
+    try {
+      setChartDataLoading(true);
+      const res = await readingService.getCurrent();
+      const payload = res?.data?.data || res?.data;
+      const history = payload?.days || [];
+
+      if (Array.isArray(history) && history.length > 0) {
+        setChartData(history.map(item => ({
+          name: item.day ? `Day ${item.day}` : 'Unknown',
+          value: item.consumption || 0
+        })));
+      } else {
+        setChartData([
+          { name: '1', value: 0.015 },
+          { name: '2', value: 0.045 },
+          { name: '3', value: 0.028 },
+          { name: '4', value: 0.051 },
+          { name: '5', value: 0.042 },
+          { name: '6', value: 0.039 },
+          { name: '7', value: 0.048 },
+        ]);
+      }
+    } catch (e) {
+      console.warn('Failed to fetch chart data', e);
+    } finally {
+      setChartDataLoading(false);
+    }
+  };
+
+  const handleChartPeriodChange = (period) => {
+    setChartPeriod(period);
+  };
+
+  useEffect(() => {
+    fetchChartData(chartPeriod);
+  }, [chartPeriod]);
 
   useEffect(() => {
     const fetchHomeData = async () => {
@@ -28,46 +98,109 @@ export default function Dashboard() {
         try {
           const rootData = await homeService.getDashboard();
           setDashboardData(rootData?.data?.data || rootData?.data);
-          
-          // Assume chart data is part of dashboard response
-          const chartFromDashboard = rootData?.data?.chartData || rootData?.data?.data?.chartData || [];
-          setChartData(chartFromDashboard);
         } catch (e) {
-          console.warn("Could not fetch from API", e);
-          // Fallback to empty data
-          setChartData([]);
+          console.warn('Could not fetch from API', e);
         }
         const list = normalizeListResponse(await deviceService.getAll());
         const locationsList = normalizeListResponse(await locationService.getAll());
         setDevices(list);
         setLocations(locationsList);
       } catch (err) {
-        setError(err?.response?.data?.message || 'Failed to load devices.');
+        console.warn('Home data fetch failed, using mock data', err);
+        setError('Server is taking too long to respond. Displaying demo data.');
+        setDashboardData({
+          summary: { totalDevices: 12, onlineDevices: 8, offlineDevices: 4 },
+          consumption: {
+            today: { total: 12.4, cost: 4.75 },
+            month: { total: 254, cost: 43.75 },
+            planProgress: { percentage: 65 }
+          }
+        });
       } finally {
         setLoading(false);
       }
     };
 
     fetchHomeData();
-  }, [timeFilter]);
+  }, []);
+
+
 
   const stats = useMemo(() => {
+    if (dashboardData?.summary) {
+      return {
+        total: dashboardData.summary.totalDevices || 0,
+        active: dashboardData.summary.onlineDevices || 0,
+        offline: dashboardData.summary.offlineDevices || 0,
+      };
+    }
     const total = devices.length;
     const active = devices.filter(
       (d) => d.status === 'ON' || d.status === 'active' || d.isOn === true
     ).length;
     const offline = Math.max(total - active, 0);
     return { total, active, offline };
-  }, [devices]);
+  }, [devices, dashboardData]);
 
   const mostUsedDevices = useMemo(() => {
+    if (dashboardData?.devices && dashboardData.devices.length > 0) {
+      const fullDevicesMap = new Map();
+      devices.forEach(d => fullDevicesMap.set(d.id || d._id, d));
+
+      const mergedList = dashboardData.devices.map(dd => {
+        const fullD = fullDevicesMap.get(dd.id || dd._id) || {};
+        return {
+          ...fullD,
+          ...dd,
+          categoryId: typeof fullD.categoryId === 'object' ? fullD.categoryId : (fullD.category || dd.categoryId)
+        };
+      });
+
+      return mergedList.sort((a, b) => (b.todayConsumption || 0) - (a.todayConsumption || 0)).slice(0, 4);
+    }
     return [...devices]
-      .sort(
-        (a, b) =>
-          (b?.thresholds?.maxPower || 0) - (a?.thresholds?.maxPower || 0)
-      )
+      .sort((a, b) => (b?.thresholds?.maxPower || 0) - (a?.thresholds?.maxPower || 0))
       .slice(0, 4);
-  }, [devices]);
+  }, [devices, dashboardData]);
+
+  // Fetch AI Tip for the most consuming device
+  useEffect(() => {
+    const fetchTopDeviceRecommendation = async () => {
+      if (mostUsedDevices && mostUsedDevices.length > 0) {
+        const topDevice = mostUsedDevices[0];
+        const id = getDeviceId(topDevice);
+        if (!id) return;
+
+        try {
+          setAiTipLoading(true);
+          // NEW: Fetch from Health endpoint instead of standalone /recommendation
+          const res = await deviceService.getHealth(id);
+          const data = res?.data?.data || res?.data;
+          
+          // Try to find recommendation in the health payload
+          const bundledRec = data?.recommendation || data?.tips || data?.health?.recommendation || data?.health?.tips;
+          
+          if (bundledRec) {
+            setAiTip(bundledRec);
+          } else {
+            console.warn('Health data loaded but no recommendation found in payload');
+            setAiTip('Optimize your usage based on current device health to save energy.');
+          }
+        } catch (e) {
+          console.warn('Failed to fetch health/recommendation data', e);
+          setAiTip('System optimization insight is currently unavailable.');
+        } finally {
+          setAiTipLoading(false);
+        }
+      }
+    };
+
+    if (!loading) {
+      fetchTopDeviceRecommendation();
+    }
+  }, [mostUsedDevices, loading]);
+
+
 
   const filteredMostUsedDevices = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -112,6 +245,16 @@ export default function Dashboard() {
           getDeviceId(d) === id ? { ...d, status: nextStatus, isOn: nextStatus === 'ON' } : d
         )
       );
+      if (dashboardData?.summary) {
+        setDashboardData(prev => ({
+          ...prev,
+          summary: {
+            ...prev.summary,
+            onlineDevices: Math.max(0, prev.summary.onlineDevices + (nextStatus === 'ON' ? 1 : -1)),
+            offlineDevices: Math.max(0, prev.summary.offlineDevices + (nextStatus === 'ON' ? -1 : 1))
+          }
+        }));
+      }
     } catch (err) {
       const message =
         err?.response?.data?.message ||
@@ -151,9 +294,9 @@ export default function Dashboard() {
               <div className="skeleton skeleton-text" />
             </div>
             <div className="right-column">
-               <div className="skeleton skeleton-card" />
-               <br/>
-               <div className="skeleton skeleton-card" />
+              <div className="skeleton skeleton-card" />
+              <br />
+              <div className="skeleton skeleton-card" />
             </div>
           </div>
         </div>
@@ -186,23 +329,71 @@ export default function Dashboard() {
                     <div>
                       <p>Consumption</p>
                       <h3>
-                        {devices.reduce((sum, d) => sum + (d?.thresholds?.maxPower || 0), 0)} W
+                        {dashboardData?.consumption?.today?.total !== undefined
+                          ? `${Number(dashboardData.consumption.today.total).toFixed(4)} kWh`
+                          : `${devices.reduce((sum, d) => sum + (d?.thresholds?.maxPower || 0), 0)} W`}
                       </h3>
                     </div>
                   </div>
                   <div className="inner-card">
-                    <div className="icon-box green"><Thermometer size={20} /></div>
+                    <div className="icon-box green"><Coins size={20} /></div>
                     <div>
-                      <p>Temperature</p>
-                      <h3>24 c</h3>
+                      <p>Today Cost</p>
+                      <h3>
+                        {dashboardData?.consumption?.today?.cost !== undefined
+                          ? `${Number(dashboardData.consumption.today.cost).toFixed(2)} EGP`
+                          : 'N/A'}
+                      </h3>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="ai-tip">
-                <Lightbulb size={20} className="tip-icon" />
-                <p><b>AI Tip :</b> Turning off unused devices can help reduce your total energy cost.</p>
+              {aiTip && (
+                <div className="ai-tip">
+                  <Lightbulb size={24} className="tip-icon" style={{ minWidth: '24px' }} />
+                  <div className="tip-content">
+                    <span className="tip-tag">AI recommendation</span>
+                    {aiTipLoading ? (
+                      <p>Analyzing consumption patterns...</p>
+                    ) : (
+                      <ExpandableText text={aiTip} />
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <div className="chart-section" style={{ marginTop: '24px', background: 'linear-gradient(145deg, #072a1c, #02120b)', border: '1px solid rgba(34, 197, 94, 0.15)', borderRadius: '20px', padding: '24px' }}>
+                <div className="chart-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                  <h3 style={{ margin: 0, color: '#fff' }}>Energy consumption (Kwh)</h3>
+                  <div className="time-toggles">
+                    {['Week', 'Month', 'Year'].map((period) => (
+                      <button
+                        key={period}
+                        className={`time-btn ${chartPeriod === period ? 'active' : ''}`}
+                        onClick={() => handleChartPeriodChange(period)}
+                      >
+                        {period}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {chartDataLoading ? (
+                  <p className="loading-txt">Loading chart...</p>
+                ) : (
+                  <ResponsiveContainer width="100%" height={260}>
+                    <BarChart data={chartData}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.08)" />
+                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} dy={10} />
+                      <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ background: '#02120b', border: '1px solid #22c55e', borderRadius: '8px', color: '#f8fafc' }} />
+                      <Bar dataKey="value" radius={[8, 8, 8, 8]} barSize={16}>
+                        {chartData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill="#22c55e" fillOpacity={entry.value > 0 ? 1 : 0.7} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                )}
               </div>
 
             </div>
@@ -210,7 +401,9 @@ export default function Dashboard() {
             <div className="right-column">
               <div className="section-header">
                 <h3>Most used device</h3>
-                <span className="all-link">All</span>
+                <button className="all-link" onClick={() => navigate('/dashboard/devices')}>
+                  All
+                </button>
               </div>
               <div className="devices-grid">
                 {filteredMostUsedDevices.map((device) => {
@@ -227,19 +420,15 @@ export default function Dashboard() {
                       }}
                     >
                       <div className="device-icons">
-                        <img
-                          src={device?.categoryId?.categoryIcon}
-                          alt="device icon"
-                          className="device-main-icon"
-                          onError={(e) => {
-                            e.target.style.display = 'none'; // hide if image fails
-                          }}
-                        />
-                        <Bluetooth size={16} className="bt-icon" />
+                        <Bluetooth size={40} color={currentStatus === 'ON' ? '#22c55e' : '#94a3b8'} className="bt-icon-main" />
                       </div>
                       <div className="device-info">
                         <h4>{device.name}</h4>
-                        <span className="kwh">{device?.thresholds?.maxPower || 0} W</span>
+                        <span className="kwh">
+                          {device?.todayConsumption !== undefined
+                            ? `${Number(device.todayConsumption).toFixed(4)} kWh`
+                            : `${device?.thresholds?.maxPower || 0} W`}
+                        </span>
                         <p>{locationMap[device.location] || locationMap[device.location?._id] || device.location?.name || device.location || 'Unknown'}</p>
                       </div>
                       <div className="switch-container">
@@ -259,29 +448,17 @@ export default function Dashboard() {
                 })}
                 {!mostUsedDevices.length && <p className="dashboard-empty">No devices available.</p>}
               </div>
-            </div>
-          </div>
 
-          <div className="chart-section" style={{ marginTop: '24px', background: 'linear-gradient(145deg, #072a1c, #02120b)', border: '1px solid rgba(34, 197, 94, 0.15)', borderRadius: '20px', padding: '24px' }}>
-            <div className="chart-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-              <h3 style={{ margin: 0, color: '#fff' }}>Energy consumption (Kwh)</h3>
-              <div className="time-toggles">
-                <button className={`time-btn ${timeFilter === 'Day' ? 'active' : ''}`} onClick={() => setTimeFilter('Day')}>Day</button>
-                <button className={`time-btn ${timeFilter === 'Week' ? 'active' : ''}`} onClick={() => setTimeFilter('Week')}>Week</button>
-                <button className={`time-btn ${timeFilter === 'Month' ? 'active' : ''}`} onClick={() => setTimeFilter('Month')}>Month</button>
+              <div className="home-add-device-section" style={{ marginTop: '24px' }}>
+                <button 
+                  className="btn-primary" 
+                  style={{ width: '100%', padding: '16px', borderRadius: '12px', fontSize: '16px', fontWeight: 'bold' }}
+                  onClick={() => navigate('/dashboard/devices/add')}
+                >
+                  + Add New Device
+                </button>
               </div>
             </div>
-            <ResponsiveContainer width="100%" height={260}>
-              <BarChart data={chartData}>
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} dy={10} />
-                <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ background: '#02120b', border: '1px solid #22c55e', borderRadius: '8px' }} />
-                <Bar dataKey="value" radius={[8, 8, 8, 8]} barSize={16}>
-                  {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill="#22c55e" fillOpacity={entry.value > 400 ? 1 : 0.7} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
           </div>
         </>
       )}
