@@ -22,83 +22,7 @@ body {
   background: #040d08;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 250px;
-  background: linear-gradient(180deg, #06140d 0%, #081c13 100%);
-  padding: 32px 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  box-shadow: 16px 0 50px rgba(0, 0, 0, 0.35);
-}
-
-.logo {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.sidebar-logo {
-  width: 100%;
-  max-width: 160px;
-  height: auto;
-  object-fit: contain;
-  display: block;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 16px;
-  color: var(--text-gray);
-  cursor: pointer;
-  border-radius: 18px;
-  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
-  margin-bottom: 10px;
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 500;
-}
-
-.nav-item.active {
-  background: rgba(34, 197, 94, 0.16);
-  color: white;
-  font-weight: 700;
-  box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.18);
-}
-
-.nav-item:hover {
-  background: rgba(34, 197, 94, 0.12);
-  color: #f8fafc;
-  transform: translateX(2px);
-}
-
-.sidebar-footer {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.sidebar-footer .nav-item {
-  background: transparent;
-  color: var(--text-gray);
-  padding-left: 0;
-  box-shadow: none;
-}
-
-.logout {
-  color: #fca5a5;
-}
-
-.sidebar a {
-  text-decoration: none;
-}
+/* Main Content */
 
 /* Header */
 .top-header {
@@ -422,7 +346,7 @@ body {
   /* Hide divider to stay consistent with Home cards */
 }
 
-/* تصميم الـ Switch الـ iOS-style */
+/* iOS-style Switch */
 .ui-switch {
   width: 44px;
   height: 22px;
@@ -457,7 +381,6 @@ body {
   justify-content: space-between;
   align-items: center;
   flex-direction: row-reverse;
-  /* Switch on right, text on left */
   margin-top: 15px;
 }
 
@@ -584,24 +507,264 @@ body {
   opacity: 0.8;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 480px) {
+  .top-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .top-header h1 {
+    font-size: 22px;
+  }
+
+  .search-bar {
+    width: 100%;
+    min-width: unset;
+    padding: 10px 14px;
+  }
+
+  .devices-page {
+    padding: 12px;
+  }
+
+  .filter-section {
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .main-toggle-filters {
+    width: 100%;
+    overflow-x: auto;
+    gap: 6px;
+  }
+
+  .btn-yellow,
+  .btn-dark,
+  .btn-outline {
+    padding: 8px 18px;
+    font-size: 12px;
+    border-radius: 6px;
+  }
+
   .devices-full-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .device-card-full {
+    min-height: 180px;
+    padding: 14px;
+  }
+
+  .device-info-full h4 {
+    font-size: 14px;
+  }
+
+  .device-info-full .kwh {
+    font-size: 12px;
+    margin-top: 6px;
+  }
+
+  .device-info-full p {
+    font-size: 12px;
+  }
+
+  .custom-switch-full {
+    width: 40px;
+    height: 22px;
+    padding: 2px;
+  }
+
+  .switch-handle-full {
+    width: 18px;
+    height: 18px;
+  }
+
+  .custom-switch-full.on .switch-handle-full {
+    transform: translateX(18px);
+  }
+
+  .thresholds-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 10px;
+    font-size: 13px;
   }
 }
 
-@media (max-width: 1150px) {
+@media (min-width: 481px) and (max-width: 640px) {
+  .top-header {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    margin-bottom: 18px;
+  }
+
+  .top-header h1 {
+    font-size: 24px;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .devices-page {
+    padding: 14px;
+  }
+
+  .filter-section {
+    gap: 12px;
+  }
+
   .devices-full-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .device-card-full {
+    min-height: 200px;
+    padding: 16px;
+  }
+
+  .btn-yellow,
+  .btn-dark,
+  .btn-outline {
+    padding: 9px 24px;
+    font-size: 13px;
+  }
+
+  .thresholds-grid {
+    grid-template-columns: 1fr;
   }
 }
 
-@media (max-width: 920px) {
-  .sub-filters-row {
-    flex-wrap: wrap;
+@media (min-width: 641px) and (max-width: 768px) {
+  .top-header {
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px;
+    margin-bottom: 18px;
+  }
+
+  .top-header h1 {
+    font-size: 26px;
+  }
+
+  .search-bar {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .devices-page {
+    padding: 16px;
+  }
+
+  .filter-section {
+    gap: 14px;
+    margin-bottom: 18px;
   }
 
   .devices-full-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .device-card-full {
+    min-height: 220px;
+  }
+
+  .thresholds-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .top-header {
+    flex-direction: row;
+    gap: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .top-header h1 {
+    font-size: 26px;
+  }
+
+  .search-bar {
+    min-width: 300px;
+  }
+
+  .devices-page {
+    padding: 18px;
+  }
+
+  .filter-section {
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .devices-full-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .device-card-full {
+    min-height: 240px;
+  }
+
+  .btn-yellow,
+  .btn-dark,
+  .btn-outline {
+    padding: 10px 28px;
+  }
+
+  .thresholds-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .devices-full-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .devices-page {
+    padding: 22px;
+  }
+}
+
+@media (min-width: 1281px) {
+  .devices-full-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .devices-page {
+    padding: 28px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .device-card-full {
+    min-height: 200px;
+  }
+
+  .device-card-full:active {
+    box-shadow: 0 10px 30px rgba(34, 197, 94, 0.15);
+  }
+
+  button {
+    min-height: 44px;
   }
 }

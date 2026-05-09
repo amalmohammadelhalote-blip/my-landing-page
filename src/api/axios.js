@@ -1,14 +1,13 @@
 import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL ||
-  'https://ecoshid-apis-production-0757.up.railway.app/api'; // حطي هنا الـ baseURL بتاعك أو في ملف .env
+  'https://ecoshid-apis-production-414f.up.railway.app/api/'; // حطي هنا الـ baseURL بتاعك أو في ملف .env
 
 const api = axios.create({
   baseURL,
-  timeout: 20000,
+  timeout: 60000,
 });
 
-// Attach token automatically if موجود
 api.interceptors.request.use((config) => {
   const token =
     localStorage.getItem('token') ||

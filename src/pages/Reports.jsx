@@ -23,6 +23,28 @@ export default function Reports() {
   const [error, setError] = useState('');
   const [dashboardData, setDashboardData] = useState(null);
 
+  const totalCost = Number(dashboardData?.consumption?.month?.cost || 120).toFixed(2);
+  const averageDailyCost = dashboardData?.consumption?.month?.cost
+    ? `${(dashboardData.consumption.month.cost / 30).toFixed(2)} EGP / day`
+    : '4.00 $ / day';
+  const highestDeviceName = dashboardData?.consumption?.deviceBreakdown?.[0]?.deviceName || 'Air conditioner';
+  const highestDeviceCost = dashboardData?.consumption?.deviceBreakdown?.[0]?.cost
+    ? Number(dashboardData.consumption.deviceBreakdown[0].cost).toFixed(2)
+    : '35';
+
+  const deviceRows = (dashboardData?.consumption?.deviceBreakdown || []).map((item, index) => ({
+    device: item.deviceName || `Device ${index + 1}`,
+    energy: `${item.consumption || 0} Kwh`,
+    cost: item.cost ? `${Number(item.cost).toFixed(2)} EGP` : '0 EGP',
+    time: item.usageHours ? `${item.usageHours}h` : '10h',
+  }));
+
+  const fallbackDeviceRows = [
+    { device: 'Air conditioner', energy: '50 Kwh', cost: '$35', time: '10h' },
+    { device: 'Fridge', energy: '25 Kwh', cost: '$12', time: '24h' },
+    { device: 'Smart TV', energy: '10 Kwh', cost: '$8', time: '14h' },
+  ];
+
   useEffect(() => {
     fetchDashboardStats();
   }, []);
@@ -106,7 +128,7 @@ export default function Reports() {
 
   return (
     <div className="report-page">
-      <header className="top-header" style={{ marginBottom: '32px' }}>
+      <header className="top-header" style={{ marginBottom: '24px' }}>
         <h1>Reports</h1>
         <div className="search-bar">
           <Search size={18} />
@@ -116,53 +138,26 @@ export default function Reports() {
 
       {error && <p className="dashboard-error">{error}</p>}
 
+      <div className="reports-stats-row">
+        <div className="reports-stat-card">
+          <span>Total cost</span>
+          <strong>{totalCost} EGP</strong>
+        </div>
+        <div className="reports-stat-card">
+          <span>Average daily cost</span>
+          <strong>{averageDailyCost}</strong>
+        </div>
+        <div className="reports-stat-card">
+          <span>Highest consumption device</span>
+          <strong>{`${highestDeviceName} - ${highestDeviceCost}${dashboardData?.consumption?.deviceBreakdown?.[0]?.cost ? ' EGP' : '$'}`}</strong>
+        </div>
+      </div>
+
       <div className="report-grid">
-
-        {/* Left Column */}
         <div className="report-left">
-
-          {/* Monthly Plan Gauge Card */}
-          <div className="report-panel report-panel-center">
-            <div className="meter-container">
-              <div className="meter-semicircle">
-                <div className="meter-needle" />
-              </div>
-              <div className="meter-text">
-                <p>Complete</p>
-                <h2>{Math.round(dashboardData?.consumption?.planProgress?.percentage || 0)}%</h2>
-              </div>
-            </div>
-
-            <p style={{ color: '#f8fafc', fontSize: '18px', fontWeight: '500', marginBottom: '24px' }}>
-              You've used {Math.round(dashboardData?.consumption?.planProgress?.percentage || 0)}% of your monthly plan.
-            </p>
-
-            <div className="stats-dual">
-              <div className="stat-box">
-                <div className="label"><Zap size={14} color="#eab308" /> Total Cost :</div>
-                <div className="value">{Number(dashboardData?.consumption?.month?.cost || 0).toFixed(2)} EGP</div>
-              </div>
-              <div className="stat-box">
-                <div className="label"><Zap size={14} color="#eab308" /> Total Consumption :</div>
-                <div className="value">{Number(dashboardData?.consumption?.month?.total || 0).toFixed(4)} KWh</div>
-              </div>
-            </div>
-
-            <div style={{ marginTop: '24px', background: 'rgba(0,0,0,0.2)', padding: '12px 16px', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#eab308', fontSize: '13px' }}>
-                <Clock size={16} /> Period :
-              </div>
-              <select style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '16px', fontWeight: '600', outline: 'none', cursor: 'pointer' }}>
-                <option style={{ color: '#000' }}>September 2025</option>
-                <option style={{ color: '#000' }}>August 2025</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Energy Consumption Bar Chart */}
           <div className="report-panel">
             <div className="chart-header-row">
-              <h3>Energy consumption</h3>
+              <h3>Energy cost over time</h3>
               <div className="time-toggles">
                 <button className={`time-btn ${periodBar === 'Week' ? 'active' : ''}`} onClick={() => setPeriodBar('Week')}>Week</button>
                 <button className={`time-btn ${periodBar === 'Month' ? 'active' : ''}`} onClick={() => setPeriodBar('Month')}>Month</button>
@@ -170,17 +165,17 @@ export default function Reports() {
               </div>
             </div>
 
-            <div style={{ height: '240px', marginTop: '20px', minHeight: '240px', width: '100%' }}>
+            <div className="report-chart-card" style={{ marginTop: '18px' }}>
               {loading ? (
                 <div className="skeleton skeleton-chart" style={{ height: '100%' }} />
               ) : barData.length > 0 ? (
-                <ResponsiveContainer width="100%" height={240} minWidth={0}>
+                <ResponsiveContainer width="100%" height={280} minWidth={0}>
                   <BarChart data={barData} barSize={12} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
                     <XAxis dataKey="name" stroke="#f8fafc" axisLine={false} tickLine={false} dy={10} fontSize={13} />
-                    <YAxis stroke="#f8fafc" axisLine={false} tickLine={false} dx={-10} tickFormatter={(val) => val === 0 ? '0' : val.toFixed(3)} fontSize={13} />
+                    <YAxis stroke="#f8fafc" axisLine={false} tickLine={false} dx={-10} tickFormatter={(val) => val === 0 ? '0' : val.toFixed(0)} fontSize={13} />
                     <Tooltip contentStyle={{ background: '#08231b', border: '1px solid #22c55e', borderRadius: '12px' }} itemStyle={{ color: '#fff' }} />
-                    <Bar dataKey="value" fill="#22c55e" radius={[6, 6, 6, 6]} />
+                    <Bar dataKey="value" fill="#22c55e" radius={[8, 8, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
@@ -188,74 +183,71 @@ export default function Reports() {
               )}
             </div>
           </div>
-
         </div>
 
-        {/* Right Column */}
         <div className="report-right">
-
-          {/* AI Tip */}
-          <div className="ai-tip-card">
-            <Lightbulb size={24} color="#eab308" style={{ flexShrink: 0 }} />
-            <p>AI Tip : Turning off unused devices can help reduce your total energy cost.</p>
-          </div>
-
-          {/* Device Performance Line Chart */}
-          <div className="report-panel">
+          <div className="report-panel report-table-panel">
             <div className="chart-header-row">
-              <h3>Device performance</h3>
-              <div className="time-toggles">
-                <button className={`time-btn ${periodLine === 'Week' ? 'active' : ''}`} onClick={() => setPeriodLine('Week')}>Week</button>
-                <button className={`time-btn ${periodLine === 'Month' ? 'active' : ''}`} onClick={() => setPeriodLine('Month')}>Month</button>
-                <button className={`time-btn ${periodLine === 'Year' ? 'active' : ''}`} onClick={() => setPeriodLine('Year')}>Year</button>
-              </div>
+              <h3>Device activity</h3>
             </div>
-
-            <div style={{ height: '220px', marginTop: '20px', minHeight: '220px', width: '100%' }}>
-              {lineData.length > 0 ? (
-                <ResponsiveContainer width="100%" height={220} minWidth={0}>
-                  <LineChart data={lineData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
-                    <XAxis dataKey="name" stroke="#f8fafc" axisLine={false} tickLine={false} dy={10} fontSize={13} />
-                    <YAxis stroke="#f8fafc" axisLine={false} tickLine={false} dx={-10} tickFormatter={(val) => val === 0 ? '0' : val.toFixed(3)} fontSize={13} />
-                    <Tooltip contentStyle={{ background: '#08231b', border: '1px solid #22c55e', borderRadius: '12px' }} itemStyle={{ color: '#fff' }} />
-                    <Line type="monotone" dataKey="value" stroke="#eab308" strokeWidth={2} dot={<CustomLineDot />} />
-                  </LineChart>
-                </ResponsiveContainer>
-              ) : (
-                <div className="dashboard-empty" style={{ display: 'grid', placeItems: 'center', height: '100%' }}>No data for this period</div>
-              )}
+            <div className="device-table-wrapper">
+              <table className="device-table">
+                <thead>
+                  <tr>
+                    <th>Device</th>
+                    <th>Energy</th>
+                    <th>Cost</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(deviceRows.length ? deviceRows : fallbackDeviceRows).slice(0, 4).map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.device}</td>
+                      <td>{item.energy}</td>
+                      <td>{item.cost}</td>
+                      <td>{item.time}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
 
-          {/* Device Usage Breakdown Pie Chart */}
-          <div className="report-panel" style={{ display: 'flex', flexDirection: 'column', minHeight: '260px' }}>
-            <h3 style={{ margin: '0 0 24px 0', color: '#fff', fontSize: '18px', textAlign: 'center' }}>Device Usage Breakdown</h3>
-
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flex: 1, padding: '0 20px' }}>
-              <ul className="custom-legend">
-                {pieData.map((entry, index) => (
-                  <li key={index}>
-                    <div className="legend-dot" style={{ backgroundColor: entry.color }} />
-                    {entry.name} : {entry.value}%
-                  </li>
-                ))}
-              </ul>
-
-              <div style={{ width: '140px', height: '140px', minHeight: '140px' }}>
-                <ResponsiveContainer width="100%" height={140} minWidth={0}>
+          <div className="report-panel report-breakdown-panel">
+            <h3>Device Usage Breakdown</h3>
+            <div className="breakdown-grid">
+              <div className="breakdown-legend">
+                <ul className="custom-legend">
+                  {pieData.length > 0 ? pieData.map((entry, index) => (
+                    <li key={index}>
+                      <div className="legend-dot" style={{ backgroundColor: entry.color }} />
+                      <span>{entry.name}</span>
+                      <strong>{entry.value}%</strong>
+                    </li>
+                  )) : fallbackDeviceRows.map((entry, index) => (
+                    <li key={index}>
+                      <div className="legend-dot" style={{ backgroundColor: ['#22c55e', '#facc15', '#3b82f6', '#f43f5e'][index] }} />
+                      <span>{entry.device}</span>
+                      <strong>{entry.energy}</strong>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="breakdown-chart">
+                <ResponsiveContainer width="100%" height={180} minWidth={0}>
                   <PieChart>
                     <Pie
-                      data={pieData.length > 0 ? pieData : [{ name: 'Empty', value: 100, color: '#1e293b' }]}
+                      data={pieData.length > 0 ? pieData : [{ name: 'Air conditioner', value: 50, color: '#22c55e' }, { name: 'Fridge', value: 25, color: '#facc15' }, { name: 'Smart TV', value: 15, color: '#3b82f6' }, { name: 'Others', value: 10, color: '#f43f5e' }]}
                       cx="50%"
                       cy="50%"
-                      innerRadius={0}
+                      innerRadius={40}
                       outerRadius={70}
                       dataKey="value"
                       stroke="#02120b"
                       strokeWidth={2}
                     >
-                      {pieData.map((entry, index) => (
+                      {(pieData.length > 0 ? pieData : [{ name: 'Air conditioner', value: 50, color: '#22c55e' }, { name: 'Fridge', value: 25, color: '#facc15' }, { name: 'Smart TV', value: 15, color: '#3b82f6' }, { name: 'Others', value: 10, color: '#f43f5e' }]).map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
@@ -265,8 +257,38 @@ export default function Reports() {
             </div>
           </div>
 
+          <div className="ai-tip-card">
+            <Lightbulb size={24} color="#eab308" style={{ flexShrink: 0 }} />
+            <p>AI Tip : Turning off unused devices can help reduce your total energy cost.</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="report-panel report-panel-full">
+        <div className="chart-header-row">
+          <h3>Energy consumption (Kwh)</h3>
+          <div className="time-toggles">
+            <button className={`time-btn ${periodLine === 'Week' ? 'active' : ''}`} onClick={() => setPeriodLine('Week')}>Week</button>
+            <button className={`time-btn ${periodLine === 'Month' ? 'active' : ''}`} onClick={() => setPeriodLine('Month')}>Month</button>
+            <button className={`time-btn ${periodLine === 'Year' ? 'active' : ''}`} onClick={() => setPeriodLine('Year')}>Year</button>
+          </div>
         </div>
 
+        <div className="report-chart-card" style={{ marginTop: '18px' }}>
+          {lineData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={320} minWidth={0}>
+              <LineChart data={lineData} margin={{ top: 10, right: 24, left: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
+                <XAxis dataKey="name" stroke="#f8fafc" axisLine={false} tickLine={false} dy={10} fontSize={13} />
+                <YAxis stroke="#f8fafc" axisLine={false} tickLine={false} dx={-10} tickFormatter={(val) => val === 0 ? '0' : val.toFixed(0)} fontSize={13} />
+                <Tooltip contentStyle={{ background: '#08231b', border: '1px solid #22c55e', borderRadius: '12px' }} itemStyle={{ color: '#fff' }} />
+                <Line type="monotone" dataKey="value" stroke="#22c55e" strokeWidth={3} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="dashboard-empty" style={{ display: 'grid', placeItems: 'center', height: '100%' }}>No data for this period</div>
+          )}
+        </div>
       </div>
     </div>
   );

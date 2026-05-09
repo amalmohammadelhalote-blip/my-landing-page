@@ -37,22 +37,20 @@ const DashboardLayout = () => {
             <Home size={20} /> Home
           </NavLink>
 
-          <NavLink to="/dashboard/devices" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <Smartphone size={20} /> Devices
-          </NavLink>
-
           <NavLink to="/dashboard/reports" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <BarChart2 size={20} /> Reports
+          </NavLink>
+
+          <NavLink to="/dashboard/devices" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+            <Smartphone size={20} /> Devices
           </NavLink>
         </nav>
 
         <div className="sidebar-footer">
-          <div className="nav-item cursor-pointer">
-            <HelpCircle size={20} /> Help
-          </div>
           <NavLink to="/dashboard/profile" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <Settings size={20} /> Settings
+            <User size={20} /> My Profile
           </NavLink>
+          <div className="nav-item"><Settings size={20} /> Settings</div>
           <NavLink to="/logout" className="nav-item logout">
             <LogOut size={20} /> Log out
           </NavLink>
@@ -61,7 +59,8 @@ const DashboardLayout = () => {
         {isMobileMenuOpen && <div className="mobile-overlay" onClick={() => setIsMobileMenuOpen(false)} />}
       </aside>
 
-      {/* الصفحات هتظهر هنا */}
+      {/* ╪د┘
+             ╪╡┘╪ص╪د╪ز ┘ç╪ز╪╕┘ç╪▒ ┘ç┘╪د */}
       <main className="main-content">
         <Outlet />
       </main>
