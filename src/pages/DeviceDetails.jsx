@@ -39,8 +39,8 @@ const ExpandableText = ({ text, limit = 4 }) => {
         {cleanedText}
       </div>
       {cleanedText.length > 200 && (
-        <button 
-          className="read-more-btn" 
+        <button
+          className="read-more-btn"
           onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }}
         >
           {isExpanded ? 'Read Less' : 'Read More...'}
@@ -102,7 +102,7 @@ export default function DeviceDetails() {
       // Show data for the latest day available with readings
       const latestDay = [...payload.days].sort((a, b) => b.day - a.day).find(d => d.readings && d.readings.length > 0);
       if (!latestDay) return [];
-      
+
       return latestDay.readings.map(r => ({
         name: new Date(r.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
         value: Number(r.power || 0)
@@ -116,7 +116,7 @@ export default function DeviceDetails() {
         const avgPower = d.readings && d.readings.length > 0
           ? d.readings.reduce((sum, r) => sum + (r.power || 0), 0) / d.readings.length
           : 0;
-        
+
         return {
           name: dayNames[date.getDay()],
           value: Number(avgPower.toFixed(2))
@@ -223,7 +223,7 @@ export default function DeviceDetails() {
         setHealthLoading(true);
         const now = new Date();
         const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-        
+
         // Fetch readings and health in parallel if needed
         const [readingsRes, healthRes] = await Promise.all([
           readingService.getMonthly(deviceId, currentMonthStr),
@@ -237,18 +237,18 @@ export default function DeviceDetails() {
         const healthData = parseResponsePayload(healthRes);
 
         if (!mounted) return;
-        
+
         // Combine data
         const combinedHealth = { ...readingsData, health: healthData };
         setHealth(combinedHealth);
-        
+
         const normalized = normalizeChartHistory(readingsData, chartPeriod);
         setChartData(normalized);
 
         // EXTRA: Check if recommendation is bundled within health or monthly response
-        const bundledRec = healthData?.recommendation || healthData?.tips || 
-                          readingsData?.recommendation || readingsData?.tips;
-        
+        const bundledRec = healthData?.recommendation || healthData?.tips ||
+          readingsData?.recommendation || readingsData?.tips;
+
         if (bundledRec) {
           setRecommendation({ recommendation: bundledRec });
         }
@@ -405,313 +405,312 @@ export default function DeviceDetails() {
   }
 
   return (
-  <div className="report-page">
+    <div className="report-page">
 
-    {/* DELETE MODAL */}
-    {isDeleting && (
-      <div className="modal-overlay">
-        <div className="delete-modal">
-          <h3>Are you sure you want to delete this device ?</h3>
+      {/* DELETE MODAL */}
+      {isDeleting && (
+        <div className="modal-overlay">
+          <div className="delete-modal">
+            <h3>Are you sure you want to delete this device ?</h3>
 
-          <div className="modal-actions">
+            <div className="modal-actions">
+              <button
+                className="confirm-delete-btn"
+                onClick={handleDeleteDevice}
+              >
+                Confirm delete
+              </button>
+
+              <button
+                className="cancel-delete-btn"
+                onClick={() => setIsDeleting(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* HEADER */}
+      <header className="top-header">
+        <h1>Device Details</h1>
+
+        <div className="search-bar">
+          <Search size={18} />
+          <input type="text" placeholder="Search" />
+        </div>
+      </header>
+
+      {/* CONTENT */}
+      <div className="device-layout">
+
+        {/* LEFT BIG CARD */}
+        <div className="usage-card main-card">
+
+          <h2 className="usage-title">
+            Usage Summary
+          </h2>
+
+          <p className="usage-subtitle">
+            Track your device's daily performance.
+          </p>
+
+          <div className="gauge-container">
+            <GaugeChart percentage={usagePercentage} />
+          </div>
+
+          <div className="usage-stat-grid">
+
+            <div className="usage-stat-box">
+              <div className="stat-label">
+                <Zap size={16} />
+                Current voltage :
+              </div>
+
+              <strong>
+                {currentVoltage} V
+              </strong>
+            </div>
+
+            <div className="usage-stat-box">
+              <div className="stat-label">
+                <Plug size={16} />
+                Current power :
+              </div>
+
+              <strong>
+                {currentPowerVal.toFixed(2)} W
+              </strong>
+            </div>
+
+            <div className="usage-stat-box">
+              <div className="stat-label">
+                <Timer size={16} />
+                Last update :
+              </div>
+
+              <strong>
+                {formatLastUpdate(lastUpdate)}
+              </strong>
+            </div>
+
+            <div className="usage-stat-box">
+              <div className="stat-label">
+                <Coins size={16} />
+                Estimated Cost :
+              </div>
+
+              <strong>
+                {estimatedCost} EGP
+              </strong>
+            </div>
+
+          </div>
+
+          {/* POWER BUTTON */}
+          <button
+            className={`switch-btn ${isOn ? 'switch-on' : 'switch-off'
+              }`}
+            onClick={handlePowerToggle}
+          >
+            <Power size={28} />
+          </button>
+
+          {/* ACTION BUTTONS */}
+          <div className="action-buttons-row">
+
             <button
-              className="confirm-delete-btn"
-              onClick={handleDeleteDevice}
+              className="btn-action btn-edit"
+              onClick={() => setIsEditing(true)}
             >
-              Confirm delete
+              <Edit size={16} />
+              Edit
             </button>
 
             <button
-              className="cancel-delete-btn"
-              onClick={() => setIsDeleting(false)}
+              className="btn-action btn-delete"
+              onClick={() => setIsDeleting(true)}
             >
-              Cancel
+              <Trash2 size={16} />
+              Delete
             </button>
-          </div>
-        </div>
-      </div>
-    )}
 
-    {/* HEADER */}
-    <header className="top-header">
-      <h1>Device Details</h1>
-
-      <div className="search-bar">
-        <Search size={18} />
-        <input type="text" placeholder="Search" />
-      </div>
-    </header>
-
-    {/* CONTENT */}
-    <div className="device-layout">
-
-      {/* LEFT BIG CARD */}
-      <div className="usage-card main-card">
-
-        <h2 className="usage-title">
-          Usage Summary
-        </h2>
-
-        <p className="usage-subtitle">
-          Track your device's daily performance.
-        </p>
-
-        <div className="gauge-container">
-          <GaugeChart percentage={usagePercentage} />
-        </div>
-
-        <div className="usage-stat-grid">
-
-          <div className="usage-stat-box">
-            <div className="stat-label">
-              <Zap size={16} />
-              Current voltage :
-            </div>
-
-            <strong>
-              {currentVoltage} V
-            </strong>
-          </div>
-
-          <div className="usage-stat-box">
-            <div className="stat-label">
-              <Plug size={16} />
-              Current power :
-            </div>
-
-            <strong>
-              {currentPowerVal.toFixed(2)} W
-            </strong>
-          </div>
-
-          <div className="usage-stat-box">
-            <div className="stat-label">
-              <Timer size={16} />
-              Last update :
-            </div>
-
-            <strong>
-              {formatLastUpdate(lastUpdate)}
-            </strong>
-          </div>
-
-          <div className="usage-stat-box">
-            <div className="stat-label">
-              <Coins size={16} />
-              Estimated Cost :
-            </div>
-
-            <strong>
-              {estimatedCost} EGP
-            </strong>
           </div>
 
         </div>
 
-        {/* POWER BUTTON */}
-        <button
-          className={`switch-btn ${
-            isOn ? 'switch-on' : 'switch-off'
-          }`}
-          onClick={handlePowerToggle}
-        >
-          <Power size={28} />
-        </button>
+        {/* RIGHT SIDE */}
+        <div className="top-right-wrapper">
 
-        {/* ACTION BUTTONS */}
-        <div className="action-buttons-row">
+          {/* DEVICE CARD */}
+          <div className="top-right-device-card">
 
-          <button
-            className="btn-action btn-edit"
-            onClick={() => setIsEditing(true)}
-          >
-            <Edit size={16} />
-            Edit
-          </button>
+            <div className={`icon-wrapper ${isOn ? 'on' : ''}`}>
+              <Bluetooth
+                size={42}
+                color={isOn ? '#22c55e' : '#94a3b8'}
+              />
+            </div>
 
-          <button
-            className="btn-action btn-delete"
-            onClick={() => setIsDeleting(true)}
-          >
-            <Trash2 size={16} />
-            Delete
-          </button>
+            <div className="device-meta">
+              <h3>
+                {selectedDevice?.name || 'Device'}
+              </h3>
+
+              <p className="loc-text">
+                {selectedDevice?.location?.name ||
+                  'Unknown Location'}
+              </p>
+
+              <p className="cat-text">
+                {selectedDevice?.categoryId?.name ||
+                  'Unknown Category'}
+              </p>
+            </div>
+
+          </div>
+
+          {/* AI CARD */}
+          <div className="ai-tip-table-card">
+
+            <div className="ai-table-header">
+              <Lightbulb size={22} color="#facc15" />
+              <h3>AI Recommendations</h3>
+            </div>
+
+            <table className="ai-table">
+
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                <tr>
+                  <td>
+                    <span className="td-badge">
+                      AI Insight
+                    </span>
+                  </td>
+
+                  <td>
+                    <ExpandableText
+                      text={
+                        recommendation?.recommendation ||
+                        'No recommendations available.'
+                      }
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <span className="td-badge action">
+                      Suggested Action
+                    </span>
+                  </td>
+
+                  <td>
+                    Optimize usage based on the insight
+                    above for maximum energy savings.
+                  </td>
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
 
         </div>
 
-      </div>
+        {/* CHART */}
+        <div className="report-chart-card full-chart">
 
-      {/* RIGHT SIDE */}
-      <div className="top-right-wrapper">
+          <div className="chart-header">
 
-        {/* DEVICE CARD */}
-        <div className="top-right-device-card">
-
-          <div className={`icon-wrapper ${isOn ? 'on' : ''}`}>
-            <Bluetooth
-              size={42}
-              color={isOn ? '#22c55e' : '#94a3b8'}
-            />
-          </div>
-
-          <div className="device-meta">
             <h3>
-              {selectedDevice?.name || 'Device'}
+              Device Performance (Watt)
             </h3>
 
-            <p className="loc-text">
-              {selectedDevice?.location?.name ||
-                'Unknown Location'}
-            </p>
+            <div className="chart-filters">
 
-            <p className="cat-text">
-              {selectedDevice?.categoryId?.name ||
-                'Unknown Category'}
-            </p>
+              {['Day', 'Week', 'Month'].map((period) => (
+                <button
+                  key={period}
+                  className={
+                    chartPeriod === period ? 'active' : ''
+                  }
+                  onClick={() => setChartPeriod(period)}
+                >
+                  {period}
+                </button>
+              ))}
+
+            </div>
+
           </div>
 
-        </div>
+          <ResponsiveContainer width="100%" height={260}>
 
-        {/* AI CARD */}
-        <div className="ai-tip-table-card">
+            <AreaChart data={chartData}>
 
-          <div className="ai-table-header">
-            <Lightbulb size={22} color="#facc15" />
-            <h3>AI Recommendations</h3>
-          </div>
-
-          <table className="ai-table">
-
-            <thead>
-              <tr>
-                <th>Category</th>
-                <th>Details</th>
-              </tr>
-            </thead>
-
-            <tbody>
-
-              <tr>
-                <td>
-                  <span className="td-badge">
-                    AI Insight
-                  </span>
-                </td>
-
-                <td>
-                  <ExpandableText
-                    text={
-                      recommendation?.recommendation ||
-                      'No recommendations available.'
-                    }
+              <defs>
+                <linearGradient
+                  id="powerFill"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor="#facc15"
+                    stopOpacity={0.7}
                   />
-                </td>
-              </tr>
 
-              <tr>
-                <td>
-                  <span className="td-badge action">
-                    Suggested Action
-                  </span>
-                </td>
+                  <stop
+                    offset="100%"
+                    stopColor="#facc15"
+                    stopOpacity={0}
+                  />
+                </linearGradient>
+              </defs>
 
-                <td>
-                  Optimize usage based on the insight
-                  above for maximum energy savings.
-                </td>
-              </tr>
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="#1e293b"
+              />
 
-            </tbody>
+              <XAxis
+                dataKey="name"
+                stroke="#94a3b8"
+              />
 
-          </table>
+              <YAxis stroke="#94a3b8" />
 
-        </div>
+              <Tooltip />
 
-      </div>
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="#facc15"
+                fill="url(#powerFill)"
+                strokeWidth={3}
+              />
 
-      {/* CHART */}
-      <div className="report-chart-card full-chart">
+            </AreaChart>
 
-        <div className="chart-header">
-
-          <h3>
-            Device Performance (Watt)
-          </h3>
-
-          <div className="chart-filters">
-
-            {['Day', 'Week', 'Month'].map((period) => (
-              <button
-                key={period}
-                className={
-                  chartPeriod === period ? 'active' : ''
-                }
-                onClick={() => setChartPeriod(period)}
-              >
-                {period}
-              </button>
-            ))}
-
-          </div>
+          </ResponsiveContainer>
 
         </div>
-
-        <ResponsiveContainer width="100%" height={260}>
-
-          <AreaChart data={chartData}>
-
-            <defs>
-              <linearGradient
-                id="powerFill"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-                <stop
-                  offset="0%"
-                  stopColor="#facc15"
-                  stopOpacity={0.7}
-                />
-
-                <stop
-                  offset="100%"
-                  stopColor="#facc15"
-                  stopOpacity={0}
-                />
-              </linearGradient>
-            </defs>
-
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="#1e293b"
-            />
-
-            <XAxis
-              dataKey="name"
-              stroke="#94a3b8"
-            />
-
-            <YAxis stroke="#94a3b8" />
-
-            <Tooltip />
-
-            <Area
-              type="monotone"
-              dataKey="value"
-              stroke="#facc15"
-              fill="url(#powerFill)"
-              strokeWidth={3}
-            />
-
-          </AreaChart>
-
-        </ResponsiveContainer>
 
       </div>
 
     </div>
-
-  </div>
-);
+  );
 }

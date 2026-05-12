@@ -23,8 +23,8 @@ const ExpandableText = ({ text }) => {
         {cleaned}
       </div>
       {cleaned.length > 150 && (
-        <button 
-          className="read-more-btn" 
+        <button
+          className="read-more-btn"
           onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }}
         >
           {isExpanded ? 'Read Less' : 'Read More...'}
@@ -47,7 +47,7 @@ export default function Dashboard() {
   const [aiTip, setAiTip] = useState('');
   const [aiTipLoading, setAiTipLoading] = useState(false);
   const [chartDataLoading, setChartDataLoading] = useState(false);
-  
+
   const isDeviceOn = (status) => status === 'ON' || status === 'active' || status === true;
   const getToggleStatus = (status) => (isDeviceOn(status) ? 'OFF' : 'ON');
   const getDeviceId = (device) => device?._id || device?.id || device?.deviceId || '';
@@ -191,10 +191,10 @@ export default function Dashboard() {
           // NEW: Fetch from Health endpoint instead of standalone /recommendation
           const res = await deviceService.getHealth(topDeviceId);
           const data = res?.data?.data || res?.data;
-          
+
           // Try to find recommendation in the health payload
           const bundledRec = data?.recommendation || data?.tips || data?.health?.recommendation || data?.health?.tips;
-          
+
           if (bundledRec) {
             setAiTip(bundledRec);
           } else {
@@ -238,7 +238,7 @@ export default function Dashboard() {
     const nextStatus = getToggleStatus(currentStatus);
     try {
       await deviceService.toggleStatus(id, nextStatus);
-      
+
       // Update main devices list
       setDevices((prev) =>
         prev.map((d) =>
@@ -246,24 +246,17 @@ export default function Dashboard() {
         )
       );
 
-      // Update dashboard data to keep Most Used Devices and Summary consistent
+      // Update dashboard data ONLY for the devices list, keeping Summary and other parts unchanged
       if (dashboardData) {
         setDashboardData(prev => {
           if (!prev) return prev;
-          
-          const updatedSummary = prev.summary ? {
-            ...prev.summary,
-            onlineDevices: Math.max(0, prev.summary.onlineDevices + (nextStatus === 'ON' ? 1 : -1)),
-            offlineDevices: Math.max(0, prev.summary.offlineDevices + (nextStatus === 'ON' ? -1 : 1))
-          } : prev.summary;
 
-          const updatedDevicesList = prev.devices ? prev.devices.map(d => 
+          const updatedDevicesList = prev.devices ? prev.devices.map(d =>
             getDeviceId(d) === id ? { ...d, status: nextStatus, isOn: nextStatus === 'ON' } : d
           ) : prev.devices;
 
           return {
             ...prev,
-            summary: updatedSummary,
             devices: updatedDevicesList
           };
         });
@@ -463,8 +456,8 @@ export default function Dashboard() {
               </div>
 
               <div className="home-add-device-section" style={{ marginTop: '24px' }}>
-                <button 
-                  className="btn-primary" 
+                <button
+                  className="btn-primary"
                   style={{ width: '100%', padding: '16px', borderRadius: '12px', fontSize: '16px', fontWeight: 'bold' }}
                   onClick={() => navigate('/dashboard/devices/add')}
                 >

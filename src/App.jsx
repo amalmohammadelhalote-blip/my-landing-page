@@ -9,7 +9,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Logout from "./pages/Logout";
 
 // الجديد
-import DashboardLayout from "./Layout/DashboardLayuot";
+import DashboardLayout from "./Layout/DashboardLayout";
 import Home from "./pages/Home";
 import Devices from "./pages/Devices";
 import Reports from "./pages/Reports";

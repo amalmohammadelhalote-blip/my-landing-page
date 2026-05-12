@@ -88,15 +88,6 @@ const SignUp = () => {
   //     default: return "red";
   //   }
   // };
-  <div className="strength-wrapper">
-              <span className="strength-label">Password Strength <span className="info-icon">i</span></span>
-              <div className="strength-bars">
-                <div className={`s-bar ${passwordStrength >= 1 ? 'low' : ''}`}></div>
-                <div className={`s-bar ${passwordStrength >= 2 ? 'medium' : ''}`}></div>
-                <div className={`s-bar ${passwordStrength >= 3 ? 'high' : ''}`}></div>
-                <div className={`s-bar ${passwordStrength >= 4 ? 'full' : ''}`}></div>
-              </div>
-            </div>
 
   return (
     <div className="signup-page">
