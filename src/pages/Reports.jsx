@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Search, Lightbulb, Zap, Clock } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, Tooltip } from 'recharts';
-import { readingService, homeService } from '../api/services';
+import { readingService, homeService, deviceService } from '../api/services';
 import './Reports.css';
 
 const CustomLineDot = (props) => {
@@ -22,31 +22,34 @@ export default function Reports() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [dashboardData, setDashboardData] = useState(null);
+  const [devices, setDevices] = useState([]);
 
-  const totalCost = Number(dashboardData?.consumption?.month?.cost || 120).toFixed(2);
-  const averageDailyCost = dashboardData?.consumption?.month?.cost
-    ? `${(dashboardData.consumption.month.cost / 30).toFixed(2)} EGP / day`
-    : '4.00 $ / day';
-  const highestDeviceName = dashboardData?.consumption?.deviceBreakdown?.[0]?.deviceName || 'Air conditioner';
-  const highestDeviceCost = dashboardData?.consumption?.deviceBreakdown?.[0]?.cost
-    ? Number(dashboardData.consumption.deviceBreakdown[0].cost).toFixed(2)
-    : '35';
+  const deviceRows = useMemo(() => {
+    const breakdown = dashboardData?.consumption?.deviceBreakdown;
+    if (Array.isArray(breakdown) && breakdown.length > 0) {
+      return breakdown.map((item, index) => ({
+        device: item.deviceName || `Device ${index + 1}`,
+        energy: `${item.consumption || 0} Kwh`,
+        cost: item.cost ? `${Number(item.cost).toFixed(2)} EGP` : '0 EGP',
+        time: item.usageHours ? `${item.usageHours}h` : '0h',
+      }));
+    }
 
-  const deviceRows = (dashboardData?.consumption?.deviceBreakdown || []).map((item, index) => ({
-    device: item.deviceName || `Device ${index + 1}`,
-    energy: `${item.consumption || 0} Kwh`,
-    cost: item.cost ? `${Number(item.cost).toFixed(2)} EGP` : '0 EGP',
-    time: item.usageHours ? `${item.usageHours}h` : '10h',
-  }));
+    if (devices.length > 0) {
+      return devices.map((item, index) => ({
+        device: item.name || `Device ${index + 1}`,
+        energy: `${item.lastReading?.todayConsumption || 0} Kwh`,
+        cost: item.lastReading?.todayCost ? `${Number(item.lastReading.todayCost).toFixed(2)} EGP` : '0 EGP',
+        time: item.lastReading?.todayUsageHours ? `${item.lastReading.todayUsageHours}h` : '0h',
+      }));
+    }
 
-  const fallbackDeviceRows = [
-    { device: 'Air conditioner', energy: '50 Kwh', cost: '$35', time: '10h' },
-    { device: 'Fridge', energy: '25 Kwh', cost: '$12', time: '24h' },
-    { device: 'Smart TV', energy: '10 Kwh', cost: '$8', time: '14h' },
-  ];
+    return [];
+  }, [dashboardData, devices]);
 
   useEffect(() => {
     fetchDashboardStats();
+    fetchDevices();
   }, []);
 
   useEffect(() => {
@@ -63,6 +66,17 @@ export default function Reports() {
       setDashboardData(res?.data?.data || res?.data);
     } catch (err) {
       console.warn('Dashboard stats fetch failed', err);
+    }
+  };
+
+  const fetchDevices = async () => {
+    try {
+      const res = await deviceService.getAll();
+      const data = res?.data?.data || res?.data || [];
+      setDevices(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.warn('Devices fetch failed', err);
+      setDevices([]);
     }
   };
 
@@ -138,21 +152,6 @@ export default function Reports() {
 
       {error && <p className="dashboard-error">{error}</p>}
 
-      <div className="reports-stats-row">
-        <div className="reports-stat-card">
-          <span>Total cost</span>
-          <strong>{totalCost} EGP</strong>
-        </div>
-        <div className="reports-stat-card">
-          <span>Average daily cost</span>
-          <strong>{averageDailyCost}</strong>
-        </div>
-        <div className="reports-stat-card">
-          <span>Highest consumption device</span>
-          <strong>{`${highestDeviceName} - ${highestDeviceCost}${dashboardData?.consumption?.deviceBreakdown?.[0]?.cost ? ' EGP' : '$'}`}</strong>
-        </div>
-      </div>
-
       <div className="report-grid">
         <div className="report-left">
           <div className="report-panel">
@@ -201,14 +200,22 @@ export default function Reports() {
                   </tr>
                 </thead>
                 <tbody>
-                  {(deviceRows.length ? deviceRows : fallbackDeviceRows).slice(0, 4).map((item, index) => (
-                    <tr key={index}>
-                      <td>{item.device}</td>
-                      <td>{item.energy}</td>
-                      <td>{item.cost}</td>
-                      <td>{item.time}</td>
+                  {deviceRows.length > 0 ? (
+                    deviceRows.slice(0, 4).map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.device}</td>
+                        <td>{item.energy}</td>
+                        <td>{item.cost}</td>
+                        <td>{item.time}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={4} style={{ textAlign: 'center', padding: '24px', color: '#94a3b8' }}>
+                        No device activity data available.
+                      </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>
@@ -225,20 +232,24 @@ export default function Reports() {
                       <span>{entry.name}</span>
                       <strong>{entry.value}%</strong>
                     </li>
-                  )) : fallbackDeviceRows.map((entry, index) => (
+                  )) : devices.length > 0 ? devices.slice(0, 4).map((item, index) => (
                     <li key={index}>
                       <div className="legend-dot" style={{ backgroundColor: ['#22c55e', '#facc15', '#3b82f6', '#f43f5e'][index] }} />
-                      <span>{entry.device}</span>
-                      <strong>{entry.energy}</strong>
+                      <span>{item.name}</span>
+                      <strong>{Math.round(item.lastReading?.todayConsumption || 0)} Kwh</strong>
                     </li>
-                  ))}
+                  )) : (
+                    <li style={{ color: '#94a3b8', padding: '12px 0' }}>
+                      No device breakdown available.
+                    </li>
+                  )}
                 </ul>
               </div>
               <div className="breakdown-chart">
                 <ResponsiveContainer width="100%" height={180} minWidth={0}>
                   <PieChart>
                     <Pie
-                      data={pieData.length > 0 ? pieData : [{ name: 'Air conditioner', value: 50, color: '#22c55e' }, { name: 'Fridge', value: 25, color: '#facc15' }, { name: 'Smart TV', value: 15, color: '#3b82f6' }, { name: 'Others', value: 10, color: '#f43f5e' }]}
+                      data={pieData}
                       cx="50%"
                       cy="50%"
                       innerRadius={40}
@@ -247,7 +258,7 @@ export default function Reports() {
                       stroke="#02120b"
                       strokeWidth={2}
                     >
-                      {(pieData.length > 0 ? pieData : [{ name: 'Air conditioner', value: 50, color: '#22c55e' }, { name: 'Fridge', value: 25, color: '#facc15' }, { name: 'Smart TV', value: 15, color: '#3b82f6' }, { name: 'Others', value: 10, color: '#f43f5e' }]).map((entry, index) => (
+                      {pieData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
@@ -255,11 +266,6 @@ export default function Reports() {
                 </ResponsiveContainer>
               </div>
             </div>
-          </div>
-
-          <div className="ai-tip-card">
-            <Lightbulb size={24} color="#eab308" style={{ flexShrink: 0 }} />
-            <p>AI Tip : Turning off unused devices can help reduce your total energy cost.</p>
           </div>
         </div>
       </div>

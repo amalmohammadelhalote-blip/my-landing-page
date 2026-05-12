@@ -405,259 +405,313 @@ export default function DeviceDetails() {
   }
 
   return (
-    <div className="report-page">
-      {/* Delete Modal Overlay */}
-      {isDeleting && (
-        <div className="modal-overlay">
-          <div className="delete-modal">
-            <h3>Are you sure you want to delete this device ?</h3>
-            <div className="modal-actions">
-              <button className="confirm-delete-btn" onClick={handleDeleteDevice} disabled={isSubmitting}>
-                {isSubmitting ? 'Deleting...' : 'Confirm delete'}
-              </button>
-              <button className="cancel-delete-btn" onClick={() => setIsDeleting(false)} disabled={isSubmitting}>
-                Cancel
-              </button>
-            </div>
+  <div className="report-page">
+
+    {/* DELETE MODAL */}
+    {isDeleting && (
+      <div className="modal-overlay">
+        <div className="delete-modal">
+          <h3>Are you sure you want to delete this device ?</h3>
+
+          <div className="modal-actions">
+            <button
+              className="confirm-delete-btn"
+              onClick={handleDeleteDevice}
+            >
+              Confirm delete
+            </button>
+
+            <button
+              className="cancel-delete-btn"
+              onClick={() => setIsDeleting(false)}
+            >
+              Cancel
+            </button>
           </div>
         </div>
-      )}
+      </div>
+    )}
 
-      <header className="top-header">
-        <h1>Device Details</h1>
-        <div className="search-bar">
-          <Search size={18} />
-          <input type="text" placeholder="Search" />
+    {/* HEADER */}
+    <header className="top-header">
+      <h1>Device Details</h1>
+
+      <div className="search-bar">
+        <Search size={18} />
+        <input type="text" placeholder="Search" />
+      </div>
+    </header>
+
+    {/* CONTENT */}
+    <div className="device-layout">
+
+      {/* LEFT BIG CARD */}
+      <div className="usage-card main-card">
+
+        <h2 className="usage-title">
+          Usage Summary
+        </h2>
+
+        <p className="usage-subtitle">
+          Track your device's daily performance.
+        </p>
+
+        <div className="gauge-container">
+          <GaugeChart percentage={usagePercentage} />
         </div>
-      </header>
 
-      {error && <p className="dashboard-error">{error}</p>}
-      {loading ? (
-        <p>Loading device details...</p>
-      ) : !selectedDevice ? (
-        <p className="dashboard-empty">Device details not found.</p>
-      ) : (
-        <div className="report-grid">
-          {/* Left Section */}
-          <section className="report-left">
-            <div className="usage-card">
-              <h2 className="usage-title">Usage Summary</h2>
-              <p className="usage-subtitle">Track your device's daily performance.</p>
+        <div className="usage-stat-grid">
 
-              <div className="gauge-container">
-                <GaugeChart percentage={usagePercentage} />
-              </div>
+          <div className="usage-stat-box">
+            <div className="stat-label">
+              <Zap size={16} />
+              Current voltage :
+            </div>
 
-              <div className="usage-stat-grid">
-                <div className="usage-stat-box">
-                  <div className="stat-label"><Zap size={16} /> Current voltage :</div>
-                  {parseFloat(currentVoltage) > 230 && <span className="small-status red-txt">High consumption</span>}
-                  <strong>{currentVoltage} {currentVoltage !== 'N/A' && 'V'}</strong>
-                </div>
-                <div className="usage-stat-box">
-                  <Plug size={18} />
-                  <span>Current power :</span>
-                  <strong>{currentPowerVal === 'N/A' ? 'N/A' : `${currentPowerVal}W`}</strong>
-                </div>
-                <div className="usage-stat-box">
-                  <div className="stat-label"><Timer size={16} /> Last update :</div>
-                  <strong>{formatLastUpdate(lastUpdate)}</strong>
-                </div>
-                <div className="usage-stat-box">
-                  <div className="stat-label"><Coins size={16} /> Estimated Cost :</div>
-                  <strong>{estimatedCost} {estimatedCost !== 'N/A' && 'EGP'}</strong>
-                </div>
-              </div>
+            <strong>
+              {currentVoltage} V
+            </strong>
+          </div>
 
+          <div className="usage-stat-box">
+            <div className="stat-label">
+              <Plug size={16} />
+              Current power :
+            </div>
+
+            <strong>
+              {currentPowerVal.toFixed(2)} W
+            </strong>
+          </div>
+
+          <div className="usage-stat-box">
+            <div className="stat-label">
+              <Timer size={16} />
+              Last update :
+            </div>
+
+            <strong>
+              {formatLastUpdate(lastUpdate)}
+            </strong>
+          </div>
+
+          <div className="usage-stat-box">
+            <div className="stat-label">
+              <Coins size={16} />
+              Estimated Cost :
+            </div>
+
+            <strong>
+              {estimatedCost} EGP
+            </strong>
+          </div>
+
+        </div>
+
+        {/* POWER BUTTON */}
+        <button
+          className={`switch-btn ${
+            isOn ? 'switch-on' : 'switch-off'
+          }`}
+          onClick={handlePowerToggle}
+        >
+          <Power size={28} />
+        </button>
+
+        {/* ACTION BUTTONS */}
+        <div className="action-buttons-row">
+
+          <button
+            className="btn-action btn-edit"
+            onClick={() => setIsEditing(true)}
+          >
+            <Edit size={16} />
+            Edit
+          </button>
+
+          <button
+            className="btn-action btn-delete"
+            onClick={() => setIsDeleting(true)}
+          >
+            <Trash2 size={16} />
+            Delete
+          </button>
+
+        </div>
+
+      </div>
+
+      {/* RIGHT SIDE */}
+      <div className="top-right-wrapper">
+
+        {/* DEVICE CARD */}
+        <div className="top-right-device-card">
+
+          <div className={`icon-wrapper ${isOn ? 'on' : ''}`}>
+            <Bluetooth
+              size={42}
+              color={isOn ? '#22c55e' : '#94a3b8'}
+            />
+          </div>
+
+          <div className="device-meta">
+            <h3>
+              {selectedDevice?.name || 'Device'}
+            </h3>
+
+            <p className="loc-text">
+              {selectedDevice?.location?.name ||
+                'Unknown Location'}
+            </p>
+
+            <p className="cat-text">
+              {selectedDevice?.categoryId?.name ||
+                'Unknown Category'}
+            </p>
+          </div>
+
+        </div>
+
+        {/* AI CARD */}
+        <div className="ai-tip-table-card">
+
+          <div className="ai-table-header">
+            <Lightbulb size={22} color="#facc15" />
+            <h3>AI Recommendations</h3>
+          </div>
+
+          <table className="ai-table">
+
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td>
+                  <span className="td-badge">
+                    AI Insight
+                  </span>
+                </td>
+
+                <td>
+                  <ExpandableText
+                    text={
+                      recommendation?.recommendation ||
+                      'No recommendations available.'
+                    }
+                  />
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <span className="td-badge action">
+                    Suggested Action
+                  </span>
+                </td>
+
+                <td>
+                  Optimize usage based on the insight
+                  above for maximum energy savings.
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+      {/* CHART */}
+      <div className="report-chart-card full-chart">
+
+        <div className="chart-header">
+
+          <h3>
+            Device Performance (Watt)
+          </h3>
+
+          <div className="chart-filters">
+
+            {['Day', 'Week', 'Month'].map((period) => (
               <button
-                className={`power-btn switch-btn ${isOn ? 'switch-on' : 'switch-off'}`}
-                type="button"
-                disabled={updatingPower}
-                onClick={handlePowerToggle}
+                key={period}
+                className={
+                  chartPeriod === period ? 'active' : ''
+                }
+                onClick={() => setChartPeriod(period)}
               >
-                <Power size={28} />
+                {period}
               </button>
+            ))}
 
-              <div className="action-buttons-row">
-                <button className="btn-action btn-edit" onClick={() => setIsEditing(true)}><Edit size={16} /> Edit</button>
-                <button className="btn-action btn-delete" onClick={() => setIsDeleting(true)}><Trash2 size={16} /> Delete</button>
-              </div>
+          </div>
 
-              {/* Success Message */}
-              {successMsg && <p className="success-banner">{successMsg}</p>}
-            </div>
-          </section>
-
-          {/* Right Section */}
-          <section className="report-right">
-            <div className="top-right-device-card">
-              <div className={`icon-wrapper ${isOn ? 'on' : ''}`}>
-                <Bluetooth size={48} color={isOn ? '#22c55e' : '#94a3b8'} />
-              </div>
-              <div className="device-meta">
-                <h3>{selectedDevice?.name || 'Smart TV'}</h3>
-                <p className="loc-text">{selectedDevice?.location?.name || selectedDevice?.location || 'Unknown Location'}</p>
-                <p className="cat-text">{selectedDevice?.category?.name || selectedDevice?.categoryId?.name || 'Unknown Category'}</p>
-              </div>
-            </div>
-
-            <div className="ai-tip-table-card">
-              <div className="ai-table-header">
-                <Lightbulb size={24} color="#facc15" />
-                <h3>AI Recommendations</h3>
-              </div>
-              <div className="ai-table-wrapper">
-                {recommendationLoading ? (
-                  <div className="skeleton skeleton-text" style={{ margin: '20px', height: '100px' }} />
-                ) : recommendation ? (
-                  <div className="dynamic-rec-content" style={{ padding: '0 20px 20px' }}>
-                    <table className="ai-table">
-                      <thead>
-                        <tr>
-                          <th>Category</th>
-                          <th>Details</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {typeof (recommendation.recommendation || recommendation.tips || recommendation) === 'string' ? (
-                          <>
-                            <tr>
-                              <td>
-                                <span className="td-badge insight">
-                                  <Lightbulb size={12} /> AI Insight
-                                </span>
-                              </td>
-                              <td className="markdown-rec-cell">
-                                <ExpandableText 
-                                  text={recommendation.recommendation || recommendation.tips || (typeof recommendation === 'string' ? recommendation : '')} 
-                                />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <span className="td-badge action">
-                                  <Zap size={12} /> Suggested Action
-                                </span>
-                              </td>
-                              <td>Optimize usage based on the insight above for maximum energy savings.</td>
-                            </tr>
-                          </>
-                        ) : (
-                          Object.entries(recommendation).map(([key, val], idx) => (
-                            <tr key={idx}>
-                              <td>
-                                <span className={`td-badge ${idx % 2 === 0 ? 'insight' : 'action'}`}>
-                                  {idx % 2 === 0 ? <Lightbulb size={12} /> : <Zap size={12} />} {key}
-                                </span>
-                              </td>
-                              <td>
-                                <ExpandableText text={typeof val === 'string' ? val : JSON.stringify(val)} />
-                              </td>
-                            </tr>
-                          ))
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <table className="ai-table">
-                    <thead>
-                      <tr>
-                        <th>Category</th>
-                        <th>Details</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <span className="td-badge insight">
-                            <Lightbulb size={12} /> Insight
-                          </span>
-                        </td>
-                        <td>
-                          Optimizing device usage could save power and extend device lifespan.
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <span className="td-badge action">
-                            <Zap size={12} /> Action
-                          </span>
-                        </td>
-                        <td>Turning off unused devices can help reduce your total energy cost by up to 15%.</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                )}
-              </div>
-            </div>
-
-            <div className="report-chart-card">
-              <div className="chart-header">
-                <h3>Device Performance <span className="unit-label">({chartPeriod === 'Month' ? 'kWh' : 'Watt'})</span></h3>
-                <div className="chart-filters">
-                  {['Day', 'Week', 'Month'].map(period => (
-                    <button
-                      key={period}
-                      type="button"
-                      className={chartPeriod === period ? 'active' : ''}
-                      onClick={() => setChartPeriod(period)}
-                    >
-                      {period}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {healthLoading && chartData.length === 0 ? (
-                <div className="skeleton-chart" style={{ height: '230px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px' }} />
-              ) : (
-                <ResponsiveContainer width="100%" height={230}>
-                  <AreaChart data={chartData}>
-                    <defs>
-                      <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={chartPeriod === 'Month' ? "#22c55e" : "#facc15"} stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor={chartPeriod === 'Month' ? "#22c55e" : "#facc15"} stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                    <XAxis 
-                      dataKey="name" 
-                      stroke="#94a3b8" 
-                      axisLine={false} 
-                      tickLine={false} 
-                      dy={10} 
-                      fontSize={12}
-                    />
-                    <YAxis 
-                      stroke="#94a3b8" 
-                      axisLine={false} 
-                      tickLine={false} 
-                      dx={-10} 
-                      fontSize={12}
-                      tickFormatter={(val) => chartPeriod === 'Month' ? val.toFixed(3) : (val >= 1000 ? `${(val / 1000).toFixed(1)}K` : val)} 
-                    />
-                    <Tooltip 
-                      cursor={{ stroke: 'rgba(34, 197, 94, 0.2)', strokeWidth: 2 }} 
-                      contentStyle={{ background: '#091712', border: '1px solid rgba(34, 197, 94, 0.3)', borderRadius: '12px', boxShadow: '0 10px 20px rgba(0,0,0,0.4)' }}
-                      labelStyle={{ color: '#fff', fontWeight: 'bold', marginBottom: '4px' }}
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="value" 
-                      stroke={chartPeriod === 'Month' ? "#22c55e" : "#facc15"} 
-                      strokeWidth={3} 
-                      fillOpacity={1} 
-                      fill="url(#colorValue)" 
-                      animationDuration={1500}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              )}
-            </div>
-          </section>
         </div>
-      )}
+
+        <ResponsiveContainer width="100%" height={260}>
+
+          <AreaChart data={chartData}>
+
+            <defs>
+              <linearGradient
+                id="powerFill"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop
+                  offset="0%"
+                  stopColor="#facc15"
+                  stopOpacity={0.7}
+                />
+
+                <stop
+                  offset="100%"
+                  stopColor="#facc15"
+                  stopOpacity={0}
+                />
+              </linearGradient>
+            </defs>
+
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke="#1e293b"
+            />
+
+            <XAxis
+              dataKey="name"
+              stroke="#94a3b8"
+            />
+
+            <YAxis stroke="#94a3b8" />
+
+            <Tooltip />
+
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke="#facc15"
+              fill="url(#powerFill)"
+              strokeWidth={3}
+            />
+
+          </AreaChart>
+
+        </ResponsiveContainer>
+
+      </div>
+
     </div>
-  );
+
+  </div>
+);
 }

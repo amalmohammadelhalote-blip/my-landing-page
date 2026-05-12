@@ -47,6 +47,23 @@ export default function Dashboard() {
   const [aiTip, setAiTip] = useState('');
   const [aiTipLoading, setAiTipLoading] = useState(false);
   const [chartDataLoading, setChartDataLoading] = useState(false);
+  
+  const isDeviceOn = (status) => status === 'ON' || status === 'active' || status === true;
+  const getToggleStatus = (status) => (isDeviceOn(status) ? 'OFF' : 'ON');
+  const getDeviceId = (device) => device?._id || device?.id || device?.deviceId || '';
+
+  const formatErrorMessage = (message) => {
+    if (typeof message === 'string') return message;
+    if (message?.message) return String(message.message);
+    if (typeof message === 'object' && message !== null) {
+      try {
+        return JSON.stringify(message);
+      } catch {
+        return 'An unexpected error occurred.';
+      }
+    }
+    return String(message || 'An unexpected error occurred.');
+  };
 
   const locationMap = locations.reduce((map, location) => {
     map[location._id || location.id] = location.name;
@@ -163,18 +180,16 @@ export default function Dashboard() {
       .slice(0, 4);
   }, [devices, dashboardData]);
 
+  const topDeviceId = mostUsedDevices[0] ? getDeviceId(mostUsedDevices[0]) : null;
+
   // Fetch AI Tip for the most consuming device
   useEffect(() => {
     const fetchTopDeviceRecommendation = async () => {
-      if (mostUsedDevices && mostUsedDevices.length > 0) {
-        const topDevice = mostUsedDevices[0];
-        const id = getDeviceId(topDevice);
-        if (!id) return;
-
+      if (topDeviceId) {
         try {
           setAiTipLoading(true);
           // NEW: Fetch from Health endpoint instead of standalone /recommendation
-          const res = await deviceService.getHealth(id);
+          const res = await deviceService.getHealth(topDeviceId);
           const data = res?.data?.data || res?.data;
           
           // Try to find recommendation in the health payload
@@ -195,10 +210,10 @@ export default function Dashboard() {
       }
     };
 
-    if (!loading) {
+    if (!loading && topDeviceId) {
       fetchTopDeviceRecommendation();
     }
-  }, [mostUsedDevices, loading]);
+  }, [topDeviceId, loading]);
 
 
 
@@ -218,42 +233,40 @@ export default function Dashboard() {
     });
   }, [mostUsedDevices, search]);
 
-  const isDeviceOn = (status) => status === 'ON' || status === 'active' || status === true;
-  const getToggleStatus = (status) => (isDeviceOn(status) ? 'OFF' : 'ON');
-
-  const getDeviceId = (device) => device?._id || device?.id || device?.deviceId || '';
-
-  const formatErrorMessage = (message) => {
-    if (typeof message === 'string') return message;
-    if (message?.message) return String(message.message);
-    if (typeof message === 'object' && message !== null) {
-      try {
-        return JSON.stringify(message);
-      } catch {
-        return 'An unexpected error occurred.';
-      }
-    }
-    return String(message || 'An unexpected error occurred.');
-  };
 
   const toggleDevice = async (id, currentStatus) => {
     const nextStatus = getToggleStatus(currentStatus);
     try {
       await deviceService.toggleStatus(id, nextStatus);
+      
+      // Update main devices list
       setDevices((prev) =>
         prev.map((d) =>
           getDeviceId(d) === id ? { ...d, status: nextStatus, isOn: nextStatus === 'ON' } : d
         )
       );
-      if (dashboardData?.summary) {
-        setDashboardData(prev => ({
-          ...prev,
-          summary: {
+
+      // Update dashboard data to keep Most Used Devices and Summary consistent
+      if (dashboardData) {
+        setDashboardData(prev => {
+          if (!prev) return prev;
+          
+          const updatedSummary = prev.summary ? {
             ...prev.summary,
             onlineDevices: Math.max(0, prev.summary.onlineDevices + (nextStatus === 'ON' ? 1 : -1)),
             offlineDevices: Math.max(0, prev.summary.offlineDevices + (nextStatus === 'ON' ? -1 : 1))
-          }
-        }));
+          } : prev.summary;
+
+          const updatedDevicesList = prev.devices ? prev.devices.map(d => 
+            getDeviceId(d) === id ? { ...d, status: nextStatus, isOn: nextStatus === 'ON' } : d
+          ) : prev.devices;
+
+          return {
+            ...prev,
+            summary: updatedSummary,
+            devices: updatedDevicesList
+          };
+        });
       }
     } catch (err) {
       const message =

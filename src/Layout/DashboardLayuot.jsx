@@ -59,8 +59,7 @@ const DashboardLayout = () => {
         {isMobileMenuOpen && <div className="mobile-overlay" onClick={() => setIsMobileMenuOpen(false)} />}
       </aside>
 
-      {/* ╪د┘
-             ╪╡┘╪ص╪د╪ز ┘ç╪ز╪╕┘ç╪▒ ┘ç┘╪د */}
+      
       <main className="main-content">
         <Outlet />
       </main>

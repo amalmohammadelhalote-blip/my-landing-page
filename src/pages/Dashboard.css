@@ -29,14 +29,22 @@ body {
   padding: 20px 22px 16px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
   gap: 16px;
   box-shadow: 16px 0 50px rgba(0, 0, 0, 0.35);
+  min-width: 250px;
+  max-width: 250px;
+  flex-shrink: 0;
 }
 
-.logo {
+.sidebar > .logo {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: flex-start;
+  flex: 0 0 auto;
+  height: auto;
   gap: 8px;
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -52,6 +60,7 @@ body {
 
 .sidebar nav {
   margin-top: 0;
+  flex: 0 0 auto;
 }
 
 .nav-item {
@@ -109,6 +118,7 @@ body {
 /* Main Content */
 .main-content {
   flex: 1;
+  min-width: 0;
   padding: 40px;
   background: #04120a;
 }
@@ -894,13 +904,15 @@ body {
 
 @media (max-width: 1200px) {
   .dashboard-container {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .sidebar {
-    width: 100%;
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
     position: relative;
-    box-shadow: none;
+    box-shadow: 16px 0 50px rgba(0, 0, 0, 0.35);
     border-right: none;
   }
 
@@ -911,7 +923,9 @@ body {
 
 @media (max-width: 900px) {
   .sidebar {
-    width: 260px;
+    width: 240px;
+    min-width: 240px;
+    max-width: 240px;
   }
 
   .main-content {
@@ -930,14 +944,6 @@ body {
 
   .mobile-top-bar {
     display: flex;
-  }
-
-  .sidebar {
-    display: none;
-  }
-
-  .mobile-overlay {
-    display: none;
   }
 
   .main-content {

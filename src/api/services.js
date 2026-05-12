@@ -36,6 +36,7 @@ export const normalizeListResponse = (response) => {
 export const deviceService = {
   getAll: () => api.get('/devices'),
   getOne: (id) => api.get(`/devices/${id}`),
+  getStatus: (id) => api.get(`/devices/${id}/status`),
   create: (data) => api.post('/devices', data),
   update: (id, data) => api.put(`/devices/${id}`, data),
   delete: (id) => api.delete(`/devices/${id}`),
