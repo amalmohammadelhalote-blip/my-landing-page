@@ -1,0 +1,658 @@
+/* =====================================================
+   RESPONSIVE DESIGN OPTIMIZATION
+   ===================================================== */
+
+/* ==================== MOBILE FIRST ====================
+   Base mobile styles (360px - 480px)
+   ===================================================== */
+
+@media (max-width: 480px) {
+  /* Layout Adjustment */
+  body {
+    font-size: 13px;
+  }
+
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .main-content,
+  .devices-page {
+    padding: 12px;
+  }
+
+  /* Header Styles */
+  .top-header {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+  }
+
+  .top-header h1 {
+    font-size: 22px;
+  }
+
+  .search-bar {
+    width: 100%;
+    min-width: unset;
+  }
+
+  /* Stats Grid */
+  .stats-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .stat-card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .stat-card h2 {
+    font-size: 24px;
+  }
+
+  /* Dashboard Grid */
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  /* Today Cards */
+  .today-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .inner-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .icon-box {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Sections */
+  .today-section,
+  .chart-section {
+    padding: 16px;
+    border-radius: 18px;
+    margin-bottom: 16px;
+  }
+
+  .section-header {
+    margin-bottom: 12px;
+  }
+
+  .section-header h2 {
+    font-size: 18px;
+  }
+
+  /* AI Tip */
+  .ai-tip {
+    padding: 12px 16px;
+    gap: 12px;
+    margin-top: 16px;
+    border-radius: 16px;
+  }
+
+  .tip-icon {
+    font-size: 20px;
+    min-width: 24px;
+  }
+
+  .ai-tip p {
+    font-size: 13px;
+  }
+
+  /* Devices Grid */
+  .devices-full-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .device-card-full {
+    min-height: 180px;
+    padding: 16px;
+  }
+
+  /* Filter Section */
+  .filter-section {
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .main-toggle-filters {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .btn-yellow,
+  .btn-dark,
+  .btn-outline {
+    padding: 8px 20px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  /* Category Pills */
+  .category-pills {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Most Used Devices */
+  .most-used-devices {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Text Content */
+  .text-content {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .read-more-btn {
+    font-size: 12px;
+  }
+
+  /* Time buttons */
+  .time-btn {
+    padding: 4px 12px;
+    font-size: 12px;
+  }
+}
+
+/* ==================== SMALL MOBILE ====================
+   Small devices (481px - 640px)
+   ===================================================== */
+
+@media (min-width: 481px) and (max-width: 640px) {
+  body {
+    font-size: 13px;
+  }
+
+  .main-content,
+  .devices-page {
+    padding: 16px;
+  }
+
+  .top-header {
+    flex-direction: column;
+    gap: 14px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+  }
+
+  .top-header h1 {
+    font-size: 24px;
+  }
+
+  .search-bar {
+    width: 100%;
+    min-width: unset;
+    padding: 10px 16px;
+  }
+
+  /* Stats Grid */
+  .stats-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .stat-card {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .stat-card h2 {
+    font-size: 26px;
+  }
+
+  /* Dashboard Grid */
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 14px;
+  }
+
+  /* Today Cards */
+  .today-cards {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .inner-card {
+    padding: 18px;
+    gap: 14px;
+  }
+
+  /* Sections */
+  .today-section,
+  .chart-section {
+    padding: 18px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+
+  .section-header h2 {
+    font-size: 18px;
+  }
+
+  /* Devices Grid */
+  .devices-full-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .device-card-full {
+    min-height: 200px;
+    padding: 18px;
+  }
+
+  /* Filter Section */
+  .main-toggle-filters {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .btn-yellow,
+  .btn-dark,
+  .btn-outline {
+    padding: 9px 24px;
+    font-size: 13px;
+  }
+}
+
+/* ==================== TABLET PORTRAIT ====================
+   Tablets 641px - 768px (including iPad portrait)
+   ===================================================== */
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .main-content,
+  .devices-page {
+    padding: 18px;
+  }
+
+  .top-header {
+    gap: 16px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+
+  .top-header h1 {
+    font-size: 26px;
+  }
+
+  .search-bar {
+    min-width: 300px;
+  }
+
+  /* Stats Grid */
+  .stats-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    padding: 18px;
+  }
+
+  .stat-card h2 {
+    font-size: 28px;
+  }
+
+  /* Dashboard Grid */
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 16px;
+  }
+
+  /* Today Cards */
+  .today-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  /* Sections */
+  .today-section,
+  .chart-section {
+    padding: 20px;
+  }
+
+  /* Devices Grid */
+  .devices-full-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .device-card-full {
+    min-height: 220px;
+    padding: 18px;
+  }
+}
+
+/* ==================== TABLET LANDSCAPE ====================
+   Tablets landscape 769px - 1024px (including iPad landscape)
+   ===================================================== */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .main-content,
+  .devices-page {
+    padding: 20px;
+  }
+
+  .top-header {
+    flex-direction: row;
+    gap: 18px;
+    padding: 18px 22px;
+    margin-bottom: 22px;
+  }
+
+  .top-header h1 {
+    font-size: 28px;
+  }
+
+  .search-bar {
+    min-width: 320px;
+  }
+
+  /* Stats Grid */
+  .stats-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+
+  .stat-card {
+    padding: 20px;
+  }
+
+  .stat-card h2 {
+    font-size: 30px;
+  }
+
+  /* Dashboard Grid */
+  .dashboard-grid {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 22px;
+    margin-top: 18px;
+  }
+
+  /* Today Cards */
+  .today-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  /* Sections */
+  .today-section,
+  .chart-section {
+    padding: 22px;
+    margin-bottom: 22px;
+  }
+
+  /* Devices Grid */
+  .devices-full-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .device-card-full {
+    min-height: 240px;
+    padding: 20px;
+  }
+
+  /* Filter Section */
+  .filter-section {
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+
+  .main-toggle-filters {
+    gap: 6px;
+  }
+
+  /* Most Used Devices */
+  .most-used-devices {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+/* ==================== SMALL DESKTOP ====================
+   Desktop 1025px - 1280px
+   ===================================================== */
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .main-content,
+  .devices-page {
+    padding: 24px;
+  }
+
+  /* Dashboard Grid */
+  .dashboard-grid {
+    grid-template-columns: 1.4fr 1fr;
+    gap: 24px;
+  }
+
+  /* Devices Grid */
+  .devices-full-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  /* Most Used Devices */
+  .most-used-devices {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ==================== LARGE DESKTOP ====================
+   Desktop 1281px and above
+   ===================================================== */
+
+@media (min-width: 1281px) {
+  .main-content,
+  .devices-page {
+    padding: 28px;
+  }
+
+  /* Dashboard Grid */
+  .dashboard-grid {
+    grid-template-columns: 1.5fr 1fr;
+    gap: 28px;
+  }
+
+  /* Devices Grid */
+  .devices-full-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  /* Most Used Devices */
+  .most-used-devices {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+/* ==================== ULTRA WIDE ====================
+   Ultra wide screens 1920px+
+   ===================================================== */
+
+@media (min-width: 1920px) {
+  .main-content,
+  .devices-page {
+    padding: 32px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  /* Devices Grid */
+  .devices-full-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+
+  /* Most Used Devices */
+  .most-used-devices {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* =====================================================
+   COMMON RESPONSIVE UTILITIES
+   ===================================================== */
+
+/* Smooth overflow handling */
+@media (max-width: 768px) {
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar {
+    width: 100% !important;
+  }
+
+  .container,
+  .content-wrapper {
+    overflow-x: hidden;
+  }
+}
+
+/* Prevent text overflow */
+@media (max-width: 640px) {
+  h1, h2, h3, h4, h5, h6 {
+    word-break: break-word;
+  }
+
+  .section-header h2,
+  .top-header h1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Flexible buttons on mobile */
+  .btn-primary,
+  .btn-secondary,
+  .btn-yellow,
+  .btn-dark,
+  .btn-outline {
+    min-width: fit-content;
+    white-space: nowrap;
+    padding: 8px 16px;
+  }
+}
+
+/* Touch-friendly adjustments */
+@media (hover: none) and (pointer: coarse) {
+  /* Increase touch targets */
+  button,
+  .nav-item,
+  .device-card-full,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Remove hover effects on touch devices */
+  .nav-item:hover {
+    background: none;
+  }
+
+  .device-card-full:hover {
+    transform: none;
+  }
+}
+
+/* =====================================================
+   ORIENTATION-SPECIFIC STYLES
+   ===================================================== */
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .main-content,
+  .devices-page {
+    padding: 12px;
+  }
+
+  .stats-row {
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .dashboard-grid {
+    gap: 12px;
+  }
+
+  .today-cards {
+    gap: 10px;
+  }
+}
+
+/* =====================================================
+   CONTAINER QUERIES (For future use)
+   ===================================================== */
+
+/* Grid auto-adjustments */
+@media (max-width: 640px) {
+  .auto-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .auto-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1025px) {
+  .auto-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+/* Prevent image overflow */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Flexible typography */
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 769px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Safe area for notched devices */
+@supports (padding: max(0px)) {
+  .main-content,
+  .sidebar {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+}
