@@ -2383,7 +2383,7 @@ img {
   margin: 0 auto;
 }
 
-/* طھطµظ…ظٹظ… ط§ظ„ظƒط§ط±طھ ط§ظ„ط£ط³ط§ط³ظٹ */
+
 .pricing-card {
   background: rgba(4, 18, 14, 0.98);
   border: 2px solid #08692e;
@@ -2395,7 +2395,7 @@ img {
   box-shadow: 0 0 25px rgba(74, 222, 128, 0.15);
 }
 
-/* ط§ظ„ظƒط§ط±طھ ط§ظ„ظ…طھظ…ظٹط² (Pro) */
+
 .pricing-card.highlight {
   border-color: rgba(0, 196, 106, 0.75);
   background: radial-gradient(circle at top, rgba(0, 196, 106, 0.2), rgba(4, 16, 14, 0.98));
