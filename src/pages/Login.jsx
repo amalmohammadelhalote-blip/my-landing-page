@@ -57,10 +57,10 @@ const Login = () => {
   return (
     <div className="login-container">
       <img src={techBackground} className="tech-bg" alt="background" />
-      <img src={logo} className="brand-logo" alt="logo" />
       <img src={roboticHand} className="robotic-hand" alt="robot hand" />
 
       <div className="auth-card">
+        <img src={logo} className="brand-logo-inner" alt="logo" />
         <h2>Sign In</h2>
         <p>Streamline your industrial monitoring in real time.</p>
 
