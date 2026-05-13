@@ -1599,7 +1599,7 @@ img {
   outline: none;
   cursor: pointer;
   color: #94a3b8;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 500;
   padding: 8px 0;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1637,8 +1637,8 @@ img {
 }
 
 .btn-outline {
-  padding: 0.7rem 1.6rem;
-  font-size: 0.9rem;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
   color: #fff;
@@ -1656,8 +1656,8 @@ img {
 }
 
 .btn-gradient {
-  padding: 0.75rem 1.8rem;
-  font-size: 0.9rem;
+  padding: 0.55rem 1.4rem;
+  font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
   color: #000;
@@ -2023,13 +2023,13 @@ img {
 }
 
 .feature-item-title {
-  font-size: 16px;
+  font-size: 14px;
   margin: 0;
 }
 
 .feature-item-desc {
   color: #9ca3af;
-  font-size: 13px;
+  font-size: 12px;
   margin-top: auto;
 }
 
