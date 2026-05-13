@@ -3,7 +3,7 @@ import { Menu, X, Zap, TrendingDown, Cpu, Plug, ShieldCheck } from "lucide-react
 import { FiArrowRight, FiAlertTriangle, FiEyeOff } from "react-icons/fi";
 import { BsBagFill, BsFillBarChartFill, BsBellFill, BsExclamationTriangleFill, BsFillLightbulbFill } from "react-icons/bs";
 import { MdOutlineFlashOn } from "react-icons/md";
-import { FaChartBar ,  FaFire , FaTemperatureLow,FaMagic,FaToggleOn } from "react-icons/fa";
+import { FaChartBar, FaFire, FaTemperatureLow, FaMagic, FaToggleOn } from "react-icons/fa";
 import { FaCoins, FaQ } from "react-icons/fa6";
 import { TbWaveSquare } from "react-icons/tb";
 import { BsBriefcaseFill } from "react-icons/bs";
@@ -84,7 +84,7 @@ export default function LandingPage() {
         <div className="nav-buttons">
           <button className="btn-outline">Join waitlist</button>
           <button className="btn-gradient" onClick={() => navigate("/login")}>
-              Live Dashboard ⚡
+            Live Dashboard ⚡
           </button>
         </div>
 
@@ -129,10 +129,10 @@ export default function LandingPage() {
           </div>
 
           <div className="hero-buttons">
-            <button className="btn-primary large" onClick={() => scrollToSection("pricing")}>
+            <button className="btn-primary" onClick={() => scrollToSection("pricing")}>
               Get early access <FiArrowRight />
             </button>
-            <button className="btn-outline large">See live dashboard</button>
+            <button className="btn-outline">See live dashboard</button>
           </div>
           <p className="security-note">
             <BsBagFill className="lock-icon" color="green" />
@@ -316,427 +316,427 @@ export default function LandingPage() {
             </p>
           </div>
           <div className="ps-features">
-            <div><BsFillBarChartFill color="#0ec96ad9" size={20}/> Real-time data stream from ESP device</div>
-            <div><BsExclamationTriangleFill color="#0ec96ad9" size={20}/> AI risk detection (Normal / Medium / High)</div>
-            <div><BsFillLightbulbFill color="#0ec96ad9" size={20}/> Smart energy-saving recommendations</div>
-            <div><BsBellFill color="#0ec96ad9" size={20}/> Instant alerts & optional relay control</div>
+            <div><BsFillBarChartFill color="#0ec96ad9" size={20} /> Real-time data stream from ESP device</div>
+            <div><BsExclamationTriangleFill color="#0ec96ad9" size={20} /> AI risk detection (Normal / Medium / High)</div>
+            <div><BsFillLightbulbFill color="#0ec96ad9" size={20} /> Smart energy-saving recommendations</div>
+            <div><BsBellFill color="#0ec96ad9" size={20} /> Instant alerts & optional relay control</div>
           </div>
         </div>
       </div>
     </section>
   );
-// ================= Feature =================//
-const FeaturesSection = () => {
-  const features = [
-    { title: "Real-time monitoring", desc: "Stream live voltage, current, and power data from your ESP device with second-level granularity on web or mobile.", icon: <TbWaveSquare size={20} color="#52ffa8" /> },
-    { title: "AI risk detection", desc: "Classifies grid health as Normal, Medium, or High risk based on patterns, spikes, and duration — not just raw numbers.", icon: <FaFire  size={20} color="#52ffa8" /> },
-    { title: "Smart recommendations", icon: <FaMagic size={20} color="#52ffa8" />, desc: "Personalized tips on when to run appliances, what to switch off, and how to stay under your plan." },
-    { title: "Remote relay control", icon: <FaToggleOn size={20} color="#52ffa8" />, desc: "Automatically or manually cut power via relay when voltage exceeds safe thresholds — from anywhere." },
-    { title: "Monthly energy insights", icon: <FaChartBar size={20} color="#52ffa8" />, desc: "See clear trends, peak hours, and utilization ratios across days, weeks, and months in one clean view." },
-    { title: "Local tariff cost estimation", icon: <FaCoins size={20} color="#52ffa8" />, desc: "Plug in your local tariffs and instantly translate kWh into real currency — before the bill arrives." }
-  ];
+  // ================= Feature =================//
+  const FeaturesSection = () => {
+    const features = [
+      { title: "Real-time monitoring", desc: "Stream live voltage, current, and power data from your ESP device with second-level granularity on web or mobile.", icon: <TbWaveSquare size={20} color="#52ffa8" /> },
+      { title: "AI risk detection", desc: "Classifies grid health as Normal, Medium, or High risk based on patterns, spikes, and duration — not just raw numbers.", icon: <FaFire size={20} color="#52ffa8" /> },
+      { title: "Smart recommendations", icon: <FaMagic size={20} color="#52ffa8" />, desc: "Personalized tips on when to run appliances, what to switch off, and how to stay under your plan." },
+      { title: "Remote relay control", icon: <FaToggleOn size={20} color="#52ffa8" />, desc: "Automatically or manually cut power via relay when voltage exceeds safe thresholds — from anywhere." },
+      { title: "Monthly energy insights", icon: <FaChartBar size={20} color="#52ffa8" />, desc: "See clear trends, peak hours, and utilization ratios across days, weeks, and months in one clean view." },
+      { title: "Local tariff cost estimation", icon: <FaCoins size={20} color="#52ffa8" />, desc: "Plug in your local tariffs and instantly translate kWh into real currency — before the bill arrives." }
+    ];
 
-  const howItWorks = [
-    {
-      step: "01",
-      title: "Connect the device",
-      desc: "Install the ECOSHIED ESP-powered module near your main distribution board or key circuits. No complex rewiring required."
-    },
-    {
-      step: "02",
-      title: "Monitor & catch all data",
-      desc: "Watch live dashboards for kWh, voltage, and risk alerts. Learn your consumption patterns over time."
-    },
-    {
-      step: "03",
-      title: "Get alerts & optimize usage",
-      desc: "Receive instant notifications, smart recommendations, and automatic relay control to protect devices and reduce bills."
-    }
-  ];
+    const howItWorks = [
+      {
+        step: "01",
+        title: "Connect the device",
+        desc: "Install the ECOSHIED ESP-powered module near your main distribution board or key circuits. No complex rewiring required."
+      },
+      {
+        step: "02",
+        title: "Monitor & catch all data",
+        desc: "Watch live dashboards for kWh, voltage, and risk alerts. Learn your consumption patterns over time."
+      },
+      {
+        step: "03",
+        title: "Get alerts & optimize usage",
+        desc: "Receive instant notifications, smart recommendations, and automatic relay control to protect devices and reduce bills."
+      }
+    ];
 
-  return (
-    <section id="features" className="features-section">
-      <div className="features-container">
-        {/* الجزء العلوي: Badge وعنوان ووصف */}
-        <div className="features-intro">
-          <span className="features-pill">● FEATURES</span>
-          <h2 className="features-main-title">Everything you need to monitor, predict, and protect.</h2>
-          <p className="features-subtitle">
-            A single, modern dashboard for your entire electrical footprint — built for homes, shops, and offices that want clarity and control.
-          </p>
-        </div>
-
-        {/* شبكة البطاقات (Grid) */}
-        <div className="features-grid-layout">
-          {features.map((f, i) => (
-            <div className="feature-card-item" key={i}>
-              <div className="feature-icon-circle">{f.icon}</div>
-              <h3 className="feature-item-title">{f.title}</h3>
-              <p className="feature-item-desc">{f.desc}</p>
-            </div>
-            
-          ))}
-        </div>
-
-        {/* How It Works Section */}
-        <div className="how-it-works-section">
-          <div className="how-it-works-intro">
-            <span className="features-pill">● HOW IT WORKS</span>
-            <h2 className="features-main-title">From plug-in to peace of mind in three steps.</h2>
+    return (
+      <section id="features" className="features-section">
+        <div className="features-container">
+          {/* الجزء العلوي: Badge وعنوان ووصف */}
+          <div className="features-intro">
+            <span className="features-pill">● FEATURES</span>
+            <h2 className="features-main-title">Everything you need to monitor, predict, and protect.</h2>
+            <p className="features-subtitle">
+              A single, modern dashboard for your entire electrical footprint — built for homes, shops, and offices that want clarity and control.
+            </p>
           </div>
 
-          <div className="how-it-works-grid">
-            {howItWorks.map((item, idx) => (
-              <div key={idx} className="how-it-works-card">
-                <div className="how-it-works-step">{item.step}</div>
-                <h3 className="how-it-works-title">{item.title}</h3>
-                <p className="how-it-works-desc">{item.desc}</p>
+          {/* شبكة البطاقات (Grid) */}
+          <div className="features-grid-layout">
+            {features.map((f, i) => (
+              <div className="feature-card-item" key={i}>
+                <div className="feature-icon-circle">{f.icon}</div>
+                <h3 className="feature-item-title">{f.title}</h3>
+                <p className="feature-item-desc">{f.desc}</p>
               </div>
+
             ))}
           </div>
-        </div>
-      </div>
-    </section>
-  );
-};
 
-// ================= UseCases =================//
-const UseCases = () => {
-    const UseCases = [
-  {
-    title: "Homes",
-    desc: " Protect fridges, AC units, and TVs from surges while understanding which rooms consume the most energy.",
-    icon: <Home size={24} color="#52ffa8" />,
-  },
-  {
-    title: "Small business",
-    desc: "Track coolers, ovens, and lighting to avoid penalties and optimize opening hours against tariffs.",
-    icon: <Store size={24} color="#52ffa8" />,
-  },
-  {
-    title: "Offices",
-    desc: "Identify after-hours waste from PCs and HVAC – and automatically enforce shutdown schedules.",
-    icon: <BsBriefcaseFill size={24} color="#52ffa8" /> 
-  },
-  {
-    title: "Industrial monitoring",
-    desc: "Supervise motors, pumps, and sensitive industrial equipment where voltage instability means real downtime.",
-    icon: <Factory size={24} color="#52ffa8" />,
-  },
-];
-
-  return (
-    <section id="usecases" className="use-section">
-      <div className="use-intro">
-        <span className="features-pill">● USE CASES</span>
-        <h2 className="features-main-title">Built for every energy-conscious space.</h2>
-      </div>
-
-      <div className="use-grid-layout">
-        {UseCases.map((u, i) => (
-          <div className="feature-card-item" key={i}>
-            <div className="feature-icon-circle">{u.icon}</div>
-            <h3 className="feature-item-title">{u.title}</h3>
-            <p className="feature-item-desc">{u.desc}</p>
-          </div>
-        ))}
-      </div>
-
-      <section className="why-section">
-        <div className="why-container">
-          <div className="why-grid">
-            <div className="why-left">
-              <span className="features-pill">● WHY ECOSHIED</span>
-              <h2 className="features-main-title">More than a smart meter. A safety net.</h2>
-              <p className="why-desc">
-                ECOSHIED is built specifically for emerging markets — where grid instability, tariffs, and protection
-                challenges are part of everyday life.
-              </p>
-
-              <ul className="why-features">
-                <li>
-                  <div className="why-icon"><HiMiniScale  size={30} color="#52ffa8" /></div>
-                  <div className="why-text"><strong className="why-live">Affordable alternative to smart meters</strong>
-                    <p>ESP-based hardware keeps costs low while unlocking smart-meter intelligence for any installation.</p>
-                  </div>
-                </li>
-
-                <li>
-                  <div className="why-icon"><Zap size={18} color="#52ffa8" /></div>
-                  <div className="why-text"><strong className="why-live">Fast, actionable insights</strong>
-                    <p>From risk scores to recommendations, the system translates complex electrical signals into simple actions.</p>
-                  </div>
-                </li>
-
-                <li>
-                  <div className="why-icon"><Clock size={18} color="#52ffa8" /></div>
-                  <div className="why-text"><strong className="why-live">24/7 protection</strong>
-                    <p>Voltage thresholds, auto relay cut-off, and spike history protect your most expensive appliances.</p>
-                  </div>
-                </li>
-              </ul>
+          {/* How It Works Section */}
+          <div className="how-it-works-section">
+            <div className="how-it-works-intro">
+              <span className="features-pill">● HOW IT WORKS</span>
+              <h2 className="features-main-title">From plug-in to peace of mind in three steps.</h2>
             </div>
 
-            <div className="why-right">
-              <div className="numbers-panel">
-                <h3 className="numbers-matter">Numbers that matter.</h3>
-                <p className="numbers-intro"> 
-                  During pilot tests, ECOSHIED-style monitoring typically uncovers 10–30% 
-                  avoidable energy waste in homes and small businesses 
-                  — much of it from predictable patterns that AI can fix automatically.</p>
-
-                <div className="numbers-grid">
-                  <div className="num-item short">
-                    <div className="num-value">10–30%</div>
-                    <div className="num-label">average waste exposed</div>
-                  </div>
-
-                  <div className="num-item short">
-                    <div className="num-value">2–4x</div>
-                    <div className="num-label">faster spike detection</div>
-                  </div>
-
-                  <div className="num-item full">
-                    <div className="num-value">24/7</div>
-                    <div className="num-label">protection — even when you're offline</div>
-                  </div>
+            <div className="how-it-works-grid">
+              {howItWorks.map((item, idx) => (
+                <div key={idx} className="how-it-works-card">
+                  <div className="how-it-works-step">{item.step}</div>
+                  <h3 className="how-it-works-title">{item.title}</h3>
+                  <p className="how-it-works-desc">{item.desc}</p>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
-
-    </section>
-  );
-}
-  // ================= Pricing =================//
-const Pricing = () => {
-  const plans = [
-    {
-      title: "Basic",
-      target: "Homes",
-      price: "Coming soon",
-      desc: "1 ECOSHIED device • Core monitoring • Mobile & web dashboard",
-      features: ["Real-time kWh & voltage", "Basic alerts", "Up to 3 protected circuits"],
-      btnText: "Join home waitlist",
-      isPro: false
-    },
-    {
-      title: "Pro",
-      target: "Most popular",
-      price: "Coming soon",
-      desc: "Shops, clinics, cafés & offices that want full control and protection.",
-      features: ["Everything in Basic", "AI risk classification", "Smart recommendations", "Auto relay control", "Tariff-based cost forecast"],
-      btnText: "Join Pro waitlist",
-      isPro: true
-    },
-    {
-      title: "Enterprise",
-      target: "Custom",
-      price: "On request",
-      desc: "Multi-site rollouts, industrial monitoring, and API-level integrations.",
-      features: ["Custom dashboards", "Advanced analytics exports", "Dedicated support & SLAs"],
-      btnText: "Talk to us",
-      isPro: false
-    }
-  ];
-
-  return (
-    <div id="pricing" className="pricing-container">
-      <div className="pricing-header">
-        <span className="badge-pricing">● PRICING</span>
-        <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', margin: '20px 0' }}>
-          Flexible plans for every footprint.
-        </h1>
-        <p style={{ color: '#9ca3af', maxWidth: '600px' }}>
-          ECOSHIED is in private beta. Lock in early-bird pricing and shape the roadmap by joining the waitlist today.
-        </p>
-      </div>
-
-      <div className="pricing-grid">
-        {plans.map((plan, index) => (
-          <div key={index} className={`pricing-card ${plan.isPro ? 'highlight' : ''}`}>
-            <div className="card-header">
-              <h3 style={{fontSize: '20px'}}>{plan.title}</h3>
-              <span className="plan-target">{plan.target}</span>
-            </div>
-            
-            <div className="price-section">
-              <div className="price-title">{plan.price}</div>
-              <p className="plan-description">{plan.desc}</p>
-            </div>
-
-            <ul className="features-list">
-              {plan.features.map((feat, i) => (
-                <li key={i}><span className="check-icon">✓</span> {feat}</li>
-              ))}
-            </ul>
-
-            <button className="waitlist-btn">
-              {plan.btnText}
-            </button>
-           
-          </div>
-          
-        ))}
-      </div>
-     <h2 className='not'>
-         Coming soon – join the waitlist to be notified as soon as 
-         pricing is live in your region.
-         </h2>
-    </div>
-  );
-};
-
- // ================= FAQ =================//
-const FaQ = ()=>{
-  const emailRef = useRef(null);
-
-  const handleRequestDemo = () => {
-    if (!emailRef.current.value.trim()) {
-      emailRef.current.focus();
-      emailRef.current.reportValidity();
-    } else {
-      // Handle form submission here
-      console.log('Email submitted:', emailRef.current.value);
-    }
+    );
   };
 
-const faqs = [
-  {
-    q: "Is ECOSHED safe to install in my home?",
-    a: " ECOSHIED is designed to work with certified ESP-based hardware and standard protection components. Installation can be done by a qualified electrician following local regulations, just like any other protective device near your panel.",
-  },
-  {
-    q: "Do I need constant internet for it to work?",
-    a: " ECOSHIED continues measuring and protecting locally even if the internet is down. Once connectivity returns, the device syncs data and pushes any missed alerts to your dashboard.",
-  },
-  {
-    q: "What devices can ECOSHED protect?",
-    a: " You can protect entire circuits or specific high-value loads such as refrigerators, AC units, freezers, POS systems, or industrial machines connected through the relay output.",
-  },
-  {
-    q: "Can it work with three-phase systems?",
-    a: " Yes, ECOSHIED is being designed to support both single-phase and three-phase environments. In multi-phase setups, multiple modules can coordinate to monitor each phase separately.",
-  },
-  {
-    q: "How accurate is the cost estimation?",
-    a: "You can input your local tariff structure and any time-of-use rules. ECOSHIED then uses live kWh data to estimate monthly bills — typically within a few percent of your actual bill, depending on local fees and taxes.",
-  },
-];
+  // ================= UseCases =================//
+  const UseCases = () => {
+    const UseCases = [
+      {
+        title: "Homes",
+        desc: " Protect fridges, AC units, and TVs from surges while understanding which rooms consume the most energy.",
+        icon: <Home size={24} color="#52ffa8" />,
+      },
+      {
+        title: "Small business",
+        desc: "Track coolers, ovens, and lighting to avoid penalties and optimize opening hours against tariffs.",
+        icon: <Store size={24} color="#52ffa8" />,
+      },
+      {
+        title: "Offices",
+        desc: "Identify after-hours waste from PCs and HVAC – and automatically enforce shutdown schedules.",
+        icon: <BsBriefcaseFill size={24} color="#52ffa8" />
+      },
+      {
+        title: "Industrial monitoring",
+        desc: "Supervise motors, pumps, and sensitive industrial equipment where voltage instability means real downtime.",
+        icon: <Factory size={24} color="#52ffa8" />,
+      },
+    ];
 
+    return (
+      <section id="usecases" className="use-section">
+        <div className="use-intro">
+          <span className="features-pill">● USE CASES</span>
+          <h2 className="features-main-title">Built for every energy-conscious space.</h2>
+        </div>
 
-  const [openIndex, setOpenIndex] = useState(null);
-  
-  return (
-    <section id="faq" className="faq-section">
-      <div className="faq-container">
-        {/* Left side - FAQ List */}
-        <div className="faq-left">
-          <div className="faq-header">
-            <span className="faq-tag">● FAQ</span>
-            <h2 className="faq-title">Answers to common questions.</h2>
-          </div>
-          
-          <div className="faq-list">
-            {faqs.map((item, idx) => (
-              <div
-                key={idx}
-                className={`faq-item ${openIndex === idx ? "open" : ""}`}
-                onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
-              >
-                <div className="faq-question-wrapper">
-                  <h3 className="faq-question">{item.q}</h3>
-                  <div className="faq-toggle">
-                    <span className="toggle-icon">
-                      {openIndex === idx ? "−" : "+"}
-                    </span>
+        <div className="use-grid-layout">
+          {UseCases.map((u, i) => (
+            <div className="feature-card-item" key={i}>
+              <div className="feature-icon-circle">{u.icon}</div>
+              <h3 className="feature-item-title">{u.title}</h3>
+              <p className="feature-item-desc">{u.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <section className="why-section">
+          <div className="why-container">
+            <div className="why-grid">
+              <div className="why-left">
+                <span className="features-pill">● WHY ECOSHIED</span>
+                <h2 className="features-main-title">More than a smart meter. A safety net.</h2>
+                <p className="why-desc">
+                  ECOSHIED is built specifically for emerging markets — where grid instability, tariffs, and protection
+                  challenges are part of everyday life.
+                </p>
+
+                <ul className="why-features">
+                  <li>
+                    <div className="why-icon"><HiMiniScale size={30} color="#52ffa8" /></div>
+                    <div className="why-text"><strong className="why-live">Affordable alternative to smart meters</strong>
+                      <p>ESP-based hardware keeps costs low while unlocking smart-meter intelligence for any installation.</p>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="why-icon"><Zap size={18} color="#52ffa8" /></div>
+                    <div className="why-text"><strong className="why-live">Fast, actionable insights</strong>
+                      <p>From risk scores to recommendations, the system translates complex electrical signals into simple actions.</p>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="why-icon"><Clock size={18} color="#52ffa8" /></div>
+                    <div className="why-text"><strong className="why-live">24/7 protection</strong>
+                      <p>Voltage thresholds, auto relay cut-off, and spike history protect your most expensive appliances.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="why-right">
+                <div className="numbers-panel">
+                  <h3 className="numbers-matter">Numbers that matter.</h3>
+                  <p className="numbers-intro">
+                    During pilot tests, ECOSHIED-style monitoring typically uncovers 10–30%
+                    avoidable energy waste in homes and small businesses
+                    — much of it from predictable patterns that AI can fix automatically.</p>
+
+                  <div className="numbers-grid">
+                    <div className="num-item short">
+                      <div className="num-value">10–30%</div>
+                      <div className="num-label">average waste exposed</div>
+                    </div>
+
+                    <div className="num-item short">
+                      <div className="num-value">2–4x</div>
+                      <div className="num-label">faster spike detection</div>
+                    </div>
+
+                    <div className="num-item full">
+                      <div className="num-value">24/7</div>
+                      <div className="num-label">protection — even when you're offline</div>
+                    </div>
                   </div>
                 </div>
-                {openIndex === idx && (
-                  <div className="faq-answer">{item.a}</div>
-                )}
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right side - Email Signup */}
-        <div className="faq-right">
-          <div className="faq-signup">
-            <h3>Want to pilot ECOSHIED?</h3>
-            <p>
-              We are onboarding a limited number of homes and businesses
-               into our early-access program. Share your email and we’ll reach out with next steps.
-            </p>
-            
-            <div className="faq-form">
-              <input 
-                ref={emailRef}
-                type="email" 
-                placeholder="you@example.com" 
-                className="faq-email-input"
-                required
-              />
-              <button className="faq-form-btn" onClick={handleRequestDemo}>Request demo</button>
             </div>
-            
-            <p className="faq-privacy">
-              We'll only use your email for ECOSHED updates. No spam, ever.
-            </p>
+          </div>
+        </section>
+
+      </section>
+    );
+  }
+  // ================= Pricing =================//
+  const Pricing = () => {
+    const plans = [
+      {
+        title: "Basic",
+        target: "Homes",
+        price: "Coming soon",
+        desc: "1 ECOSHIED device • Core monitoring • Mobile & web dashboard",
+        features: ["Real-time kWh & voltage", "Basic alerts", "Up to 3 protected circuits"],
+        btnText: "Join home waitlist",
+        isPro: false
+      },
+      {
+        title: "Pro",
+        target: "Most popular",
+        price: "Coming soon",
+        desc: "Shops, clinics, cafés & offices that want full control and protection.",
+        features: ["Everything in Basic", "AI risk classification", "Smart recommendations", "Auto relay control", "Tariff-based cost forecast"],
+        btnText: "Join Pro waitlist",
+        isPro: true
+      },
+      {
+        title: "Enterprise",
+        target: "Custom",
+        price: "On request",
+        desc: "Multi-site rollouts, industrial monitoring, and API-level integrations.",
+        features: ["Custom dashboards", "Advanced analytics exports", "Dedicated support & SLAs"],
+        btnText: "Talk to us",
+        isPro: false
+      }
+    ];
+
+    return (
+      <div id="pricing" className="pricing-container">
+        <div className="pricing-header">
+          <span className="badge-pricing">● PRICING</span>
+          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', margin: '20px 0' }}>
+            Flexible plans for every footprint.
+          </h1>
+          <p style={{ color: '#9ca3af', maxWidth: '600px' }}>
+            ECOSHIED is in private beta. Lock in early-bird pricing and shape the roadmap by joining the waitlist today.
+          </p>
+        </div>
+
+        <div className="pricing-grid">
+          {plans.map((plan, index) => (
+            <div key={index} className={`pricing-card ${plan.isPro ? 'highlight' : ''}`}>
+              <div className="card-header">
+                <h3 style={{ fontSize: '20px' }}>{plan.title}</h3>
+                <span className="plan-target">{plan.target}</span>
+              </div>
+
+              <div className="price-section">
+                <div className="price-title">{plan.price}</div>
+                <p className="plan-description">{plan.desc}</p>
+              </div>
+
+              <ul className="features-list">
+                {plan.features.map((feat, i) => (
+                  <li key={i}><span className="check-icon">✓</span> {feat}</li>
+                ))}
+              </ul>
+
+              <button className="waitlist-btn">
+                {plan.btnText}
+              </button>
+
+            </div>
+
+          ))}
+        </div>
+        <h2 className='not'>
+          Coming soon – join the waitlist to be notified as soon as
+          pricing is live in your region.
+        </h2>
+      </div>
+    );
+  };
+
+  // ================= FAQ =================//
+  const FaQ = () => {
+    const emailRef = useRef(null);
+
+    const handleRequestDemo = () => {
+      if (!emailRef.current.value.trim()) {
+        emailRef.current.focus();
+        emailRef.current.reportValidity();
+      } else {
+        // Handle form submission here
+        console.log('Email submitted:', emailRef.current.value);
+      }
+    };
+
+    const faqs = [
+      {
+        q: "Is ECOSHED safe to install in my home?",
+        a: " ECOSHIED is designed to work with certified ESP-based hardware and standard protection components. Installation can be done by a qualified electrician following local regulations, just like any other protective device near your panel.",
+      },
+      {
+        q: "Do I need constant internet for it to work?",
+        a: " ECOSHIED continues measuring and protecting locally even if the internet is down. Once connectivity returns, the device syncs data and pushes any missed alerts to your dashboard.",
+      },
+      {
+        q: "What devices can ECOSHED protect?",
+        a: " You can protect entire circuits or specific high-value loads such as refrigerators, AC units, freezers, POS systems, or industrial machines connected through the relay output.",
+      },
+      {
+        q: "Can it work with three-phase systems?",
+        a: " Yes, ECOSHIED is being designed to support both single-phase and three-phase environments. In multi-phase setups, multiple modules can coordinate to monitor each phase separately.",
+      },
+      {
+        q: "How accurate is the cost estimation?",
+        a: "You can input your local tariff structure and any time-of-use rules. ECOSHIED then uses live kWh data to estimate monthly bills — typically within a few percent of your actual bill, depending on local fees and taxes.",
+      },
+    ];
+
+
+    const [openIndex, setOpenIndex] = useState(null);
+
+    return (
+      <section id="faq" className="faq-section">
+        <div className="faq-container">
+          {/* Left side - FAQ List */}
+          <div className="faq-left">
+            <div className="faq-header">
+              <span className="faq-tag">● FAQ</span>
+              <h2 className="faq-title">Answers to common questions.</h2>
+            </div>
+
+            <div className="faq-list">
+              {faqs.map((item, idx) => (
+                <div
+                  key={idx}
+                  className={`faq-item ${openIndex === idx ? "open" : ""}`}
+                  onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
+                >
+                  <div className="faq-question-wrapper">
+                    <h3 className="faq-question">{item.q}</h3>
+                    <div className="faq-toggle">
+                      <span className="toggle-icon">
+                        {openIndex === idx ? "−" : "+"}
+                      </span>
+                    </div>
+                  </div>
+                  {openIndex === idx && (
+                    <div className="faq-answer">{item.a}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right side - Email Signup */}
+          <div className="faq-right">
+            <div className="faq-signup">
+              <h3>Want to pilot ECOSHIED?</h3>
+              <p>
+                We are onboarding a limited number of homes and businesses
+                into our early-access program. Share your email and we’ll reach out with next steps.
+              </p>
+
+              <div className="faq-form">
+                <input
+                  ref={emailRef}
+                  type="email"
+                  placeholder="you@example.com"
+                  className="faq-email-input"
+                  required
+                />
+                <button className="faq-form-btn" onClick={handleRequestDemo}>Request demo</button>
+              </div>
+
+              <p className="faq-privacy">
+                We'll only use your email for ECOSHED updates. No spam, ever.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Green CTA Section */}
-      <div className="faq-cta">
-        <h3 className="faq-cta-title">Ready to make your electricity smarter and safer?</h3>
-        <p className="faq-cta-subtitle">
-          Join ECOSHED early access and help us shape the future of affordable, AI-powered energy monitoring for everyone.
-        </p>
-        
-        <div className="faq-cta-actions">
-          <button className="faq-cta-btn">Request Access</button>
-           <button className="faq-ct-btn">View Demo</button>
+        {/* Green CTA Section */}
+        <div className="faq-cta">
+          <h3 className="faq-cta-title">Ready to make your electricity smarter and safer?</h3>
+          <p className="faq-cta-subtitle">
+            Join ECOSHED early access and help us shape the future of affordable, AI-powered energy monitoring for everyone.
+          </p>
+
+          <div className="faq-cta-actions">
+            <button className="faq-cta-btn">Request Access</button>
+            <button className="faq-ct-btn">View Demo</button>
+          </div>
+
+          <div className="faq-cta-tags">
+            <span className="cta-tag">AI-powered detection</span>
+            <span className="cta-tag">Designed for homes & SMEs</span>
+            <span className="cta-tag">24/7 energy monitoring</span>
+            <span className="cta-tag">Easy setup in emerging markets</span>
+          </div>
         </div>
-
-        <div className="faq-cta-tags">
-          <span className="cta-tag">AI-powered detection</span>
-          <span className="cta-tag">Designed for homes & SMEs</span>
-          <span className="cta-tag">24/7 energy monitoring</span>
-          <span className="cta-tag">Easy setup in emerging markets</span>
-        </div>
-      </div>
-    </section>
-  );
-}
+      </section>
+    );
+  }
 
 
 
-const Footer =()=> {
-  return (
-     <footer>
+  const Footer = () => {
+    return (
+      <footer>
         <div className="page-shell footer-inner">
-            <p>© <span id="year"></span> ECOSHIED. All rights reserved.</p>
-            <div className="footer-links">
-                <span>Early access prototype – Not yet a certified protective device.</span>
-            </div>
+          <p>© <span id="year"></span> ECOSHIED. All rights reserved.</p>
+          <div className="footer-links">
+            <span>Early access prototype – Not yet a certified protective device.</span>
+          </div>
         </div>
-    </footer>
-  );
-}
+      </footer>
+    );
+  }
   // ================= Return =================//
   return (
     <>
       <Navbar />
       <Hero />
       <Problem />
-      <FeaturesSection/>
-      <UseCases/>
-      <Pricing/>
-      <FaQ/>
-      <Footer/>
+      <FeaturesSection />
+      <UseCases />
+      <Pricing />
+      <FaQ />
+      <Footer />
       {/* باقي الأقسام لو عندك هتضيفيهم هنا */}
     </>
   );
