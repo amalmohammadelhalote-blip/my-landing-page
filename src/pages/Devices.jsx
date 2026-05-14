@@ -291,7 +291,7 @@ const Devices = () => {
   });
 
 
-  const renderedDevices = filteredDevices.length ? filteredDevices : devices;
+  const renderedDevices = filteredDevices;
 
   return (
     <div className="page-container">
@@ -405,6 +405,11 @@ const Devices = () => {
                 </div>
               );
             })}
+            {renderedDevices.length === 0 && devices.length > 0 && (
+              <div className="no-results-message" style={{ gridColumn: '1/-1', textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
+                <p>No devices found for this filter.</p>
+              </div>
+            )}
           </div>
         </>
       )}
