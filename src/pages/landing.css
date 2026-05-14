@@ -285,7 +285,7 @@ body {
   border: 1px solid rgba(16, 185, 129, 0.15);
   box-shadow: 0 0 90px rgba(16, 185, 129, 0.25);
   backdrop-filter: blur(20px);
-  width: 100%;
+  width: 95%;
   max-width: 580px;
   margin: auto;
   overflow: hidden;
