@@ -111,13 +111,13 @@ export default function LandingPage() {
             AI-powered energy monitoring & protection
           </div>
           <h1>
-            Protect your home <br />
-            from <span>hidden energy risks.</span>
+            Protect your industrial & <br />
+            home space from <span>hidden energy risks.</span>
           </h1>
           <h5>
-            ECOSHIELD connects to your ESP-based hardware to analyze
-            electricity in real time, flag voltage threats, and suggest smarter
-            ways to cut your bill — before damage or surprises hit.
+            ECOSHIED connects to your smart-home or industrial hardware to analyze
+            electricity in real time, flag voltage threats, and optimize large-scale
+            consumption — before damage or surprises hit.
           </h5>
           <div className="stats">
             {stats.map((s, i) => (
@@ -136,7 +136,7 @@ export default function LandingPage() {
           </div>
           <p className="security-note">
             <BsBagFill className="lock-icon" color="green" />
-            No credit card. Designed for homes & small businesses.
+            No credit card. Built for factories, enterprises & smart homes.
           </p>
         </div>
 
@@ -304,9 +304,9 @@ export default function LandingPage() {
           <span className="ps-badge green">● THE ECOSHIED SOLUTION</span>
           <h1>One AI layer between your devices and the grid.</h1>
           <p className="ps-text">
-            ECOSHIED connects to your ESP-based hardware to continuously
+            ECOSHIED integrates with your industrial, commercial, or smart-home infrastructure to continuously
             sample voltage, current, and usage patterns. Our AI classifies
-            risk (Normal / Medium / High) and reacts in milliseconds — so you don’t have to.
+            risk (Normal / Medium / High) and reacts in milliseconds — providing real-time protection for large enterprises and modern homes.
           </p>
           <div className="ps-solution-box">
             <h4>Real-time brain for your electrons.</h4>
@@ -362,7 +362,7 @@ export default function LandingPage() {
             <span className="features-pill">● FEATURES</span>
             <h2 className="features-main-title">Everything you need to monitor, predict, and protect.</h2>
             <p className="features-subtitle">
-              A single, modern dashboard for your entire electrical footprint — built for homes, shops, and offices that want clarity and control.
+              A single, modern dashboard for your entire electrical footprint — built for factories, companies, and smart homes that want clarity and control.
             </p>
           </div>
 
@@ -693,7 +693,7 @@ export default function LandingPage() {
         <div className="faq-cta">
           <h3 className="faq-cta-title">Ready to make your electricity smarter and safer?</h3>
           <p className="faq-cta-subtitle">
-            Join ECOSHED early access and help us shape the future of affordable, AI-powered energy monitoring for everyone.
+            Join ECOSHIED early access and help us shape the future of AI-powered energy monitoring for modern homes and large-scale industrial enterprises.
           </p>
 
           <div className="faq-cta-actions">
@@ -702,10 +702,10 @@ export default function LandingPage() {
           </div>
 
           <div className="faq-cta-tags">
-            <span className="cta-tag">AI-powered detection</span>
-            <span className="cta-tag">Designed for homes & SMEs</span>
-            <span className="cta-tag">24/7 energy monitoring</span>
-            <span className="cta-tag">Easy setup in emerging markets</span>
+            <span className="cta-tag">Industrial-Grade AI Detection</span>
+            <span className="cta-tag">Factories, Enterprises & Smart Homes</span>
+            <span className="cta-tag">24/7 Grid Protection</span>
+            <span className="cta-tag">High-Resolution Analytics</span>
           </div>
         </div>
       </section>
