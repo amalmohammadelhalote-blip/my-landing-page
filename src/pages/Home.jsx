@@ -164,18 +164,19 @@ export default function Dashboard() {
 
 
   const stats = useMemo(() => {
-    if (dashboardData?.summary) {
-      return {
-        total: dashboardData.summary.totalDevices || 0,
-        active: dashboardData.summary.onlineDevices || 0,
-        offline: dashboardData.summary.offlineDevices || 0,
-      };
-    }
-    const total = devices.length;
+    // Always compute active/offline dynamically from local devices to react to toggles immediately
+    const totalFromDashboard = dashboardData?.summary?.totalDevices || 0;
+    const localTotal = devices.length;
+    
+    // Use the max of local array length or dashboard summary for total
+    const total = Math.max(localTotal, totalFromDashboard);
+    
     const active = devices.filter(
       (d) => d.status === 'ON' || d.status === 'active' || d.isOn === true
     ).length;
+    
     const offline = Math.max(total - active, 0);
+    
     return { total, active, offline };
   }, [devices, dashboardData]);
 
