@@ -38,13 +38,22 @@ const Devices = () => {
       .trim();
 
   const getConsumptionText = (device) => {
-    const val = device?.lastReading?.todayConsumption;
+    // Try different possible field paths for consumption
+    const val = 
+      device?.todayConsumption ?? 
+      device?.lastReading?.todayConsumption ?? 
+      device?.totalConsumption ??
+      device?.consumption;
 
     if (typeof val === 'number') {
       return `${val.toFixed(3)} kWh`;
     }
 
-    return '0 kWh';
+    if (typeof val === 'string' && !isNaN(parseFloat(val))) {
+      return `${parseFloat(val).toFixed(3)} kWh`;
+    }
+
+    return '0.000 kWh';
   };
 
   const toArray = (value) => {
