@@ -47,6 +47,7 @@ export default function Dashboard() {
   const [aiTip, setAiTip] = useState('');
   const [aiTipLoading, setAiTipLoading] = useState(false);
   const [chartDataLoading, setChartDataLoading] = useState(false);
+  const [currentReadings, setCurrentReadings] = useState(null);
 
   const isDeviceOn = (status) => status === 'ON' || status === 'active' || status === true;
   const getToggleStatus = (status) => (isDeviceOn(status) ? 'OFF' : 'ON');
@@ -124,7 +125,10 @@ export default function Dashboard() {
         let devicesWithConsumption = [...list];
         try {
           const readingsRes = await readingService.getCurrent();
-          const breakdown = readingsRes?.data?.data?.deviceBreakdown || readingsRes?.data?.deviceBreakdown || [];
+          const readingsData = readingsRes?.data?.data || readingsRes?.data;
+          setCurrentReadings(readingsData);
+          
+          const breakdown = readingsData?.deviceBreakdown || [];
           if (breakdown.length > 0) {
             const consumptionMap = new Map(breakdown.map(b => [b.deviceId, b.consumption]));
             devicesWithConsumption = list.map(d => ({
@@ -356,9 +360,15 @@ export default function Dashboard() {
                     <div>
                       <p>Consumption</p>
                       <h3>
-                        {dashboardData?.consumption?.today?.total !== undefined
-                          ? `${Number(dashboardData.consumption.today.total).toFixed(4)} kWh`
-                          : `${devices.reduce((sum, d) => sum + (d?.thresholds?.maxPower || 0), 0)} W`}
+                        {(() => {
+                          if (currentReadings?.days?.length > 0) {
+                            const lastDay = currentReadings.days[currentReadings.days.length - 1];
+                            return `${Number(lastDay.consumption || 0).toFixed(2)} kWh`;
+                          }
+                          return dashboardData?.consumption?.today?.total !== undefined
+                            ? `${Number(dashboardData.consumption.today.total).toFixed(4)} kWh`
+                            : `${devices.reduce((sum, d) => sum + (d?.thresholds?.maxPower || 0), 0)} W`;
+                        })()}
                       </h3>
                     </div>
                   </div>
@@ -367,9 +377,16 @@ export default function Dashboard() {
                     <div>
                       <p>Today Cost</p>
                       <h3>
-                        {dashboardData?.consumption?.today?.cost !== undefined
-                          ? `${Number(dashboardData.consumption.today.cost).toFixed(2)} EGP`
-                          : 'N/A'}
+                        {(() => {
+                          if (currentReadings?.days?.length > 0) {
+                            const lastDay = currentReadings.days[currentReadings.days.length - 1];
+                            const cost = (lastDay.consumption || 0) * 1.5; // Assuming 1.5 EGP per kWh for estimation
+                            return `${cost.toFixed(2)} EGP`;
+                          }
+                          return dashboardData?.consumption?.today?.cost !== undefined
+                            ? `${Number(dashboardData.consumption.today.cost).toFixed(2)} EGP`
+                            : 'N/A';
+                        })()}
                       </h3>
                     </div>
                   </div>
