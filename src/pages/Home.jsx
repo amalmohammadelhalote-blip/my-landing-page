@@ -186,9 +186,15 @@ export default function Dashboard() {
 
       const mergedList = dashboardData.devices.map(dd => {
         const fullD = fullDevicesMap.get(dd.id || dd._id) || {};
+        
+        // Prioritize actual reading consumption over dashboard placeholder 0s
+        const actualConsumption = fullD.consumption || dd.todayConsumption || dd.consumption || 0;
+
         return {
           ...fullD,
           ...dd,
+          consumption: actualConsumption,
+          todayConsumption: actualConsumption,
           categoryId: typeof fullD.categoryId === 'object' ? fullD.categoryId : (fullD.category || dd.categoryId)
         };
       });
