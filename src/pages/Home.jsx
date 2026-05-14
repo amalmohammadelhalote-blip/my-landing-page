@@ -431,8 +431,8 @@ export default function Dashboard() {
                       <div className="device-info">
                         <h4>{device.name}</h4>
                         <span className="kwh">
-                          {device?.todayConsumption !== undefined
-                            ? `${Number(device.todayConsumption).toFixed(4)} kWh`
+                          { (device?.todayConsumption !== undefined || device?.consumption !== undefined)
+                            ? `${Number(device?.todayConsumption ?? device?.consumption).toFixed(4)} kWh`
                             : `${device?.thresholds?.maxPower || 0} W`}
                         </span>
                         <p>{locationMap[device.location] || locationMap[device.location?._id] || device.location?.name || device.location || 'Unknown'}</p>
