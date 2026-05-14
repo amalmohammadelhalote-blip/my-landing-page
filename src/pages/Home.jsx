@@ -120,7 +120,23 @@ export default function Dashboard() {
         }
         const list = normalizeListResponse(await deviceService.getAll());
         const locationsList = normalizeListResponse(await locationService.getAll());
-        setDevices(list);
+        
+        let devicesWithConsumption = [...list];
+        try {
+          const readingsRes = await readingService.getCurrent();
+          const breakdown = readingsRes?.data?.data?.deviceBreakdown || readingsRes?.data?.deviceBreakdown || [];
+          if (breakdown.length > 0) {
+            const consumptionMap = new Map(breakdown.map(b => [b.deviceId, b.consumption]));
+            devicesWithConsumption = list.map(d => ({
+              ...d,
+              consumption: consumptionMap.get(d._id || d.id) ?? d.consumption ?? 0
+            }));
+          }
+        } catch (err) {
+          console.warn('Could not fetch current readings for devices', err);
+        }
+
+        setDevices(devicesWithConsumption);
         setLocations(locationsList);
       } catch (err) {
         console.warn('Home data fetch failed, using mock data', err);
@@ -173,10 +189,15 @@ export default function Dashboard() {
         };
       });
 
-      return mergedList.sort((a, b) => (b.todayConsumption || 0) - (a.todayConsumption || 0)).slice(0, 4);
+      return mergedList.sort((a, b) => ((b.todayConsumption ?? b.consumption ?? 0) - (a.todayConsumption ?? a.consumption ?? 0))).slice(0, 4);
     }
     return [...devices]
-      .sort((a, b) => (b?.thresholds?.maxPower || 0) - (a?.thresholds?.maxPower || 0))
+      .sort((a, b) => {
+        const aCons = a?.todayConsumption ?? a?.consumption ?? 0;
+        const bCons = b?.todayConsumption ?? b?.consumption ?? 0;
+        if (aCons !== 0 || bCons !== 0) return bCons - aCons;
+        return (b?.thresholds?.maxPower || 0) - (a?.thresholds?.maxPower || 0);
+      })
       .slice(0, 4);
   }, [devices, dashboardData]);
 

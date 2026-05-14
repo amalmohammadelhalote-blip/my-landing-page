@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Tv, Bluetooth } from 'lucide-react';
-import { categoryService, deviceService, locationService } from '../api/services';
+import { categoryService, deviceService, locationService, readingService } from '../api/services';
 import "./Devices.css";
 import "./AddDevice.css";
 import noDeviceImg from "../assets/no-device.png";
@@ -212,18 +212,28 @@ const Devices = () => {
         setLoading(true);
         setError('');
 
-        const [devicesRes, categoriesRes, locationsRes] = await Promise.all([
+        const [devicesRes, categoriesRes, locationsRes, readingsRes] = await Promise.allSettled([
           deviceService.getAll(),
           categoryService.getAll(),
           locationService.getAll(),
+          readingService.getCurrent()
         ]);
 
-        // ✅ أهم سطر
-        const devicesData = devicesRes?.data?.data || [];
+        let devicesData = devicesRes.status === 'fulfilled' ? (devicesRes.value?.data?.data || []) : [];
+        const breakdown = readingsRes.status === 'fulfilled' ? (readingsRes.value?.data?.data?.deviceBreakdown || readingsRes.value?.data?.deviceBreakdown || []) : [];
+
+        // Merge consumption from breakdown into devices
+        if (breakdown.length > 0) {
+          const consumptionMap = new Map(breakdown.map(b => [b.deviceId, b.consumption]));
+          devicesData = devicesData.map(d => ({
+            ...d,
+            consumption: consumptionMap.get(d._id || d.id) ?? d.consumption ?? 0
+          }));
+        }
 
         setDevices(devicesData);
-        setCategories(categoriesRes?.data?.data || []);
-        setLocations(locationsRes?.data?.data || []);
+        setCategories(categoriesRes.status === 'fulfilled' ? (categoriesRes.value?.data?.data || []) : []);
+        setLocations(locationsRes.status === 'fulfilled' ? (locationsRes.value?.data?.data || []) : []);
 
       } catch (err) {
         setError('Failed to load devices');
