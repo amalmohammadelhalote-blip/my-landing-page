@@ -56,7 +56,7 @@ export default function LandingPage() {
             <Zap size={16} />
           </div>
           <div>
-            <h3>ECOSHIED</h3>
+            <h3>ECOSHID</h3>
             <p className="brand-sub">Smart Energy Guardian</p>
           </div>
         </div>
@@ -301,10 +301,10 @@ export default function LandingPage() {
         </div>
 
         <div className="ps-right">
-          <span className="ps-badge green">● THE ECOSHIED SOLUTION</span>
+          <span className="ps-badge green">● THE ECOSHID SOLUTION</span>
           <h1>One AI layer between your devices and the grid.</h1>
           <p className="ps-text">
-            ECOSHIED integrates with your industrial, commercial, or smart-home infrastructure to continuously
+            ECOSHID integrates with your industrial, commercial, or smart-home infrastructure to continuously
             sample voltage, current, and usage patterns. Our AI classifies
             risk (Normal / Medium / High) and reacts in milliseconds — providing real-time protection for large enterprises and modern homes.
           </p>
@@ -312,7 +312,7 @@ export default function LandingPage() {
             <h4>Real-time brain for your electrons.</h4>
             <p>
               From live kWh tracking to auto relay cut-off,
-              ECOSHIED turns raw electrical signals into clear decisions and alerts.
+              ECOSHID turns raw electrical signals into clear decisions and alerts.
             </p>
           </div>
           <div className="ps-features">
@@ -340,7 +340,7 @@ export default function LandingPage() {
       {
         step: "01",
         title: "Connect the device",
-        desc: "Install the ECOSHIED ESP-powered module near your main distribution board or key circuits. No complex rewiring required."
+        desc: "Install the ECOSHID ESP-powered module near your main distribution board or key circuits. No complex rewiring required."
       },
       {
         step: "02",
@@ -446,10 +446,10 @@ export default function LandingPage() {
           <div className="why-container">
             <div className="why-grid">
               <div className="why-left">
-                <span className="features-pill">● WHY ECOSHIED</span>
+                <span className="features-pill">● WHY ECOSHID</span>
                 <h2 className="features-main-title">More than a smart meter. A safety net.</h2>
                 <p className="why-desc">
-                  ECOSHIED is built specifically for emerging markets — where grid instability, tariffs, and protection
+                  ECOSHID is built specifically for emerging markets — where grid instability, tariffs, and protection
                   challenges are part of everyday life.
                 </p>
 
@@ -481,7 +481,7 @@ export default function LandingPage() {
                 <div className="numbers-panel">
                   <h3 className="numbers-matter">Numbers that matter.</h3>
                   <p className="numbers-intro">
-                    During pilot tests, ECOSHIED-style monitoring typically uncovers 10–30%
+                    During pilot tests, ECOSHID-style monitoring typically uncovers 10–30%
                     avoidable energy waste in homes and small businesses
                     — much of it from predictable patterns that AI can fix automatically.</p>
 
@@ -517,7 +517,7 @@ export default function LandingPage() {
         title: "Basic",
         target: "Homes",
         price: "Coming soon",
-        desc: "1 ECOSHIED device • Core monitoring • Mobile & web dashboard",
+        desc: "1 ECOSHID device • Core monitoring • Mobile & web dashboard",
         features: ["Real-time kWh & voltage", "Basic alerts", "Up to 3 protected circuits"],
         btnText: "Join home waitlist",
         isPro: false
@@ -550,7 +550,7 @@ export default function LandingPage() {
             Flexible plans for every footprint.
           </h1>
           <p style={{ color: '#9ca3af', maxWidth: '600px' }}>
-            ECOSHIED is in private beta. Lock in early-bird pricing and shape the roadmap by joining the waitlist today.
+            ECOSHID is in private beta. Lock in early-bird pricing and shape the roadmap by joining the waitlist today.
           </p>
         </div>
 
@@ -605,24 +605,24 @@ export default function LandingPage() {
 
     const faqs = [
       {
-        q: "Is ECOSHED safe to install in my home?",
-        a: " ECOSHIED is designed to work with certified ESP-based hardware and standard protection components. Installation can be done by a qualified electrician following local regulations, just like any other protective device near your panel.",
+        q: "Is ECOSHD safe to install in my home?",
+        a: " ECOSHID is designed to work with certified ESP-based hardware and standard protection components. Installation can be done by a qualified electrician following local regulations, just like any other protective device near your panel.",
       },
       {
         q: "Do I need constant internet for it to work?",
-        a: " ECOSHIED continues measuring and protecting locally even if the internet is down. Once connectivity returns, the device syncs data and pushes any missed alerts to your dashboard.",
+        a: " ECOSHID continues measuring and protecting locally even if the internet is down. Once connectivity returns, the device syncs data and pushes any missed alerts to your dashboard.",
       },
       {
-        q: "What devices can ECOSHED protect?",
+        q: "What devices can ECOSHD protect?",
         a: " You can protect entire circuits or specific high-value loads such as refrigerators, AC units, freezers, POS systems, or industrial machines connected through the relay output.",
       },
       {
         q: "Can it work with three-phase systems?",
-        a: " Yes, ECOSHIED is being designed to support both single-phase and three-phase environments. In multi-phase setups, multiple modules can coordinate to monitor each phase separately.",
+        a: " Yes, ECOSHID is being designed to support both single-phase and three-phase environments. In multi-phase setups, multiple modules can coordinate to monitor each phase separately.",
       },
       {
         q: "How accurate is the cost estimation?",
-        a: "You can input your local tariff structure and any time-of-use rules. ECOSHIED then uses live kWh data to estimate monthly bills — typically within a few percent of your actual bill, depending on local fees and taxes.",
+        a: "You can input your local tariff structure and any time-of-use rules. ECOSHID then uses live kWh data to estimate monthly bills — typically within a few percent of your actual bill, depending on local fees and taxes.",
       },
     ];
 
@@ -665,7 +665,7 @@ export default function LandingPage() {
           {/* Right side - Email Signup */}
           <div className="faq-right">
             <div className="faq-signup">
-              <h3>Want to pilot ECOSHIED?</h3>
+              <h3>Want to pilot ECOSHID?</h3>
               <p>
                 We are onboarding a limited number of homes and businesses
                 into our early-access program. Share your email and we’ll reach out with next steps.
@@ -683,7 +683,7 @@ export default function LandingPage() {
               </div>
 
               <p className="faq-privacy">
-                We'll only use your email for ECOSHED updates. No spam, ever.
+                We'll only use your email for ECOSHID updates. No spam, ever.
               </p>
             </div>
           </div>
@@ -693,7 +693,7 @@ export default function LandingPage() {
         <div className="faq-cta">
           <h3 className="faq-cta-title">Ready to make your electricity smarter and safer?</h3>
           <p className="faq-cta-subtitle">
-            Join ECOSHIED early access and help us shape the future of AI-powered energy monitoring for modern homes and large-scale industrial enterprises.
+            Join ECOSHID early access and help us shape the future of AI-powered energy monitoring for modern homes and large-scale industrial enterprises.
           </p>
 
           <div className="faq-cta-actions">
@@ -718,7 +718,7 @@ export default function LandingPage() {
     return (
       <footer>
         <div className="page-shell footer-inner">
-          <p>© <span id="year"></span> ECOSHIED. All rights reserved.</p>
+          <p>© <span id="year"></span> ECOSHID. All rights reserved.</p>
           <div className="footer-links">
             <span>Early access prototype – Not yet a certified protective device.</span>
           </div>
