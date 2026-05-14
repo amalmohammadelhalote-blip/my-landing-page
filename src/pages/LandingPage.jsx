@@ -115,7 +115,7 @@ export default function LandingPage() {
             home space from <span>hidden energy risks.</span>
           </h1>
           <h5>
-            ECOSHIED connects to your smart-home or industrial hardware to analyze
+            ECOSHID connects to your smart-home or industrial hardware to analyze
             electricity in real time, flag voltage threats, and optimize large-scale
             consumption — before damage or surprises hit.
           </h5>
