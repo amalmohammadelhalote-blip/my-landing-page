@@ -22,96 +22,7 @@ body {
   background: #040d08;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 250px;
-  background: linear-gradient(180deg, #06140d 0%, #081c13 100%);
-  padding: 20px 22px 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
-  gap: 16px;
-  box-shadow: 16px 0 50px rgba(0, 0, 0, 0.35);
-  min-width: 250px;
-  max-width: 250px;
-  flex-shrink: 0;
-}
-
-.sidebar > .logo {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex: 0 0 auto;
-  height: auto;
-  gap: 8px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.sidebar-logo {
-  width: 120px;
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-  display: block;
-}
-
-.sidebar nav {
-  margin-top: 0;
-  flex: 0 0 auto;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 16px;
-  color: var(--text-gray);
-  cursor: pointer;
-  border-radius: 18px;
-  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
-  margin-bottom: 10px;
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 500;
-}
-
-.nav-item.active {
-  background: rgba(34, 197, 94, 0.16);
-  color: white;
-  font-weight: 700;
-  box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.18);
-}
-
-.nav-item:hover {
-  background: rgba(34, 197, 94, 0.12);
-  color: #f8fafc;
-  transform: translateX(2px);
-}
-
-.sidebar-footer {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.sidebar-footer .nav-item {
-  background: transparent;
-  color: var(--text-gray);
-  padding-left: 0;
-  box-shadow: none;
-}
-
-.logout {
-  color: #fca5a5;
-}
-
-.sidebar a {
-  text-decoration: none;
-}
+/* Standalone Sidebar component styling has been migrated to Sidebar.css */
 
 /* Main Content */
 
@@ -121,6 +32,7 @@ body {
   min-width: 0;
   padding: 40px;
   background: #04120a;
+  margin-left: 250px; /* Offset for fixed sidebar on desktop */
 }
 
 .mobile-top-bar {
@@ -911,7 +823,9 @@ body {
     width: 250px;
     min-width: 250px;
     max-width: 250px;
-    position: relative;
+    position: sticky;
+    top: 0;
+    height: 100vh;
     box-shadow: 16px 0 50px rgba(0, 0, 0, 0.35);
     border-right: none;
   }
@@ -950,6 +864,7 @@ body {
     padding: 12px;
     margin-top: 60px;
     margin-bottom: 0;
+    margin-left: 0 !important;
   }
 
   .desktop-only {

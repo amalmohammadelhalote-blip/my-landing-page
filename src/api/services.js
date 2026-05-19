@@ -42,6 +42,7 @@ export const deviceService = {
   delete: (id) => api.delete(`/devices/${id}`),
   toggleStatus: (id, status) => api.put(`/devices/${id}/status`, { status }),
   getHealth: (id, period) => api.get(`/devices/${id}/health`, { params: period ? { period } : {} }),
+  getActivity: (id) => api.get(`/dashboard/devices/${id}/activity`),
   getRecommendation: (id) => api.get(`/devices/${id}/recommendation`),
 
 };

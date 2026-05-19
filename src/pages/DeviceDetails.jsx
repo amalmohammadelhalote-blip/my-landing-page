@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Search, Bluetooth, Lightbulb, Zap, Plug, Timer, Coins, Power, Edit, Trash2, Tv } from 'lucide-react';
+import { Search, Bluetooth, Lightbulb, Zap, Plug, Timer, Coins, Power, Edit, Trash2, Tv, ChevronDown, Calendar } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area } from 'recharts';
 import ReactMarkdown from 'react-markdown';
 import { deviceService, categoryService, locationService, readingService } from '../api/services';
@@ -58,6 +58,12 @@ export default function DeviceDetails() {
   const [health, setHealth] = useState(null);
   const [chartData, setChartData] = useState([]);
   const [chartPeriod, setChartPeriod] = useState('Day');
+  const [selectedMonth, setSelectedMonth] = useState(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  });
+  const [selectedDay, setSelectedDay] = useState(new Date().getDate());
+  const [isPeriodModalOpen, setIsPeriodModalOpen] = useState(false);
   const [recommendation, setRecommendation] = useState(null);
 
   // Edit/Delete states
@@ -92,44 +98,91 @@ export default function DeviceDetails() {
   };
 
   const normalizeChartHistory = (payload, period) => {
-    if (!payload || !payload.days || payload.days.length === 0) {
-      return [];
-    }
+    if (!payload) return [];
 
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
     if (period === 'Day') {
-      // Show data for the latest day available with readings
-      const latestDay = [...payload.days].sort((a, b) => b.day - a.day).find(d => d.readings && d.readings.length > 0);
-      if (!latestDay) return [];
+      // Check if we are viewing the current month/day to decide between Activity API and historical Month API
+      const now = new Date();
+      const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      const isCurrentDay = (selectedMonth === currentMonth && Number(selectedDay) === now.getDate());
 
-      return latestDay.readings.map(r => ({
-        name: new Date(r.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
-        value: Number(r.power || 0)
-      }));
+      // If it's historical data or a specific day from Month API
+      if (payload.days) {
+        const targetDay = payload.days.find(d => Number(d.day) === Number(selectedDay));
+        if (targetDay && targetDay.readings) {
+          return targetDay.readings.map(r => ({
+            name: new Date(r.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+            value: Number(r.power || 0)
+          }));
+        }
+      }
+
+      // Fallback to activity if it's the current day or if provided
+      const activity = payload.activity || payload.data?.activity || [];
+      if (activity.length === 0) return [];
+
+      return [...activity]
+        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+        .map(item => ({
+          name: new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+          value: Number(item.power || item.energy || 0)
+        }));
     }
 
-    if (period === 'Week') {
-      // Take up to last 7 days and use average power
-      return payload.days.slice(-7).map(d => {
-        const date = new Date(payload.month + '-' + String(d.day).padStart(2, '0'));
-        const avgPower = d.readings && d.readings.length > 0
-          ? d.readings.reduce((sum, r) => sum + (r.power || 0), 0) / d.readings.length
-          : 0;
+    const days = payload.days || payload.data?.days || [];
+    if (days.length === 0) return [];
 
-        return {
-          name: dayNames[date.getDay()],
-          value: Number(avgPower.toFixed(2))
-        };
-      });
+    if (period === 'Week') {
+      let refDate = new Date();
+      if (selectedMonth) {
+        const parts = selectedMonth.split('-');
+        if (parts.length === 2) {
+          refDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, new Date().getDate());
+        }
+      }
+
+      const allWeekReadings = [];
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(refDate);
+        d.setDate(d.getDate() - i);
+        const dayNum = d.getDate();
+
+        const dayData = days.find(x => Number(x.day) === dayNum);
+        if (dayData && dayData.readings) {
+          allWeekReadings.push(...dayData.readings);
+        }
+      }
+
+      return allWeekReadings
+        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+        .map(r => {
+          const dt = new Date(r.timestamp);
+          return {
+            name: `${dayNames[dt.getDay()]} ${dt.getHours()}:00`,
+            value: Number(r.power || r.energy || 0)
+          };
+        });
     }
 
     if (period === 'Month') {
-      // Show consumption per day
-      return payload.days.map(d => ({
-        name: `${d.day}`,
-        value: Number((d.consumption || 0).toFixed(4))
-      }));
+      const allReadings = [];
+      days.forEach(d => {
+        if (d.readings && d.readings.length > 0) {
+          allReadings.push(...d.readings);
+        }
+      });
+
+      return allReadings
+        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+        .map(r => {
+          const dt = new Date(r.timestamp);
+          return {
+            name: `Day ${dt.getDate()}`,
+            value: Number(r.power || r.energy || 0)
+          };
+        });
     }
 
     return [];
@@ -224,13 +277,29 @@ export default function DeviceDetails() {
         const now = new Date();
         const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
-        // Fetch readings and health in parallel if needed
-        const [readingsRes, healthRes] = await Promise.all([
-          readingService.getMonthly(deviceId, currentMonthStr),
-          deviceService.getHealth(deviceId).catch(e => {
-            console.warn('Health endpoint failed, falling back to readings only', e);
+        // Determine which API to use
+        let readingsPromise;
+        const isCurrentDay = (selectedMonth === currentMonthStr && Number(selectedDay) === now.getDate());
+
+        if (chartPeriod === 'Day' && isCurrentDay) {
+          readingsPromise = deviceService.getActivity(deviceId);
+        } else {
+          readingsPromise = readingService.getMonthly(deviceId, selectedMonth);
+        }
+
+        // Check if we should still try fetching health
+        let healthPromise = Promise.resolve(null);
+        if (!window.__healthEndpointBroken) {
+          healthPromise = deviceService.getHealth(deviceId).catch(e => {
+            console.warn('Health endpoint failed, disabling further health requests for this session.', e);
+            window.__healthEndpointBroken = true;
             return null;
-          })
+          });
+        }
+
+        const [readingsRes, healthRes] = await Promise.all([
+          readingsPromise,
+          healthPromise
         ]);
 
         const readingsData = parseResponsePayload(readingsRes);
@@ -245,7 +314,7 @@ export default function DeviceDetails() {
         const normalized = normalizeChartHistory(readingsData, chartPeriod);
         setChartData(normalized);
 
-        // EXTRA: Check if recommendation is bundled within health or monthly response
+        // EXTRA: Check if recommendation is bundled
         const bundledRec = healthData?.recommendation || healthData?.tips ||
           readingsData?.recommendation || readingsData?.tips;
 
@@ -262,7 +331,7 @@ export default function DeviceDetails() {
     fetchHealthAndChart();
     const interval = setInterval(fetchHealthAndChart, 30000);
     return () => { mounted = false; clearInterval(interval); };
-  }, [deviceId, chartPeriod, isEditing]);
+  }, [deviceId, chartPeriod, selectedMonth, selectedDay, isEditing]);
 
   const handlePowerToggle = async () => {
     if (!selectedDeviceDetail) return;
@@ -634,23 +703,36 @@ export default function DeviceDetails() {
           <div className="chart-header">
 
             <h3>
-              Device Performance (Watt)
+              Device Performance
             </h3>
 
-            <div className="chart-filters">
+            <div className="chart-controls-wrapper" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '12px', width: '100%' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                <div className="chart-filters">
+                  {['Day', 'Week', 'Month'].map((period) => (
+                    <button
+                      key={period}
+                      className={chartPeriod === period ? 'active' : ''}
+                      onClick={() => setChartPeriod(period)}
+                    >
+                      {period}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-              {['Day', 'Week', 'Month'].map((period) => (
-                <button
-                  key={period}
-                  className={
-                    chartPeriod === period ? 'active' : ''
-                  }
-                  onClick={() => setChartPeriod(period)}
-                >
-                  {period}
-                </button>
-              ))}
-
+              <button className="period-dropdown-btn" onClick={() => setIsPeriodModalOpen(true)}>
+                <div className="period-dropdown-left">
+                  <Calendar size={18} color="#facc15" />
+                  <span className="period-label">Period:</span>
+                </div>
+                <div className="period-dropdown-right">
+                  <span className="period-value">
+                    {chartPeriod === 'Day' ? `${selectedMonth} (Day ${selectedDay})` : selectedMonth}
+                  </span>
+                  <ChevronDown size={18} color="#94a3b8" />
+                </div>
+              </button>
             </div>
 
           </div>
@@ -693,7 +775,14 @@ export default function DeviceDetails() {
 
               <YAxis stroke="#94a3b8" />
 
-              <Tooltip />
+              <Tooltip
+                formatter={(val) => [
+                  `${val} ${chartPeriod === 'Day' ? 'W' : 'kWh'}`,
+                  'Usage'
+                ]}
+                contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '8px' }}
+                itemStyle={{ color: '#facc15' }}
+              />
 
               <Area
                 type="monotone"
@@ -710,6 +799,47 @@ export default function DeviceDetails() {
         </div>
 
       </div>
+
+      {/* BOTTOM SHEET MODAL FOR PERIOD SELECTION */}
+      {isPeriodModalOpen && (
+        <div className="bottom-sheet-overlay" onClick={() => setIsPeriodModalOpen(false)}>
+          <div className="bottom-sheet-content" onClick={(e) => e.stopPropagation()}>
+            <div className="bottom-sheet-header">
+              <h3>Select Period</h3>
+              <button className="close-sheet-btn" onClick={() => setIsPeriodModalOpen(false)}>✕</button>
+            </div>
+
+            <div className="bottom-sheet-body">
+              <div className="form-group full">
+                <label>Month</label>
+                <input
+                  type="month"
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                />
+              </div>
+
+              {chartPeriod === 'Day' && (
+                <div className="form-group full" style={{ marginTop: '15px' }}>
+                  <label>Day</label>
+                  <select
+                    value={selectedDay}
+                    onChange={(e) => setSelectedDay(e.target.value)}
+                  >
+                    {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                      <option key={d} value={d}>Day {d}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
+
+            <button className="confirm-btn full-width" style={{ marginTop: '20px' }} onClick={() => setIsPeriodModalOpen(false)}>
+              Apply Changes
+            </button>
+          </div>
+        </div>
+      )}
 
     </div>
   );

@@ -13,8 +13,23 @@ const ForgetPassword = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const validateForm = () => {
+    if (!email.trim()) {
+      setError("Email is required.");
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+    
     setLoading(true);
     setError("");
     setMessage("");
@@ -51,30 +66,29 @@ const ForgetPassword = () => {
   return (
     <div className="login-container">
       <img src={techBackground} className="tech-bg" alt="background" />
-      <img src={logo} className="brand-logo" alt="logo" />
 
       <div className="auth-card">
+        <img src={logo} className="brand-logo-inner" alt="logo" />
         <h2>Forgot Password</h2>
         <p className="subtitle">Enter your email to receive a reset code</p>
 
         {message && <p className="success-msg">{message}</p>}
         {error && <p className="error-msg">{error}</p>}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <div className="input-box">
             <label>EMAIL</label>
             <div className="field-wrapper">
-              <Mail className="icon-left" size={18} />
               <input
                 type="email"
                 placeholder="Enter your email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (error) setError("");
+                }}
               />
-              <div className="glow-icon-right">
-                <Mail size={14} />
-              </div>
+              <Mail className="icon-right" size={18} />
             </div>
           </div>
 

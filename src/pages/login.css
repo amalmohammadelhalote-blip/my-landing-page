@@ -130,6 +130,25 @@ body {
   color: var(--neon-green);
 }
 
+.toggle-pass-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.toggle-pass-btn:hover {
+  color: var(--neon-green);
+}
+
 .error-msg {
   color: #ff4d4d;
   font-size: 12px;
@@ -227,6 +246,28 @@ body {
   border-radius: 5px;
   margin: 5px 0 10px 0;
   transition: 0.3s;
+}
+
+.success-msg {
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.error-msg {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 /* Responsive */

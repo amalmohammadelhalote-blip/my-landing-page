@@ -14,6 +14,7 @@ const VerifyCode = () => {
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(60);
   const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   const inputs = useRef([]);
 
   /* ================= OTP INPUT ================= */
@@ -22,6 +23,9 @@ const VerifyCode = () => {
     const newOtp = [...otp];
     newOtp[index] = element.value;
     setOtp(newOtp);
+    if (error) setError("");
+    if (successMsg) setSuccessMsg("");
+
     if (element.nextSibling && element.value) {
       element.nextSibling.focus();
     }
@@ -37,24 +41,36 @@ const VerifyCode = () => {
     const paste = e.clipboardData.getData("text").slice(0, 6);
     if (!isNaN(paste)) {
       const newOtp = paste.split("");
-      setOtp(newOtp);
+      setOtp([...newOtp, ...Array(6 - newOtp.length).fill("")].slice(0, 6));
       newOtp.forEach((num, i) => {
         if (inputs.current[i]) {
           inputs.current[i].value = num;
         }
       });
+      if (error) setError("");
     }
   };
 
   /* ================= VERIFY CODE ================= */
+  const validateForm = () => {
+    const code = otp.join("");
+    if (code.length !== 6) {
+      setError("Please enter the complete 6-digit code.");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const code = otp.join("");
-    if (code.length !== 6) return;
+    if (!validateForm()) return;
+    
     setLoading(true);
     setError("");
+    setSuccessMsg("");
 
     try {
+      const code = otp.join("");
       const res = await authService.verifyResetCode({ resetCode: code });
       // The API returns status success if valid
       navigate("/reset-password", { state: { email } });
@@ -78,9 +94,10 @@ const VerifyCode = () => {
   const resendCode = async () => {
     try {
       setError("");
+      setSuccessMsg("");
       await authService.forgotPassword({ email });
       setTimer(60);
-      alert("Verification code resent to your email.");
+      setSuccessMsg("Verification code resent to your email.");
     } catch (err) {
       setError(err.response?.data?.message || "Failed to resend code");
     }
@@ -92,14 +109,13 @@ return(
 
 <img src={techBackground} className="tech-bg" alt="background"/>
 
-<img src={logo} className="brand-logo" alt="logo"/>
-
 <div className="auth-card">
-
+<img src={logo} className="brand-logo-inner" alt="logo"/>
 <h2>Email Verification</h2>
 <p className="subtitle">Enter the 6-digit code sent to <strong>{email}</strong></p>
 
 {error && <p className="error-msg">{error}</p>}
+{successMsg && <p className="success-msg">{successMsg}</p>}
 
 <form onSubmit={handleSubmit} onPaste={handlePaste}>
 

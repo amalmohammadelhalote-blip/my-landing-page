@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { Lock } from "lucide-react";
+import { Lock, Eye, EyeOff } from "lucide-react";
 import techBackground from "../assets/background4.jpg";
 import logo from "../assets/logo.png";
 import { authService } from "../api/services";
@@ -13,18 +13,37 @@ const ResetPassword = () => {
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
+  const validateForm = () => {
+    if (!password) {
+      setError("Password is required.");
+      return false;
+    }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return false;
+    }
+    if (!confirmPassword) {
+      setError("Please confirm your password.");
+      return false;
+    }
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    if (!validateForm()) return;
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
+    setError("");
 
     try {
       setLoading(true);
@@ -48,47 +67,49 @@ const ResetPassword = () => {
     <div className="login-container">
 
       <img src={techBackground} className="tech-bg" alt="background" />
-      <img src={logo} className="brand-logo" alt="logo" />
 
       <div className="auth-card">
 
+        <img src={logo} className="brand-logo-inner" alt="logo" />
         <h2>Reset Password</h2>
         <p className="subtitle">Create a new password for <strong>{email}</strong></p>
 
         {error && <p className="error-msg">{error}</p>}
-        {success && <p className="success-banner" style={{ background: 'rgba(34, 197, 94, 0.2)', color: '#4ade80', padding: '12px', borderRadius: '8px', marginBottom: '15px' }}>Password reset successfully! Redirecting to login...</p>}
+        {success && <p className="success-msg">Password reset successfully! Redirecting to login...</p>}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
 
           <div className="input-box">
-            <label>New Password</label>
+            <label>NEW PASSWORD</label>
             <div className="field-wrapper">
-              <Lock className="icon-left" size={18} />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter new password"
                 value={password}
-                onChange={(e)=>setPassword(e.target.value)}
-                required
+                onChange={(e) => { setPassword(e.target.value); if (error) setError(""); }}
               />
+              <button type="button" className="toggle-pass-btn" onClick={() => setShowPassword(p => !p)}>
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
           </div>
 
           <div className="input-box">
-            <label>Confirm Password</label>
+            <label>CONFIRM PASSWORD</label>
             <div className="field-wrapper">
-              <Lock className="icon-left" size={18} />
               <input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm new password"
                 value={confirmPassword}
-                onChange={(e)=>setConfirmPassword(e.target.value)}
-                required
+                onChange={(e) => { setConfirmPassword(e.target.value); if (error) setError(""); }}
               />
+              <button type="button" className="toggle-pass-btn" onClick={() => setShowConfirmPassword(p => !p)}>
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
           </div>
 
-          <button type="submit" className="submit-btn">
+          <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? "Resetting..." : "Reset Password"}
           </button>
 

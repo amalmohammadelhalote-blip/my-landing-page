@@ -16,30 +16,29 @@
 /* Sidebar */
 .sidebar {
   width: 180px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
   background: linear-gradient(180deg, #06140d 0%, #081c13 100%);
-  padding: 20px 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 0;
   box-shadow: 16px 0 50px rgba(0, 0, 0, 0.35);
-  position: relative;
   z-index: 100;
 }
 
 .logo {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0;
-  padding: 20px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  margin-bottom: 8px;
+  padding: 24px 16px 8px 16px; /* Aligns with the 24px top padding of main-content */
+  margin-bottom: 4px; /* Links directly under the logo */
 }
 
 .sidebar-logo {
-  width: 100px;
+  width: 120px;
   height: auto;
   object-fit: contain;
   display: block;
@@ -151,7 +150,7 @@
     width: 280px;
     z-index: 1000;
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 16px 0;
+    padding: 0;
   }
 
   .sidebar.open {

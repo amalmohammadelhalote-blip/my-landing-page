@@ -6,14 +6,22 @@
 
 .profile-page {
   padding: 32px;
-  background-color: #020b08; /* Deeper black */
+  background-color: #020b08;
+  /* Deeper black */
   min-height: 100vh;
   animation: fadeIn 0.5s ease-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .settings-container {
@@ -35,7 +43,7 @@
   flex-direction: column;
   position: sticky;
   top: 32px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .user-greeting {
@@ -152,15 +160,15 @@
   background-color: #94a3b8;
   transition: .4s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: rgba(34, 197, 94, 0.2);
   border-color: rgba(34, 197, 94, 0.4);
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   transform: translateX(23px);
   background-color: #22c55e;
   box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
@@ -196,7 +204,7 @@ input:checked + .slider:before {
   border: var(--setting-border);
   border-radius: 32px;
   padding: 48px;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
 }
 
 /* Forms - Industrial Precision */
@@ -235,7 +243,7 @@ input:checked + .slider:before {
   font-size: 15px;
   outline: none;
   transition: all 0.3s;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .setting-field input:focus {
@@ -264,7 +272,7 @@ input:checked + .slider:before {
 }
 
 /* Privacy & Help Content */
-.privacy-policy-content h2, 
+.privacy-policy-content h2,
 .help-center-content h2 {
   font-size: 32px;
   margin-top: 0;
@@ -441,6 +449,7 @@ section {
   .settings-container {
     grid-template-columns: 1fr;
   }
+
   .settings-sidebar {
     position: static;
   }
