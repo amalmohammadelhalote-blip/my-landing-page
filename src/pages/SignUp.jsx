@@ -113,7 +113,7 @@ const SignUp = () => {
       <img src={techBackground} className="tech-bg" alt="background" />
       <div className="signup-card">
         <div className="card-right">
-          <img src={logo} className="logo" alt="logo" />
+          <img src={logo} className="brand-logo-inner" alt="logo" />
           <h2>Create <span>Account</span></h2>
           <p className="subtitle">Join the platform &amp; make the world greener</p>
 
