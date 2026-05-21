@@ -399,7 +399,9 @@ export default function Profile() {
                 </div>
 
                 <div className="help-item" style={{ gridColumn: '1 / -1' }}>
-                  <HelpCircle size={24} color="#22c55e" />
+                  <div className="icon-circle" style={{ background: 'rgba(34, 197, 94, 0.1)', padding: '12px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <HelpCircle size={24} color="#22c55e" />
+                  </div>
                   <div style={{ flex: 1 }}>
                     <h4>Technical Documentation</h4>
                     <p style={{ fontSize: '14px', color: '#94a3b8', fontWeight: '400' }}>Access our comprehensive guides on device integration and API management.</p>
