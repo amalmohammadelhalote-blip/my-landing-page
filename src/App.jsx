@@ -14,7 +14,14 @@ import Home from "./pages/Home";
 import Devices from "./pages/Devices";
 import Reports from "./pages/Reports";
 import DeviceDetails from "./pages/DeviceDetails";
-import Profile from "./pages/Profile";
+import ProfileLayout from "./pages/profile/ProfileLayout";
+import ProfileMenu from "./pages/profile/ProfileMenu";
+import ProfileEdit from "./pages/profile/ProfileEdit";
+import ProfilePassword from "./pages/profile/ProfilePassword";
+import ProfileDelete from "./pages/profile/ProfileDelete";
+import ProfilePrivacy from "./pages/profile/ProfilePrivacy";
+import ProfileHelp from "./pages/profile/ProfileHelp";
+import ProfileLogoutPage from "./pages/profile/ProfileLogout";
 import AddDevice from "./pages/AddDevice";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -46,7 +53,15 @@ function App() {
           <Route path="devices/add" element={<AddDevice />} />
           <Route path="devices/:deviceId" element={<DeviceDetails />} />
           <Route path="reports" element={<Reports />} />
-          <Route path="profile" element={<Profile />} />
+          <Route path="profile" element={<ProfileLayout />}>
+            <Route index element={<ProfileMenu />} />
+            <Route path="edit" element={<ProfileEdit />} />
+            <Route path="password" element={<ProfilePassword />} />
+            <Route path="delete" element={<ProfileDelete />} />
+            <Route path="privacy" element={<ProfilePrivacy />} />
+            <Route path="help" element={<ProfileHelp />} />
+            <Route path="logout" element={<ProfileLogoutPage />} />
+          </Route>
 
         </Route>
 
