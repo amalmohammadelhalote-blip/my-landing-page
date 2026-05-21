@@ -203,21 +203,26 @@
 
 .error-msg,
 .success-msg {
-  padding: 12px;
-  border-radius: 12px;
-  text-align: center;
-  margin-bottom: 15px;
-  font-size: 14px;
+  padding: 12px 16px !important;
+  border-radius: 12px !important;
+  text-align: center !important;
+  margin-bottom: 15px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
 }
 
 .error-msg {
-  background: rgba(239, 68, 68, .1);
-  color: #ef4444;
+  color: #ff3333 !important;
+  background: rgba(239, 68, 68, 0.15) !important;
+  border: 1px solid rgba(255, 51, 51, 0.35) !important;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1) !important;
 }
 
 .success-msg {
-  background: rgba(34, 197, 94, .1);
-  color: #22c55e;
+  color: #00ff87 !important;
+  background: rgba(34, 197, 94, 0.15) !important;
+  border: 1px solid rgba(0, 255, 135, 0.35) !important;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.1) !important;
 }
 
 /* DATE PICKER */
