@@ -389,8 +389,17 @@ const Devices = () => {
                   }}
                 >
                   <div className="card-top-icons">
+                    {getDeviceCategory(device).icon ? (
+                      <img
+                        src={getDeviceCategory(device).icon}
+                        alt={getDeviceCategory(device).name}
+                        className="device-icon"
+                      />
+                    ) : (
+                      <Tv size={20} color="#4ade80" />
+                    )}
                     <Bluetooth
-                      size={36}
+                      size={22}
                       color={status === 'ON' ? '#22c55e' : '#94a3b8'}
                       className={`bt-icon ${status === 'ON' ? 'on' : 'off'}`}
                     />
