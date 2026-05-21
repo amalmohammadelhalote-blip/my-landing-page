@@ -11,11 +11,10 @@ export default function ProfileEdit() {
     email: '',
     phone: '',
     address: '',
-    date_of_birth: '',
+    dob: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
   useEffect(() => {
     if (!profile) return;
@@ -25,7 +24,7 @@ export default function ProfileEdit() {
       email: profile.email || '',
       phone: profile.phone || '',
       address: profile.address || '',
-      date_of_birth: profile.date_of_birth || profile.dob || '',
+      dob: profile.dob || profile.date_of_birth || '06 / 10 / 2003',
     });
   }, [profile]);
 
@@ -34,17 +33,9 @@ export default function ProfileEdit() {
     try {
       setIsSubmitting(true);
       setError('');
-      setSuccess('');
-      await userService.updateProfile({
-        name: formData.name,
-        username: formData.username,
-        email: formData.email,
-        phone: formData.phone,
-        address: formData.address,
-        date_of_birth: formData.date_of_birth,
-      });
-      setSuccess('Profile updated successfully.');
+      await userService.updateProfile(formData);
       await refetch();
+      alert('Profile updated successfully!');
     } catch (err) {
       setError(err?.response?.data?.message || 'Failed to update profile.');
     } finally {
@@ -59,8 +50,8 @@ export default function ProfileEdit() {
       {loading ? (
         <p className="profile-sub-page__loading">Loading...</p>
       ) : (
-        <form className="profile-sub-form" onSubmit={handleSubmit}>
-          <div className="profile-field">
+        <form className="settings-form profile-sub-form" onSubmit={handleSubmit}>
+          <div className="setting-field">
             <label>Full name</label>
             <input
               type="text"
@@ -68,7 +59,7 @@ export default function ProfileEdit() {
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
           </div>
-          <div className="profile-field">
+          <div className="setting-field">
             <label>User name</label>
             <input
               type="text"
@@ -76,7 +67,7 @@ export default function ProfileEdit() {
               onChange={(e) => setFormData({ ...formData, username: e.target.value })}
             />
           </div>
-          <div className="profile-field">
+          <div className="setting-field">
             <label>Email</label>
             <input
               type="email"
@@ -84,15 +75,15 @@ export default function ProfileEdit() {
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
-          <div className="profile-field">
-            <label>Address</label>
+          <div className="setting-field">
+            <label>Adress</label>
             <input
               type="text"
               value={formData.address}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
             />
           </div>
-          <div className="profile-field">
+          <div className="setting-field">
             <label>Phone number</label>
             <input
               type="text"
@@ -100,24 +91,17 @@ export default function ProfileEdit() {
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             />
           </div>
-          <div className="profile-field">
+          <div className="setting-field">
             <label>Date of birth</label>
             <input
-              type="date"
-              value={
-                formData.date_of_birth && String(formData.date_of_birth).includes('T')
-                  ? String(formData.date_of_birth).slice(0, 10)
-                  : formData.date_of_birth || ''
-              }
-              onChange={(e) => setFormData({ ...formData, date_of_birth: e.target.value })}
+              type="text"
+              value={formData.dob}
+              onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
             />
           </div>
-
-          {error ? <p className="profile-message profile-message--error">{error}</p> : null}
-          {success ? <p className="profile-message profile-message--success">{success}</p> : null}
-
-          <button type="submit" className="profile-primary-btn" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving...' : 'Confirm changes'}
+          {error ? <p className="error-message">{error}</p> : null}
+          <button type="submit" className="confirm-btn" disabled={isSubmitting}>
+            {isSubmitting ? 'Processing...' : 'Confirm changes'}
           </button>
         </form>
       )}

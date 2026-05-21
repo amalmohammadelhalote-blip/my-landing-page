@@ -35,7 +35,6 @@ export default function ProfileMenu() {
   if (loading) {
     return (
       <div className="profile-menu-page">
-        <h1 className="profile-menu-page__title">Settings &amp; Profile</h1>
         <p className="profile-menu-page__loading">Loading...</p>
       </div>
     );
@@ -43,10 +42,11 @@ export default function ProfileMenu() {
 
   return (
     <div className="profile-menu-page">
-      <h1 className="profile-menu-page__title">Settings &amp; Profile</h1>
-      <p className="profile-menu-page__greeting">
-        Hello <span>@{profile?.username || 'user'}</span>
-      </p>
+      <div className="user-greeting profile-menu-page__greeting-block">
+        <h3>
+          Hello <span>@{profile?.username || 'user'}</span>
+        </h3>
+      </div>
 
       <div className="profile-menu-card">
         <button type="button" className="profile-menu-row" onClick={go('/dashboard/profile/edit')}>
@@ -78,16 +78,20 @@ export default function ProfileMenu() {
             <Bell size={20} />
             Notifications
           </span>
-          <label className="profile-toggle">
-            <input type="checkbox" checked={notifications} onChange={toggleNotifications} />
-            <span className="profile-toggle__slider" />
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={notifications}
+              onChange={toggleNotifications}
+            />
+            <span className="slider round" />
           </label>
         </div>
 
         <button type="button" className="profile-menu-row" onClick={go('/dashboard/profile/privacy')}>
           <span className="profile-menu-row__left">
             <Shield size={20} />
-            Privacy Policy
+            Privacy policy
           </span>
           <ChevronRight size={18} className="profile-menu-row__chevron" />
         </button>
@@ -95,7 +99,7 @@ export default function ProfileMenu() {
         <button type="button" className="profile-menu-row" onClick={go('/dashboard/profile/help')}>
           <span className="profile-menu-row__left">
             <HelpCircle size={20} />
-            Help Center
+            Help center
           </span>
           <ChevronRight size={18} className="profile-menu-row__chevron" />
         </button>
@@ -107,7 +111,7 @@ export default function ProfileMenu() {
         >
           <span className="profile-menu-row__left">
             <LogOut size={20} />
-            Logout
+            Log out
           </span>
           <ChevronRight size={18} className="profile-menu-row__chevron" />
         </button>

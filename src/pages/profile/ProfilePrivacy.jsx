@@ -5,37 +5,73 @@ import ProfileMobileHeader from './ProfileMobileHeader';
 export default function ProfilePrivacy() {
   return (
     <div className="profile-sub-page profile-sub-page--scroll">
-      <ProfileMobileHeader title="Privacy Policy" />
+      <ProfileMobileHeader title="Privacy policy" />
 
-      <div className="profile-policy">
-        <p className="profile-policy__updated">
-          <Calendar size={14} /> Last Updated: April 2026
-        </p>
+      <div className="privacy-policy-content settings-content">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+          <div>
+            <h2>Privacy Policy</h2>
+            <div className="last-update">
+              <Calendar size={14} /> Last Updated: April 2026
+            </div>
+          </div>
+          <button type="button" className="all-link" style={{ height: 'fit-content' }}>
+            Download PDF
+          </button>
+        </div>
 
-        <p className="profile-policy__intro">
-          At <strong>ECOSHID</strong>, we prioritize the protection of your industrial and personal data.
-        </p>
+        <div className="policy-text">
+          <p className="intro-text">
+            At <strong>ECOSHID</strong>, we prioritize the protection of your industrial and personal data. This policy outlines our rigorous standards for data management and user privacy within the Smart Energy Management ecosystem.
+          </p>
 
-        <section>
-          <h3><Shield size={18} /> 1. Information Infrastructure</h3>
-          <ul>
-            <li>Encrypted storage of user credentials.</li>
-            <li>Secure capture of device telemetry data.</li>
-            <li>Protected mapping of device locations and categories.</li>
-          </ul>
-        </section>
+          <section>
+            <h3>
+              <Shield size={18} color="#22c55e" /> 1. Information Infrastructure
+            </h3>
+            <p>Our system architectures are designed to segment and secure specific data points:</p>
+            <ul>
+              <li>
+                <strong>Identity Protocol:</strong> Encrypted storage of hierarchical user credentials.
+              </li>
+              <li>
+                <strong>Telemetry Data:</strong> High-precision capture of voltage, current, and wattage.
+              </li>
+              <li>
+                <strong>Asset Topology:</strong> Mapping of device locators and category hierarchies.
+              </li>
+            </ul>
+          </section>
 
-        <section>
-          <h3><Zap size={18} /> 2. Data Processing</h3>
-          <p>Aggregated data is used to optimize energy usage and predictive maintenance alerts.</p>
-        </section>
+          <section>
+            <h3>
+              <Zap size={18} color="#22c55e" /> 2. Data Processing &amp; AI Insights
+            </h3>
+            <p>Aggregated data points are processed to generate predictive energy models:</p>
+            <ul>
+              <li>Optimizing grid distribution based on historical consumption patterns.</li>
+              <li>Predictive maintenance alerts based on unusual technical data signatures.</li>
+            </ul>
+          </section>
 
-        <section>
-          <h3><Mail size={18} /> 3. Contact</h3>
-          <p>Privacy inquiries: arabym702@gmail.com</p>
-        </section>
+          <section>
+            <h3>
+              <Mail size={18} color="#22c55e" /> 3. Contact &amp; Support Protocols
+            </h3>
+            <p>For official privacy inquiries or data access requests, please utilize the following channels:</p>
+            <div className="contact-info-card">
+              <p>
+                <strong>ECOSHID Compliance Team</strong>
+              </p>
+              <p>Channel: arabym702@gmail.com</p>
+              <p>Operations: +01012209503</p>
+            </div>
+          </section>
 
-        <p className="profile-policy__copy">ECOSHID © {new Date().getFullYear()}</p>
+          <p className="copyright-text">
+            ECOSHID Enterprise Energy Systems © {new Date().getFullYear()}. Secure Infrastructure.
+          </p>
+        </div>
       </div>
     </div>
   );

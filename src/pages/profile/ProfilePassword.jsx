@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { userService } from '../../api/services';
 import ProfileMobileHeader from './ProfileMobileHeader';
 
@@ -9,33 +8,29 @@ export default function ProfilePassword() {
     newPassword: '',
     confirmPassword: '',
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [passError, setPassError] = useState('');
+  const [isPassSubmitting, setIsPassSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
-
+    setPassError('');
     if (passForm.newPassword !== passForm.confirmPassword) {
-      setError('New passwords do not match.');
+      setPassError('New passwords do not match.');
       return;
     }
-
     try {
-      setIsSubmitting(true);
+      setIsPassSubmitting(true);
       await userService.changePassword({
         currentPassword: passForm.currentPassword,
         newPassword: passForm.newPassword,
         confirmPassword: passForm.confirmPassword,
       });
-      setSuccess('Password changed successfully.');
+      alert('Password changed successfully!');
       setPassForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
     } catch (err) {
-      setError(err?.response?.data?.message || 'Failed to change password.');
+      setPassError(err?.response?.data?.message || 'Failed to change password.');
     } finally {
-      setIsSubmitting(false);
+      setIsPassSubmitting(false);
     }
   };
 
@@ -43,46 +38,40 @@ export default function ProfilePassword() {
     <div className="profile-sub-page">
       <ProfileMobileHeader title="Change password" />
 
-      <form className="profile-sub-form" onSubmit={handleSubmit}>
-        <div className="profile-field">
+      <form className="settings-form profile-sub-form" onSubmit={handleSubmit}>
+        <div className="setting-field">
           <label>Current password</label>
           <input
             type="password"
             placeholder="Enter your password"
             value={passForm.currentPassword}
             onChange={(e) => setPassForm({ ...passForm, currentPassword: e.target.value })}
-            required
           />
         </div>
-        <p className="profile-forgot-link">
-          <Link to="/forget-password">Forgot password?</Link>
-        </p>
-        <div className="profile-field">
+        <div className="forgot-password-link">
+          <a href="#">forgot password?</a>
+        </div>
+        <div className="setting-field">
           <label>New password</label>
           <input
             type="password"
             placeholder="Enter your password"
             value={passForm.newPassword}
             onChange={(e) => setPassForm({ ...passForm, newPassword: e.target.value })}
-            required
           />
         </div>
-        <div className="profile-field">
+        <div className="setting-field">
           <label>Confirm password</label>
           <input
             type="password"
             placeholder="Enter your password"
             value={passForm.confirmPassword}
             onChange={(e) => setPassForm({ ...passForm, confirmPassword: e.target.value })}
-            required
           />
         </div>
-
-        {error ? <p className="profile-message profile-message--error">{error}</p> : null}
-        {success ? <p className="profile-message profile-message--success">{success}</p> : null}
-
-        <button type="submit" className="profile-primary-btn" disabled={isSubmitting}>
-          {isSubmitting ? 'Saving...' : 'Confirm changes'}
+        {passError && <p className="error-message">{passError}</p>}
+        <button type="submit" className="confirm-btn" disabled={isPassSubmitting}>
+          {isPassSubmitting ? 'Processing...' : 'Confirm changes'}
         </button>
       </form>
     </div>

@@ -522,15 +522,20 @@ section {
   letter-spacing: -0.02em;
 }
 
-.profile-menu-page__greeting {
-  margin: 0 0 24px;
-  font-size: 1.05rem;
-  color: #e2e8f0;
+.profile-menu-page__greeting-block {
+  margin-bottom: 24px;
+  text-align: center;
 }
 
-.profile-menu-page__greeting span {
+.profile-menu-page__greeting-block h3 {
+  margin: 0;
+  font-size: 20px;
   color: #fff;
-  font-weight: 600;
+}
+
+.profile-menu-page__greeting-block span {
+  color: #22c55e;
+  font-weight: 700;
 }
 
 .profile-menu-page__loading {
@@ -700,6 +705,17 @@ section {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.profile-sub-page .settings-form {
+  grid-template-columns: 1fr;
+  max-width: 100%;
+}
+
+.profile-sub-page .error-message {
+  color: #fca5a5;
+  font-size: 14px;
+  margin: 0;
 }
 
 .profile-field {
