@@ -418,11 +418,19 @@ body {
 
 .sub-filters-row {
   display: flex !important;
-  flex-wrap: wrap !important;
-  justify-content: center;
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
   align-items: center;
   gap: 10px;
   margin-top: 5px;
+  padding-bottom: 4px;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sub-filters-row::-webkit-scrollbar {
+  display: none;
 }
 
 .filter-chip {
