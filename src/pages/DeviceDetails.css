@@ -892,115 +892,338 @@ body {
   to { opacity: 1; }
 }
 
-/* Responsiveness Fixes */
+/* Chart controls */
+.chart-controls-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
+}
+
+.chart-controls-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Responsiveness — tablet */
 @media (max-width: 1024px) {
   .report-grid {
     grid-template-columns: 1fr;
     gap: 24px;
   }
-}
-
-@media (max-width: 768px) {
-  .top-header {
-    flex-direction: column;
-    gap: 15px;
-    align-items: flex-start;
-    padding: 15px 20px;
-  }
-
-  .header-actions {
-    width: 100%;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .search-bar {
-    width: 100%;
-    min-width: 0;
-  }
 
   .report-page {
-    padding: 15px;
+    padding: 16px;
+    max-width: 100%;
+  }
+
+  .device-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .full-chart {
+    grid-column: auto;
+    height: auto;
+    min-height: 280px;
+  }
+
+  .top-right-wrapper {
+    gap: 16px;
+  }
+}
+
+/* Responsiveness — mobile */
+@media (max-width: 768px) {
+  .report-page {
+    padding: 0;
+    min-height: auto;
+  }
+
+  .report-page .top-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 0 0 16px;
+    margin-bottom: 16px;
+  }
+
+  .report-page .top-header h1 {
+    font-size: 22px;
+  }
+
+  .report-page .search-bar {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .device-layout {
+    gap: 14px;
+  }
+
+  .usage-card.main-card {
+    padding: 20px 16px;
+    height: auto;
+  }
+
+  .usage-title {
+    font-size: 20px;
+  }
+
+  .usage-subtitle {
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .gauge-container {
+    max-width: 220px;
+    margin-bottom: 16px;
   }
 
   .usage-stat-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .stats-dual {
-    grid-template-columns: 1fr;
-  }
-  
-  .history-row {
-    flex-direction: column;
-    align-items: flex-start;
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
 
-  .report-left,
-  .report-right {
-    gap: 18px;
+  .usage-stat-box {
+    padding: 12px 10px;
+  }
+
+  .usage-stat-box strong {
+    font-size: 18px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .switch-btn {
+    padding: 14px;
   }
 
   .top-right-device-card {
     flex-direction: row;
-    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: 18px;
+    padding: 16px;
+    gap: 14px;
   }
 
-  .top-right-device-card .device-meta {
-    min-width: 180px;
-    width: auto;
+  .icon-wrapper {
+    margin-right: 0;
+    flex-shrink: 0;
+  }
+
+  .device-meta h3 {
+    font-size: 16px;
+  }
+
+  .ai-tip-table-card {
+    padding: 16px;
+    overflow: hidden;
+  }
+
+  .ai-table-header {
+    margin-bottom: 14px;
+  }
+
+  .ai-table-header h3 {
+    font-size: 16px;
   }
 
   .ai-table-wrapper {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -4px;
+    padding: 0 4px;
+  }
+
+  .ai-table {
+    min-width: 520px;
+  }
+
+  .ai-table th,
+  .ai-table td {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .report-chart-card.full-chart {
+    padding: 16px;
+    min-height: 300px;
+  }
+
+  .chart-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .chart-header h3 {
+    font-size: 15px;
+  }
+
+  .chart-controls-wrapper {
+    align-items: stretch;
+  }
+
+  .chart-controls-top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .chart-filters {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 6px;
+    border-radius: 999px;
+  }
+
+  .chart-filters button {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .period-dropdown-btn {
+    padding: 12px 14px;
+  }
+
+  .period-value {
+    font-size: 13px;
+    max-width: 55vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .report-chart-card .recharts-responsive-container {
+    min-height: 220px !important;
   }
 }
 
+/* Responsiveness — small phones */
 @media (max-width: 480px) {
-  h1 {
-    font-size: 24px !important;
+  .report-page .top-header h1 {
+    font-size: 20px;
   }
-  
-  .report-page {
-    padding: 12px;
+
+  .usage-stat-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
-  
+
   .usage-card,
   .top-right-device-card,
   .ai-tip-table-card,
   .report-chart-card {
-    padding: 24px 16px;
+    padding: 16px 14px;
+    border-radius: 16px;
   }
-  
+
   .gauge-container {
-    width: 100%;
     max-width: 100%;
   }
-  
+
   .top-right-device-card {
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
   }
-  
-  .top-right-device-card .icon-wrapper {
-    margin-right: 0;
+
+  .icon-wrapper {
+    width: 44px;
+    height: 44px;
   }
-  
-  .top-right-device-card .device-meta {
-    width: 100%;
-  }
-  
+
   .action-buttons-row {
     flex-direction: column;
+    gap: 10px;
   }
-  
+
   .btn-action {
     width: 100%;
+  }
+
+  /* AI table → بطاقات على الشاشات الصغيرة */
+  .ai-table-wrapper {
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ai-table {
+    min-width: 0;
+    display: block;
+  }
+
+  .ai-table thead {
+    display: none;
+  }
+
+  .ai-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-table tr {
+    display: block;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 4px 0;
+  }
+
+  .ai-table td {
+    display: block;
+    padding: 10px 14px;
+    border: none;
+  }
+
+  .ai-table td:first-child {
+    padding-bottom: 4px;
+  }
+
+  .ai-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .period-dropdown-left {
+    gap: 8px;
+  }
+
+  .period-label {
+    font-size: 13px;
+  }
+
+  .chart-filters button {
+    font-size: 12px;
+    padding: 7px 10px;
+  }
+
+  .edit-form-container {
+    padding: 20px 12px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .delete-modal {
+    padding: 24px 20px;
+    width: calc(100% - 32px);
   }
 }

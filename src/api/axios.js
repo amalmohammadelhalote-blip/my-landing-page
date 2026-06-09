@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL ||
-  'https://ecoshid-apis-production-414f.up.railway.app/api/'; // حطي هنا الـ baseURL بتاعك أو في ملف .env
+  'https://ecoshid-apis-production-065f.up.railway.app/api/'; // حطي هنا الـ baseURL بتاعك أو في ملف .env
 
 const api = axios.create({
   baseURL,

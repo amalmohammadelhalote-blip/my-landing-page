@@ -6,7 +6,7 @@ export default function ProfileMobileHeader({ title }) {
   const navigate = useNavigate();
 
   return (
-    <header className="profile-mobile-header">
+    <header className="profile-mobile-header profile-mobile-only">
       <button
         type="button"
         className="profile-mobile-header__back"

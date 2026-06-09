@@ -15,7 +15,7 @@ import Devices from "./pages/Devices";
 import Reports from "./pages/Reports";
 import DeviceDetails from "./pages/DeviceDetails";
 import ProfileLayout from "./pages/profile/ProfileLayout";
-import ProfileMenu from "./pages/profile/ProfileMenu";
+import ProfileDesktopRedirect from "./pages/profile/ProfileDesktopRedirect";
 import ProfileEdit from "./pages/profile/ProfileEdit";
 import ProfilePassword from "./pages/profile/ProfilePassword";
 import ProfileDelete from "./pages/profile/ProfileDelete";
@@ -54,7 +54,7 @@ function App() {
           <Route path="devices/:deviceId" element={<DeviceDetails />} />
           <Route path="reports" element={<Reports />} />
           <Route path="profile" element={<ProfileLayout />}>
-            <Route index element={<ProfileMenu />} />
+            <Route index element={<ProfileDesktopRedirect />} />
             <Route path="edit" element={<ProfileEdit />} />
             <Route path="password" element={<ProfilePassword />} />
             <Route path="delete" element={<ProfileDelete />} />

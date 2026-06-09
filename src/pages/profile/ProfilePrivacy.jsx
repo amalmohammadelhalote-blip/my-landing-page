@@ -4,18 +4,18 @@ import ProfileMobileHeader from './ProfileMobileHeader';
 
 export default function ProfilePrivacy() {
   return (
-    <div className="profile-sub-page profile-sub-page--scroll">
+    <div className="profile-sub-page profile-sub-page--scroll profile-privacy-page">
       <ProfileMobileHeader title="Privacy policy" />
 
-      <div className="privacy-policy-content settings-content">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
-          <div>
+      <div className="privacy-policy-content settings-content profile-privacy-content">
+        <div className="privacy-policy-header">
+          <div className="privacy-policy-header__titles">
             <h2>Privacy Policy</h2>
             <div className="last-update">
               <Calendar size={14} /> Last Updated: April 2026
             </div>
           </div>
-          <button type="button" className="all-link" style={{ height: 'fit-content' }}>
+          <button type="button" className="all-link privacy-download-btn">
             Download PDF
           </button>
         </div>
@@ -25,7 +25,7 @@ export default function ProfilePrivacy() {
             At <strong>ECOSHID</strong>, we prioritize the protection of your industrial and personal data. This policy outlines our rigorous standards for data management and user privacy within the Smart Energy Management ecosystem.
           </p>
 
-          <section>
+          <section className="policy-section">
             <h3>
               <Shield size={18} color="#22c55e" /> 1. Information Infrastructure
             </h3>
@@ -43,7 +43,7 @@ export default function ProfilePrivacy() {
             </ul>
           </section>
 
-          <section>
+          <section className="policy-section">
             <h3>
               <Zap size={18} color="#22c55e" /> 2. Data Processing &amp; AI Insights
             </h3>
@@ -54,7 +54,7 @@ export default function ProfilePrivacy() {
             </ul>
           </section>
 
-          <section>
+          <section className="policy-section">
             <h3>
               <Mail size={18} color="#22c55e" /> 3. Contact &amp; Support Protocols
             </h3>

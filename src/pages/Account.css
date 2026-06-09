@@ -102,6 +102,19 @@
   font-size: 16px;
 }
 
+/* Field error styles */
+.input-error {
+  border-color: rgba(239, 68, 68, 0.6) !important;
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.06);
+}
+
+.field-error {
+  color: #ffb4b4;
+  font-size: 12px;
+  margin-top: 6px;
+  display: block;
+}
+
 .input-icon input,
 .input-icon select {
   flex: 1;
@@ -122,6 +135,110 @@
   cursor: pointer;
 }
 
+/* Eye button styling for password toggle */
+.eye-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  margin-right: 8px;
+  transition: color .2s ease;
+}
+
+.eye-btn:hover {
+  color: #00ff9c;
+}
+
+.eye-btn:focus {
+  outline: none;
+}
+
+/* Gender toggle styles */
+.gender-toggle {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.gender-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  border-radius: 28px;
+  border: 1.5px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+  color: #d1d5db;
+  cursor: pointer;
+  position: relative;
+  transition: all .18s ease;
+}
+.gender-option .label-text {
+  font-weight: 600;
+}
+.gender-option input { /* hide the native radio */
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.gender-option .radio-indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2);
+  background: transparent;
+  margin-left: 6px;
+}
+.gender-option.selected {
+  background: linear-gradient(135deg, #002912, rgba(0,255,156,0.06));
+  border-color: rgba(0,255,156,0.35);
+  color: #00ff9c;
+  box-shadow: 0 6px 18px rgba(0,255,156,0.08);
+}
+.gender-option.selected .radio-indicator {
+  background: #00ff9c;
+  border-color: #00ff9c;
+}
+
+/* Collapsed wrapper and selected display */
+.gender-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.gender-selected {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+  color: #d1d5db;
+  min-width: 120px;
+  cursor: pointer;
+}
+.gender-selected:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,255,156,0.08);
+}
+.gender-selected .chev {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  transform: rotate(45deg);
+  border-right: 2px solid rgba(255,255,255,0.6);
+  border-bottom: 2px solid rgba(255,255,255,0.6);
+  transition: transform .18s ease;
+}
+.gender-selected .chev.open {
+  transform: rotate(-135deg);
+}
+
 .date-input {
   padding-right: 10px;
 }
@@ -134,36 +251,7 @@
   color: white;
   padding: 14px 12px;
 }
-
-.password-bar {
-  width: 100%;
-  height: 7px;
-  background: #111;
-  border-radius: 20px;
-  overflow: hidden;
-  margin-top: 18px;
-}
-
-.strength {
-  height: 100%;
-  transition: .3s;
-}
-
-.low {
-  background: #ff4d4d;
-}
-
-.medium {
-  background: #ffa500;
-}
-
-.high {
-  background: #d9ff00;
-}
-
-.full {
-  background: #00ff9c;
-}
+/* Password strength removed */
 
 .create-btn {
   width: 70%;
@@ -204,25 +292,51 @@
 .error-msg,
 .success-msg {
   padding: 12px 16px !important;
-  border-radius: 12px !important;
+  border-radius: 10px !important;
   text-align: center !important;
-  margin-bottom: 15px !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
+  margin-bottom: 14px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
 }
 
 .error-msg {
   color: #ff3333 !important;
-  background: rgba(239, 68, 68, 0.15) !important;
-  border: 1px solid rgba(255, 51, 51, 0.35) !important;
-  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1) !important;
+  background: rgba(255,77,77,0.08) !important;
+  border: 1px solid rgba(255,77,77,0.18) !important;
+  box-shadow: 0 6px 20px rgba(255,77,77,0.06) !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.error-msg::before {
+  content: '\26A0';
+  font-weight: 900;
+  font-size: 16px;
+  color: #ff3333;
 }
 
 .success-msg {
-  color: #00ff87 !important;
-  background: rgba(34, 197, 94, 0.15) !important;
-  border: 1px solid rgba(0, 255, 135, 0.35) !important;
-  box-shadow: 0 4px 15px rgba(197, 72, 34, 0.1) !important;
+  color: #08110d !important;
+  background: linear-gradient(90deg, rgba(34,197,94,0.95), rgba(16,185,129,0.95)) !important;
+  border: 1px solid rgba(16,185,129,0.9) !important;
+  box-shadow: 0 6px 20px rgba(16,185,129,0.08) !important;
+}
+
+/* Field-level error visuals */
+.input-error {
+  border-color: #ff4d4d !important;
+  box-shadow: 0 6px 18px rgba(255,77,77,0.06) !important;
+}
+
+.field-error {
+  color: #ff3333;
+  background: rgba(255,77,77,0.04);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  margin-top: 8px;
+  display: inline-block;
 }
 
 /* DATE PICKER */
@@ -269,22 +383,369 @@
 
 /* RESPONSIVE */
 
-@media(max-width:768px) {
-
+@media (max-width: 768px) {
   .form-grid {
     grid-template-columns: 1fr;
   }
 
   .card-right {
-    padding: 25px;
+    padding: 30px 24px;
   }
 
   .card-right h2 {
-    font-size: 30px;
+    font-size: 32px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    margin-bottom: 24px;
   }
 
   .create-btn {
     width: 100%;
+    margin: 20px 0 0;
   }
 
+  .input-icon {
+    border-radius: 12px;
+  }
+
+  .input-icon input,
+  .input-icon select {
+    padding: 12px 10px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .signup-card {
+    border-radius: 24px;
+  }
+
+  .card-right {
+    padding: 24px 18px;
+  }
+
+  .brand-logo-inner {
+    width: 70px;
+    margin-bottom: 12px;
+  }
+
+  .card-right h2 {
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .form-grid {
+    gap: 14px;
+  }
+
+  .input-icon {
+    padding: 0;
+    border-radius: 11px;
+  }
+
+  .input-icon svg {
+    margin-left: 12px;
+    font-size: 16px;
+  }
+
+  .input-icon input,
+  .input-icon select {
+    padding: 11px 10px;
+    font-size: 14px;
+  }
+
+  .eye-btn {
+    padding: 6px 10px;
+    margin-right: 6px;
+  }
+
+  .gender-wrapper {
+    width: 100%;
+    flex: 1;
+  }
+
+  .gender-selected {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 22px;
+    font-size: 14px;
+  }
+
+  .gender-toggle {
+    flex-direction: row;
+    gap: 8px;
+    padding: 6px;
+  }
+
+  .gender-option {
+    padding: 8px 14px;
+    border-radius: 18px;
+    font-size: 13px;
+    min-width: 85px;
+  }
+
+  .password-bar {
+    height: 6px;
+    margin-top: 12px;
+  }
+
+  .create-btn {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 11px;
+    font-size: 14px;
+    margin-top: 18px;
+  }
+
+  .login-link {
+    margin-top: 16px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .signup-page {
+    padding: 16px;
+  }
+
+  .signup-card {
+    width: 100%;
+    border-radius: 20px;
+    background: rgba(7, 15, 10, .75);
+  }
+
+  .card-right {
+    padding: 20px 16px;
+  }
+
+  .brand-logo-inner {
+    width: 60px;
+    margin-bottom: 10px;
+  }
+
+  .card-right h2 {
+    font-size: 24px;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+
+  .card-right span {
+    color: #00ff9c;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    margin-bottom: 20px;
+    color: #b5bcc4;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .input-icon {
+    padding: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .input-icon:focus-within {
+    box-shadow: 0 0 0 2px rgba(0, 255, 156, 0.1), 0 0 12px rgba(0, 255, 156, 0.15);
+  }
+
+  .input-icon svg {
+    margin-left: 10px;
+    font-size: 15px;
+  }
+
+  .input-icon input,
+  .input-icon select {
+    padding: 10px 8px;
+    font-size: 14px;
+    height: 44px;
+  }
+
+  .input-icon input::placeholder {
+    color: #7a8590;
+    font-size: 13px;
+  }
+
+  .eye-btn {
+    padding: 6px 8px;
+    margin-right: 6px;
+    color: #7a8590;
+  }
+
+  .eye-btn:hover {
+    color: #00ff9c;
+  }
+
+  /* Gender section improvements */
+  .gender-wrapper {
+    width: 100%;
+    flex: 1;
+    gap: 6px;
+  }
+
+  .gender-selected {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 13px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.02);
+    min-height: 44px;
+  }
+
+  .gender-selected:active {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .gender-toggle {
+    flex-direction: row;
+    gap: 6px;
+    padding: 4px;
+    border-radius: 18px;
+  }
+
+  .gender-option {
+    padding: 8px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    min-width: 80px;
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+    flex: 1;
+    text-align: center;
+  }
+
+  .gender-option .radio-indicator {
+    width: 14px;
+    height: 14px;
+    margin-left: 4px;
+  }
+
+  .gender-option.selected {
+    background: linear-gradient(135deg, #002912, rgba(0, 255, 156, 0.08));
+    border-color: rgba(0, 255, 156, 0.3);
+  }
+
+  /* Password strength */
+  .password-bar {
+    height: 5px;
+    border-radius: 18px;
+    margin-top: 10px;
+    background: rgba(17, 17, 17, 0.8);
+  }
+
+  /* Button improvements */
+  .create-btn {
+    width: 100%;
+    padding: 11px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 16px;
+    min-height: 44px;
+    background: linear-gradient(135deg, #00ff9c, #16a34a);
+    border: none;
+  }
+
+  .create-btn:active {
+    transform: scale(0.98);
+  }
+
+  .create-btn:disabled {
+    opacity: 0.7;
+  }
+
+  /* Alerts */
+  .error-msg,
+  .success-msg {
+    font-size: 12px;
+    padding: 10px 14px !important;
+    margin-bottom: 12px !important;
+    border-radius: 10px !important;
+  }
+
+  .login-link {
+    margin-top: 14px;
+    font-size: 12px;
+    color: #9ca3af;
+  }
+
+  .login-link a {
+    color: #00ff9c;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+  .card-right {
+    padding: 16px 14px;
+  }
+
+  .brand-logo-inner {
+    width: 52px;
+    margin-bottom: 8px;
+  }
+
+  .card-right h2 {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    font-size: 11px;
+    margin-bottom: 16px;
+  }
+
+  .form-grid {
+    gap: 10px;
+  }
+
+  .input-icon input,
+  .input-icon select {
+    padding: 9px 8px;
+    font-size: 13px;
+  }
+
+  .input-icon svg {
+    margin-left: 8px;
+    font-size: 14px;
+  }
+
+  .eye-btn {
+    padding: 4px 6px;
+    margin-right: 4px;
+  }
+
+  .create-btn {
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-top: 12px;
+  }
+
+  .gender-selected {
+    padding: 8px 10px;
+    font-size: 12px;
+    min-height: 40px;
+  }
+
+  .gender-option {
+    padding: 6px 10px;
+    font-size: 11px;
+    min-width: 72px;
+  }
+
+  .login-link {
+    font-size: 11px;
+  }
 }

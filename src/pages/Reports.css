@@ -612,3 +612,122 @@ body {
     padding-bottom: 5px;
   }
 }
+
+/* Period Picker Modal */
+.period-picker-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  padding: 24px;
+}
+
+.period-picker {
+  background: linear-gradient(180deg, #07140b 0%, #02120b 100%);
+  border: 1px solid rgba(34, 197, 94, 0.15);
+  padding: 24px;
+  border-radius: 20px;
+  width: 420px;
+  max-width: 100%;
+  color: #fff;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+}
+
+.period-picker h3 {
+  margin: 0 0 20px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.period-picker .picker-top {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.period-year-input {
+  background: rgba(0, 0, 0, 0.3);
+  color: #cfe7d5;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 10px 14px;
+  border-radius: 12px;
+  width: 100px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.period-month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.month-btn {
+  background: rgba(0, 0, 0, 0.25);
+  color: #bfcfc1;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 14px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s;
+}
+
+.month-btn:hover {
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+.month-btn.active {
+  background: #022613;
+  border: 2px solid #22c55e;
+  color: #22c55e;
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.15);
+  font-weight: 800;
+}
+
+.period-done-btn {
+  background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
+  color: #fff;
+  border: none;
+  width: 100%;
+  padding: 15px;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.period-cancel-btn {
+  background: transparent;
+  color: #94a3b8;
+  border: none;
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+@media (max-width: 480px) {
+  .period-picker {
+    width: 100%;
+    border-radius: 16px;
+    padding: 18px;
+  }
+  .month-btn { height: 50px; font-size: 13px; }
+  .period-done-btn { padding: 13px; font-size: 15px; }
+}

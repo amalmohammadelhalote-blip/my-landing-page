@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { Search, Zap, Thermometer, Lightbulb, Bluetooth, Coins } from 'lucide-react';
-import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
-import { deviceService, homeService, normalizeListResponse, locationService, readingService } from '../api/services';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
+import { deviceService, homeService, normalizeListResponse, locationService, readingService, reportService } from '../api/services';
 import './Home.css';
 
 const getPeriodChartData = (period) => [];
@@ -34,6 +35,48 @@ const ExpandableText = ({ text }) => {
   );
 };
 
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function PeriodPicker({ open, onClose, onConfirm, initialYear, initialMonth }) {
+  const [year, setYear] = useState(initialYear);
+  const [month, setMonth] = useState(initialMonth);
+  if (!open) return null;
+
+  return createPortal(
+    <div className="period-picker-modal" onClick={onClose}>
+      <div className="period-picker" onClick={e => e.stopPropagation()}>
+        <h3>Select Period</h3>
+        <div className="picker-top">
+          <button className="month-btn" style={{width:40,height:40,fontSize:20,padding:0}} onClick={() => setYear(y => y - 1)}>&#8249;</button>
+          <input
+            className="period-year-input"
+            type="number"
+            value={year}
+            min={2000}
+            max={2100}
+            onChange={e => setYear(Number(e.target.value))}
+          />
+          <button className="month-btn" style={{width:40,height:40,fontSize:20,padding:0}} onClick={() => setYear(y => y + 1)}>&#8250;</button>
+        </div>
+        <div className="period-month-grid">
+          {MONTHS.map((m, i) => (
+            <button
+              key={m}
+              className={`month-btn ${month === i + 1 ? 'active' : ''}`}
+              onClick={() => setMonth(i + 1)}
+            >{m}</button>
+          ))}
+        </div>
+        <div className="picker-actions">
+          <button className="period-done-btn" onClick={() => { onConfirm(year, month); onClose(); }}>Done</button>
+          <button className="period-cancel-btn" onClick={onClose}>Cancel</button>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const [devices, setDevices] = useState([]);
@@ -48,6 +91,9 @@ export default function Dashboard() {
   const [aiTipLoading, setAiTipLoading] = useState(false);
   const [chartDataLoading, setChartDataLoading] = useState(false);
   const [currentReadings, setCurrentReadings] = useState(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
   const isDeviceOn = (status) => status === 'ON' || status === 'active' || status === true;
   const getToggleStatus = (status) => (isDeviceOn(status) ? 'OFF' : 'ON');
@@ -71,31 +117,47 @@ export default function Dashboard() {
     return map;
   }, {});
 
-  const fetchChartData = async (period) => {
+  const fetchChartData = async (period, year, month) => {
     try {
       setChartDataLoading(true);
-      const res = await readingService.getCurrent();
-      const payload = res?.data?.data || res?.data;
-      const history = payload?.days || [];
 
-      if (Array.isArray(history) && history.length > 0) {
-        setChartData(history.map(item => ({
-          name: item.day ? `Day ${item.day}` : 'Unknown',
-          value: item.consumption || 0
-        })));
+      let res;
+      if (period === 'Week') {
+        res = await reportService.getWeekly(year, month);
+      } else if (period === 'Month') {
+        res = await reportService.getMonthly(year, month);
       } else {
-        setChartData([
-          { name: '1', value: 0.015 },
-          { name: '2', value: 0.045 },
-          { name: '3', value: 0.028 },
-          { name: '4', value: 0.051 },
-          { name: '5', value: 0.042 },
-          { name: '6', value: 0.039 },
-          { name: '7', value: 0.048 },
-        ]);
+        res = await reportService.getYearly(year);
       }
+
+      const payload = res?.data?.data || res?.data;
+
+      let normalized = [];
+
+      if (period === 'Week' && Array.isArray(payload?.weeks)) {
+        normalized = payload.weeks.map(item => ({
+          name: `W${item.week}`,
+          value: item.consumption ?? 0,
+          cost: item.cost ?? 0,
+        }));
+      } else if (period === 'Month' && Array.isArray(payload?.months)) {
+        normalized = payload.months.map(item => ({
+          name: item.month,               // "Jan", "Feb", ...
+          value: item.consumption ?? 0,
+          cost: item.cost ?? 0,
+        }));
+      } else if (period === 'Year' && Array.isArray(payload?.years)) {
+        normalized = payload.years.map(item => ({
+          name: String(item.year),
+          value: item.consumption ?? 0,
+          cost: item.cost ?? 0,
+        }));
+      }
+
+      setChartData(normalized);
     } catch (e) {
       console.warn('Failed to fetch chart data', e);
+      setChartData([]);
     } finally {
       setChartDataLoading(false);
     }
@@ -105,9 +167,14 @@ export default function Dashboard() {
     setChartPeriod(period);
   };
 
+  const handlePeriodConfirm = (year, month) => {
+    setSelectedYear(year);
+    setSelectedMonth(month);
+  };
+
   useEffect(() => {
-    fetchChartData(chartPeriod);
-  }, [chartPeriod]);
+    fetchChartData(chartPeriod, selectedYear, selectedMonth);
+  }, [chartPeriod, selectedYear, selectedMonth]);
 
   useEffect(() => {
     const fetchHomeData = async () => {
@@ -145,14 +212,7 @@ export default function Dashboard() {
       } catch (err) {
         console.warn('Home data fetch failed, using mock data', err);
         setError('Server is taking too long to respond. Displaying demo data.');
-        setDashboardData({
-          summary: { totalDevices: 12, onlineDevices: 8, offlineDevices: 4 },
-          consumption: {
-            today: { total: 12.4, cost: 4.75 },
-            month: { total: 254, cost: 43.75 },
-            planProgress: { percentage: 65 }
-          }
-        });
+        
       } finally {
         setLoading(false);
       }
@@ -403,7 +463,15 @@ export default function Dashboard() {
 
               <div className="chart-section" style={{ marginTop: '24px', background: 'linear-gradient(145deg, #072a1c, #02120b)', border: '1px solid rgba(34, 197, 94, 0.15)', borderRadius: '20px', padding: '24px' }}>
                 <div className="chart-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-                  <h3 style={{ margin: 0, color: '#fff' }}>Energy consumption (Kwh)</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <h3 style={{ margin: 0, color: '#fff' }}>Energy consumption (Kwh)</h3>
+                    <button
+                      onClick={() => setPickerOpen(true)}
+                      style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.25)', color: '#22c55e', borderRadius: '8px', padding: '4px 12px', fontSize: '12px', fontWeight: 700, cursor: 'pointer', width: 'fit-content' }}
+                    >
+                      {MONTHS[selectedMonth - 1]} {selectedYear} ▾
+                    </button>
+                  </div>
                   <div className="time-toggles">
                     {['Week', 'Month', 'Year'].map((period) => (
                       <button
@@ -420,13 +488,36 @@ export default function Dashboard() {
                   <p className="loading-txt">Loading chart...</p>
                 ) : (
                   <ResponsiveContainer width="100%" height={260}>
-                    <BarChart data={chartData}>
+                    <BarChart data={chartData} margin={{ top: 10, right: 16, left: 10, bottom: 30 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.08)" />
-                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} dy={10} />
-                      <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ background: '#02120b', border: '1px solid #22c55e', borderRadius: '8px', color: '#f8fafc' }} />
+                      <XAxis
+                        dataKey="name"
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{ fill: '#94a3b8', fontSize: 11 }}
+                        dy={10}
+                        interval={chartPeriod === 'Month' ? 1 : 0}
+                        angle={chartPeriod === 'Month' ? -35 : 0}
+                        textAnchor={chartPeriod === 'Month' ? 'end' : 'middle'}
+                      />
+                      <YAxis
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{ fill: '#94a3b8', fontSize: 12 }}
+                        tickFormatter={(val) => val >= 1000 ? `${(val/1000).toFixed(1)}k` : val.toFixed(2)}
+                        width={55}
+                      />
+                      <Tooltip
+                        cursor={{ fill: 'rgba(34,197,94,0.06)' }}
+                        contentStyle={{ background: '#02120b', border: '1px solid #22c55e', borderRadius: '8px', color: '#f8fafc' }}
+                        formatter={(val, name, props) => [
+                          `${Number(val).toFixed(2)} kWh`,
+                          `Cost: ${Number(props.payload.cost ?? 0).toFixed(2)} EGP`
+                        ]}
+                      />
                       <Bar dataKey="value" radius={[8, 8, 8, 8]} barSize={16}>
                         {chartData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill="#22c55e" fillOpacity={entry.value > 0 ? 1 : 0.7} />
+                          <Cell key={`cell-${index}`} fill="#22c55e" fillOpacity={entry.value > 0 ? 1 : 0.3} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -500,6 +591,13 @@ export default function Dashboard() {
           </div>
         </>
       )}
+      <PeriodPicker
+        open={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        onConfirm={handlePeriodConfirm}
+        initialYear={selectedYear}
+        initialMonth={selectedMonth}
+      />
     </>
   );
 };

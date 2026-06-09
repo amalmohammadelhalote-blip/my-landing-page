@@ -271,115 +271,226 @@ input:checked+.slider:before {
   box-shadow: 0 15px 35px rgba(34, 197, 94, 0.4);
 }
 
-/* Privacy & Help Content */
+/* ═══════════════════════════════════════════
+   PRIVACY POLICY — Premium Professional
+═══════════════════════════════════════════ */
+
 .privacy-policy-content h2,
 .help-center-content h2 {
   font-size: 32px;
   margin-top: 0;
-  margin-bottom: 24px;
-  background: linear-gradient(to right, #fff, #94a3b8);
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #fff 0%, #86efac 60%, #22c55e 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
-.last-update {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(34, 197, 94, 0.1);
-  color: #22c55e;
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-  border: 1px solid rgba(34, 197, 94, 0.2);
+/* Header row: title + download btn */
+.privacy-policy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(34, 197, 94, 0.12);
 }
 
-.policy-text h3 {
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  margin: 12px 0 4px 0;
+.privacy-policy-header__titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.privacy-download-btn {
+  flex-shrink: 0;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22c55e !important;
+  padding: 10px 20px !important;
+  border-radius: 12px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.03em;
+  transition: all 0.25s ease;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-section {
-  padding: 10px 6%;
+.privacy-download-btn:hover {
+  background: rgba(34, 197, 94, 0.15) !important;
+  border-color: #22c55e !important;
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Last Updated badge */
+.last-update {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(34, 197, 94, 0.08);
+  color: #4ade80;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  margin-top: 10px;
+}
+
+/* Intro text — elevated highlight block */
+.intro-text {
+  font-size: 14px !important;
+  color: #e2f5e8 !important;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.07), rgba(34, 197, 94, 0.03));
+  padding: 18px 20px !important;
+  border-radius: 16px;
+  border-left: 3px solid #22c55e;
+  margin-bottom: 28px !important;
+  line-height: 1.7 !important;
+  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.06);
+}
+
+.intro-text strong {
+  color: #22c55e;
+}
+
+/* Policy section cards */
+.policy-section {
+  background: linear-gradient(135deg, rgba(9, 30, 20, 0.8), rgba(4, 14, 9, 0.6));
+  border: 1px solid rgba(34, 197, 94, 0.1);
+  border-radius: 20px;
+  padding: 24px 28px;
+  margin-bottom: 16px !important;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  animation: slideInUp 0.4s ease both;
 }
 
-.policy-text section {
-  margin-bottom: 10px;
+.policy-section:nth-child(2) { animation-delay: 0.05s; }
+.policy-section:nth-child(3) { animation-delay: 0.1s; }
+.policy-section:nth-child(4) { animation-delay: 0.15s; }
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
+.policy-section:hover {
+  border-color: rgba(34, 197, 94, 0.22);
+  box-shadow: 0 8px 32px rgba(34, 197, 94, 0.06);
+}
+
+/* Section heading with icon */
+.policy-text h3 {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: -0.01em;
+}
+
+.policy-text h3 svg {
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.5));
+}
+
+/* Body text inside sections */
 .policy-text p {
   color: #94a3b8;
-  line-height: 1.5;
-  font-size: 13px;
-  margin-bottom: 6px;
+  line-height: 1.65;
+  font-size: 14px;
+  margin-bottom: 12px;
 }
 
+/* Bullet list */
 .policy-text ul {
   list-style: none;
   padding: 0;
-  margin: 6px 0;
+  margin: 10px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .policy-text ul li {
   position: relative;
-  padding-left: 18px;
+  padding: 10px 14px 10px 36px;
   color: #cbd5e1;
-  font-size: 12px;
-  margin-bottom: 4px;
-  line-height: 1.4;
+  font-size: 13.5px;
+  line-height: 1.55;
+  background: rgba(255, 255, 255, 0.025);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: background 0.2s;
+}
+
+.policy-text ul li:hover {
+  background: rgba(34, 197, 94, 0.05);
+  border-color: rgba(34, 197, 94, 0.1);
 }
 
 .policy-text ul li::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 8px;
-  width: 6px;
-  height: 6px;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 7px;
+  height: 7px;
   background: #22c55e;
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
 }
 
-.intro-text {
-  font-size: 14px !important;
-  color: #fff !important;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 12px;
-  border-radius: 10px;
-  border-left: 3px solid #22c55e;
-  margin-bottom: 12px;
+.policy-text ul li strong {
+  color: #e2f5e8;
+  font-weight: 600;
 }
 
+/* Contact card */
 .contact-info-card {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 16px;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.06), rgba(0, 0, 0, 0.2));
+  border: 1px solid rgba(34, 197, 94, 0.18);
+  padding: 20px 24px;
   border-radius: 16px;
-  margin-top: 15px;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .contact-info-card p {
-  margin-bottom: 6px !important;
-  font-size: 13px !important;
+  margin: 0 !important;
+  font-size: 14px !important;
+  color: #cbd5e1 !important;
+  line-height: 1.6;
 }
 
+.contact-info-card p:first-child {
+  color: #22c55e !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  margin-bottom: 6px !important;
+}
+
+/* Copyright footer */
 .copyright-text {
-  margin-top: 40px;
+  margin-top: 36px;
   padding-top: 20px;
-  border-top: var(--setting-border);
-  font-size: 11px !important;
+  border-top: 1px solid rgba(34, 197, 94, 0.1);
+  font-size: 12px !important;
   text-align: center;
-  color: #64748b !important;
+  color: #4b5563 !important;
+  letter-spacing: 0.03em;
 }
 
 .help-center-content {
@@ -500,11 +611,119 @@ section {
   color: #22c55e;
 }
 
-/* ─── Mobile app-style profile (Settings & Profile) ─── */
+/* ─── Profile: Desktop split + Mobile stack ─── */
 .profile-app {
   width: 100%;
   min-height: calc(100vh - 80px);
   animation: fadeIn 0.35s ease-out;
+}
+
+.profile-app__desktop-header {
+  display: none;
+}
+
+.profile-app__shell {
+  margin-top: 0;
+}
+
+.profile-menu-mobile {
+  display: block;
+}
+
+.profile-menu-desktop {
+  display: none;
+}
+
+.profile-mobile-only {
+  display: grid;
+}
+
+/* موبايل: القائمة فقط أو الصفحة الفرعية فقط */
+@media (max-width: 991px) {
+  .profile-page {
+    padding: 16px;
+  }
+
+  .profile-app--menu .profile-app__main {
+    display: none;
+  }
+
+  .profile-app--menu .profile-app__shell {
+    display: block;
+    grid-template-columns: 1fr;
+  }
+
+  .profile-app--sub .profile-menu-mobile,
+  .profile-app--sub .profile-menu-desktop {
+    display: none !important;
+  }
+
+  .profile-app--sub .profile-app__shell {
+    display: block;
+    grid-template-columns: 1fr;
+  }
+
+  .profile-app--sub .profile-app__main {
+    display: block;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+}
+
+/* ديسكتوب: المنيو + المحتوى جنب بعض */
+@media (min-width: 992px) {
+  .profile-app__desktop-header {
+    display: flex;
+  }
+
+  .profile-app__shell {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 40px;
+    margin-top: 32px;
+    align-items: start;
+  }
+
+  .profile-app__sidebar-col {
+    min-width: 0;
+  }
+
+  .profile-menu-mobile {
+    display: none !important;
+  }
+
+  .profile-menu-desktop {
+    display: flex !important;
+  }
+
+  .profile-mobile-only {
+    display: none !important;
+  }
+
+  .profile-app--menu .profile-app__main,
+  .profile-app--sub .profile-app__main {
+    display: block;
+  }
+
+  .profile-app__main.settings-content {
+    max-width: none;
+  }
+
+  .profile-sub-page {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    min-height: auto;
+  }
+
+  .profile-sub-page .settings-content {
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
 }
 
 .profile-menu-page {
@@ -919,24 +1138,292 @@ section {
   padding: 24px;
 }
 
-/* Desktop: keep menu centered, sub-pages wider */
+/* Help Center — mobile */
+.profile-help-page .profile-help-content {
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.help-center-intro {
+  margin-bottom: 24px;
+}
+
+.help-center-intro h2 {
+  margin: 0 0 8px;
+  font-size: 1.35rem;
+  color: #fff;
+}
+
+.help-center-intro p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.help-item__icon {
+  flex-shrink: 0;
+  background: rgba(34, 197, 94, 0.1);
+  padding: 12px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.help-item__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.help-item__body p {
+  word-break: break-word;
+}
+
+.help-item__badge {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+  display: block;
+  margin-top: 4px;
+}
+
+.help-item__badge--online {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.help-item__chevron {
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.help-item--wide {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 991px) {
+  .profile-help-page.profile-sub-page {
+    padding: 0 12px 24px;
+    max-width: 100%;
+  }
+
+  .profile-help-page .help-center-content {
+    margin-top: 0;
+  }
+
+  .help-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .help-item {
+    padding: 16px;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .help-item--wide {
+    grid-column: auto;
+    flex-wrap: wrap;
+  }
+
+  .help-item--wide .help-item__chevron {
+    margin-left: auto;
+  }
+
+  .help-center-intro h2 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .help-item {
+    padding: 14px;
+  }
+
+  .help-item h4 {
+    font-size: 15px;
+  }
+
+  .help-item p {
+    font-size: 13px;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   Privacy Policy — Wide 2-Column Layout
+══════════════════════════════════════════════ */
+
+/* Remove scroll, fill available height */
+.profile-privacy-wide {
+  min-height: auto !important;
+  padding-bottom: 16px !important;
+}
+
+.profile-privacy-page .profile-privacy-content {
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* 2-column grid for sections */
+.policy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.policy-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Remove margin-bottom from sections inside grid */
+.policy-col .policy-section {
+  margin-bottom: 0 !important;
+  flex: 1;
+}
+
+/* Header compact on wide layout */
+.profile-privacy-wide .privacy-policy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(34, 197, 94, 0.12);
+}
+
+.privacy-policy-header__titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.privacy-download-btn {
+  flex-shrink: 0;
+}
+
+/* Intro text compact */
+.profile-privacy-wide .intro-text {
+  margin-bottom: 16px !important;
+}
+
+/* Copyright minimal */
+.profile-privacy-wide .copyright-text {
+  margin-top: 16px;
+  padding-top: 12px;
+}
+
+/* ── Desktop: keep grid ── */
 @media (min-width: 992px) {
-  .profile-menu-page {
-    max-width: 480px;
-    padding-top: 24px;
+  .profile-privacy-wide {
+    padding: 0 !important;
   }
 
-  .profile-sub-page {
-    max-width: 720px;
-    padding: 24px 32px 48px;
-  }
-
-  .profile-mobile-header {
-    padding-bottom: 28px;
+  .profile-privacy-wide .profile-privacy-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 }
 
-/* Hide legacy split layout when using profile-app */
-.profile-app .settings-container {
-  display: none;
+/* ── Mobile: single column ── */
+@media (max-width: 991px) {
+  .profile-privacy-page.profile-sub-page {
+    padding: 0 12px 28px;
+    max-width: 100%;
+  }
+
+  .policy-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .privacy-policy-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+  }
+
+  .privacy-policy-content h2,
+  .profile-privacy-content h2 {
+    font-size: 1.35rem;
+    margin-bottom: 6px;
+  }
+
+  .privacy-download-btn {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .policy-section {
+    padding: 16px 14px;
+    border-radius: 14px;
+  }
+
+  .policy-text h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .policy-text p {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .policy-text ul li {
+    font-size: 13px;
+    padding: 8px 12px 8px 30px;
+  }
+
+  .intro-text {
+    font-size: 13px !important;
+    padding: 13px 14px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 14px !important;
+  }
+
+  .contact-info-card {
+    padding: 14px 16px;
+  }
+
+  .copyright-text {
+    margin-top: 16px;
+    padding-top: 12px;
+  }
 }
+
+@media (max-width: 480px) {
+  .privacy-policy-content h2,
+  .profile-privacy-content h2 {
+    font-size: 1.15rem;
+  }
+
+  .policy-section {
+    padding: 14px 12px;
+  }
+
+  .policy-text h3 {
+    font-size: 13px;
+  }
+}
+

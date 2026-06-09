@@ -388,22 +388,6 @@ const Devices = () => {
                     if (e.key === 'Enter') navigate(`/dashboard/devices/${device._id || device.id}`);
                   }}
                 >
-                  <div className="card-top-icons">
-                    {getDeviceCategory(device).icon ? (
-                      <img
-                        src={getDeviceCategory(device).icon}
-                        alt={getDeviceCategory(device).name}
-                        className="device-icon"
-                      />
-                    ) : (
-                      <Tv size={20} color="#4ade80" />
-                    )}
-                    <Bluetooth
-                      size={22}
-                      color={status === 'ON' ? '#22c55e' : '#94a3b8'}
-                      className={`bt-icon ${status === 'ON' ? 'on' : 'off'}`}
-                    />
-                  </div>
                   <div className="device-details">
                     <h4>{device.name || 'Smart TV'}</h4>
                     <span className="kwh-text">{getConsumptionText(device)}</span>

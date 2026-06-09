@@ -27,7 +27,7 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [showGender, setShowGender] = useState(false);
 
   const validate = () => {
     const e = {};
@@ -45,7 +45,48 @@ const SignUp = () => {
     if (!formData.confirmPassword) e.confirmPassword = "Please confirm your password.";
     else if (formData.password !== formData.confirmPassword) e.confirmPassword = "Passwords do not match.";
     setErrors(e);
+    // focus first invalid field for better UX
+    if (Object.keys(e).length > 0) {
+      const first = Object.keys(e)[0];
+      setTimeout(() => {
+        const el = document.querySelector(`[name="${first}"]`);
+        if (el && el.focus) {
+          el.focus();
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 50);
+    }
     return Object.keys(e).length === 0;
+  };
+
+  const handleBlur = (ev) => {
+    const { name, value } = ev.target;
+    const fieldErrors = { ...errors };
+    // simple per-field validation
+    if (name === 'name' && !value.trim()) fieldErrors.name = 'Full name is required.';
+    if (name === 'username' && !value.trim()) fieldErrors.username = 'Username is required.';
+    if (name === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!value.trim()) fieldErrors.email = 'Email is required.';
+      else if (!emailRegex.test(value)) fieldErrors.email = 'Please enter a valid email.';
+    }
+    if (name === 'address' && !value.trim()) fieldErrors.address = 'Address is required.';
+    if (name === 'date_of_birth' && !value) fieldErrors.date_of_birth = 'Date of birth is required.';
+    if (name === 'phone') {
+      if (!value.trim()) fieldErrors.phone = 'Phone number is required.';
+      else if (!/^\d{10,11}$/.test(value)) fieldErrors.phone = 'Phone must be 10–11 digits.';
+    }
+    if (name === 'password') {
+      if (!value) fieldErrors.password = 'Password is required.';
+      else if (value.length < 6) fieldErrors.password = 'Password must be at least 6 characters.';
+      else delete fieldErrors.password;
+    }
+    if (name === 'confirmPassword') {
+      if (!value) fieldErrors.confirmPassword = 'Please confirm your password.';
+      else if (value !== formData.password) fieldErrors.confirmPassword = 'Passwords do not match.';
+      else delete fieldErrors.confirmPassword;
+    }
+    setErrors(fieldErrors);
   };
 
   const handleChange = (e) => {
@@ -54,30 +95,6 @@ const SignUp = () => {
     // Clear the field error as user types
     if (errors[name]) setErrors(prev => ({ ...prev, [name]: "" }));
     if (apiError) setApiError("");
-    if (name === "password") checkStrength(value);
-  };
-
-  const checkStrength = (pwd) => {
-    let s = 0;
-    if (pwd.length >= 6) s++;
-    if (/[A-Z]/.test(pwd)) s++;
-    if (/[0-9]/.test(pwd)) s++;
-    if (/[^A-Za-z0-9]/.test(pwd)) s++;
-    setPasswordStrength(s);
-  };
-
-  const strengthColor = () => {
-    if (passwordStrength <= 1) return "#ef4444";
-    if (passwordStrength === 2) return "#f97316";
-    if (passwordStrength === 3) return "#eab308";
-    return "#22c55e";
-  };
-
-  const strengthLabel = () => {
-    if (passwordStrength <= 1) return "Weak";
-    if (passwordStrength === 2) return "Fair";
-    if (passwordStrength === 3) return "Good";
-    return "Strong";
   };
 
   const handleSubmit = async (e) => {
@@ -95,11 +112,22 @@ const SignUp = () => {
       }
     } catch (err) {
       const status = err?.response?.status;
-      const msg = err?.response?.data?.message;
-      if (status === 409) {
-        setApiError("This email or username is already registered. Please try a different one.");
-      } else if (msg) {
-        setApiError(msg);
+      const data = err?.response?.data;
+      // Map server validation errors to fields if provided
+      if (data && typeof data === 'object' && data.errors) {
+        // assume errors is an object like { field: ['msg'] }
+        const mapped = {};
+        Object.keys(data.errors).forEach(k => {
+          const v = data.errors[k];
+          mapped[k] = Array.isArray(v) ? v[0] : v;
+        });
+        setErrors(prev => ({ ...prev, ...mapped }));
+      } else if (status === 409) {
+        // conflict - map to email/username if message contains text
+        if (data?.message && /email/i.test(data.message)) setErrors(prev => ({ ...prev, email: data.message }));
+        else setApiError("This email or username is already registered. Please try a different one.");
+      } else if (data?.message) {
+        setApiError(data.message);
       } else {
         setApiError("Something went wrong. Please try again.");
       }
@@ -120,71 +148,98 @@ const SignUp = () => {
           {apiError && <p className="error-msg" style={{ width: '100%', marginBottom: '12px' }}>{apiError}</p>}
           {success && <p className="success-msg" style={{ width: '100%', marginBottom: '12px' }}>{success}</p>}
 
-          <form onSubmit={handleSubmit} noValidate>
+          <form onSubmit={handleSubmit} noValidate autoComplete="off">
             <div className="form-grid">
 
               {/* Full Name */}
               <div>
                 <div className={`input-icon ${errors.name ? 'input-error' : ''}`}>
                   <User size={16} style={{ marginLeft: 12, color: '#0cdf3b', flexShrink: 0 }} />
-                  <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} />
+                  <input autoComplete="off" type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} onBlur={handleBlur} aria-invalid={errors.name ? true : false} aria-describedby={errors.name ? 'name-error' : undefined} />
                 </div>
-                {errors.name && <span className="field-error">{errors.name}</span>}
+                {errors.name && <span id="name-error" className="field-error">{errors.name}</span>}
               </div>
 
               {/* Date of Birth */}
               <div>
                 <div className={`input-icon ${errors.date_of_birth ? 'input-error' : ''}`}>
                   <Calendar size={16} style={{ marginLeft: 12, color: '#0cdf3b', flexShrink: 0 }} />
-                  <input type="date" name="date_of_birth" value={formData.date_of_birth} onChange={handleChange} />
+                  <input autoComplete="off" type="date" name="date_of_birth" value={formData.date_of_birth} onChange={handleChange} onBlur={handleBlur} aria-invalid={errors.date_of_birth ? true : false} aria-describedby={errors.date_of_birth ? 'date_of_birth-error' : undefined} />
                 </div>
-                {errors.date_of_birth && <span className="field-error">{errors.date_of_birth}</span>}
+                {errors.date_of_birth && <span id="date_of_birth-error" className="field-error">{errors.date_of_birth}</span>}
               </div>
 
               {/* Username */}
               <div>
                 <div className={`input-icon ${errors.username ? 'input-error' : ''}`}>
                   <User size={16} style={{ marginLeft: 12, color: '#0cdf3b', flexShrink: 0 }} />
-                  <input type="text" name="username" placeholder="Username" value={formData.username} onChange={handleChange} />
+                  <input autoComplete="off" type="text" name="username" placeholder="Username" value={formData.username} onChange={handleChange} onBlur={handleBlur} aria-invalid={errors.username ? true : false} aria-describedby={errors.username ? 'username-error' : undefined} />
                 </div>
-                {errors.username && <span className="field-error">{errors.username}</span>}
+                {errors.username && <span id="username-error" className="field-error">{errors.username}</span>}
               </div>
 
               {/* Email */}
               <div>
                 <div className={`input-icon ${errors.email ? 'input-error' : ''}`}>
                   <Mail size={16} style={{ marginLeft: 12, color: '#0cdf3b', flexShrink: 0 }} />
-                  <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
+                  <input autoComplete="off" type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} onBlur={handleBlur} aria-invalid={errors.email ? true : false} aria-describedby={errors.email ? 'email-error' : undefined} />
                 </div>
-                {errors.email && <span className="field-error">{errors.email}</span>}
+                {errors.email && <span id="email-error" className="field-error">{errors.email}</span>}
               </div>
 
               {/* Address */}
               <div>
                 <div className={`input-icon ${errors.address ? 'input-error' : ''}`}>
                   <MapPin size={16} style={{ marginLeft: 12, color: '#0cdf3b', flexShrink: 0 }} />
-                  <input type="text" name="address" placeholder="Address" value={formData.address} onChange={handleChange} />
+                  <input autoComplete="off" type="text" name="address" placeholder="Address" value={formData.address} onChange={handleChange} onBlur={handleBlur} aria-invalid={errors.address ? true : false} aria-describedby={errors.address ? 'address-error' : undefined} />
                 </div>
-                {errors.address && <span className="field-error">{errors.address}</span>}
+                {errors.address && <span id="address-error" className="field-error">{errors.address}</span>}
               </div>
 
               {/* Phone */}
               <div>
                 <div className={`input-icon ${errors.phone ? 'input-error' : ''}`}>
                   <Phone size={16} style={{ marginLeft: 12, color: '#0cdf3b', flexShrink: 0 }} />
-                  <input type="text" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} />
+                  <input autoComplete="off" type="text" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} onBlur={handleBlur} aria-invalid={errors.phone ? true : false} aria-describedby={errors.phone ? 'phone-error' : undefined} />
                 </div>
-                {errors.phone && <span className="field-error">{errors.phone}</span>}
+                {errors.phone && <span id="phone-error" className="field-error">{errors.phone}</span>}
               </div>
 
-              {/* Gender */}
+              {/* Gender (collapsed until clicked) */}
               <div>
-                <div className="input-icon">
+                <div className="input-icon" style={{ padding: 8, gap: 8 }}>
                   <User size={16} style={{ marginLeft: 12, color: '#0cdf3b', flexShrink: 0 }} />
-                  <select name="gender" value={formData.gender} onChange={handleChange}>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                  </select>
+
+                  <div className="gender-wrapper">
+                    <div
+                      className="gender-selected"
+                      role="button"
+                      tabIndex={0}
+                      aria-haspopup="listbox"
+                      onClick={() => setShowGender(s => !s)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setShowGender(s => !s); }}
+                    >
+                      <span className="label-text">{formData.gender === 'male' ? 'Male' : 'Female'}</span>
+                      <span className={`chev ${showGender ? 'open' : ''}`}></span>
+                    </div>
+
+                    {showGender && (
+                      <div className="gender-toggle" role="listbox" aria-label="Gender options">
+                        <label className={`gender-option ${formData.gender === 'male' ? 'selected' : ''}`}>
+                          <input type="radio" name="gender" value="male" checked={formData.gender === 'male'} onChange={(e) => { setFormData(prev => ({ ...prev, gender: e.target.value })); setShowGender(false); }} />
+                          <span className="label-text">Male</span>
+                          <span className="radio-indicator" aria-hidden></span>
+                        </label>
+
+                        <label className={`gender-option ${formData.gender === 'female' ? 'selected' : ''}`}>
+                          <input type="radio" name="gender" value="female" checked={formData.gender === 'female'} onChange={(e) => { setFormData(prev => ({ ...prev, gender: e.target.value })); setShowGender(false); }} />
+                          <span className="label-text">Female</span>
+                          <span className="radio-indicator" aria-hidden></span>
+                        </label>
+                      </div>
+                    )}
+                  </div>
+
                 </div>
               </div>
 
@@ -192,39 +247,29 @@ const SignUp = () => {
               <div>
                 <div className={`input-icon ${errors.password ? 'input-error' : ''}`}>
                   <Lock size={16} style={{ marginLeft: 12, color: '#0cdf3b', flexShrink: 0 }} />
-                  <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} />
+                  <input autoComplete="new-password" type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} onBlur={handleBlur} aria-invalid={errors.password ? true : false} aria-describedby={errors.password ? 'password-error' : undefined} />
                   <button type="button" className="eye-btn" onClick={() => setShowPassword(p => !p)}>
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
-                {errors.password && <span className="field-error">{errors.password}</span>}
+                {errors.password && <span id="password-error" className="field-error">{errors.password}</span>}
               </div>
 
               {/* Confirm Password */}
               <div>
                 <div className={`input-icon ${errors.confirmPassword ? 'input-error' : ''}`}>
                   <Lock size={16} style={{ marginLeft: 12, color: '#0cdf3b', flexShrink: 0 }} />
-                  <input type={showConfirmPassword ? "text" : "password"} name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} />
+                  <input autoComplete="new-password" type={showConfirmPassword ? "text" : "password"} name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} onBlur={handleBlur} aria-invalid={errors.confirmPassword ? true : false} aria-describedby={errors.confirmPassword ? 'confirmPassword-error' : undefined} />
                   <button type="button" className="eye-btn" onClick={() => setShowConfirmPassword(p => !p)}>
                     {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
-                {errors.confirmPassword && <span className="field-error">{errors.confirmPassword}</span>}
+                {errors.confirmPassword && <span id="confirmPassword-error" className="field-error">{errors.confirmPassword}</span>}
               </div>
 
             </div>
 
-            {/* Password Strength */}
-            {formData.password && (
-              <div style={{ width: '100%', marginTop: 10 }}>
-                <div className="password-bar">
-                  <div className="strength" style={{ width: `${passwordStrength * 25}%`, background: strengthColor() }}></div>
-                </div>
-                <span style={{ fontSize: 11, color: strengthColor(), marginTop: 4, display: 'block' }}>
-                  Password strength: {strengthLabel()}
-                </span>
-              </div>
-            )}
+            {/* Password Strength removed per request */}
 
             <button className="create-btn" type="submit" disabled={loading}>
               {loading ? "Creating..." : "Create Account →"}

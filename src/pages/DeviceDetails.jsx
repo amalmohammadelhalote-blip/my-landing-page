@@ -1,10 +1,41 @@
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Search, Bluetooth, Lightbulb, Zap, Plug, Timer, Coins, Power, Edit, Trash2, Tv, ChevronDown, Calendar } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area } from 'recharts';
+import { Search, Bluetooth, Lightbulb, Zap, Plug, Timer, Coins, Power, Edit, Trash2 } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
 import ReactMarkdown from 'react-markdown';
-import { deviceService, categoryService, locationService, readingService } from '../api/services';
+import { deviceService, categoryService, locationService, reportService } from '../api/services';
 import './DeviceDetails.css';
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function PeriodPicker({ open, onClose, onConfirm, initialYear, initialMonth }) {
+  const [year, setYear] = useState(initialYear);
+  const [month, setMonth] = useState(initialMonth);
+  if (!open) return null;
+  return createPortal(
+    <div className="period-picker-modal" onClick={onClose}>
+      <div className="period-picker" onClick={e => e.stopPropagation()}>
+        <h3>Select Period</h3>
+        <div className="picker-top">
+          <button className="month-btn" style={{ width: 40, height: 40, fontSize: 20, padding: 0 }} onClick={() => setYear(y => y - 1)}>&#8249;</button>
+          <input className="period-year-input" type="number" value={year} min={2000} max={2100} onChange={e => setYear(Number(e.target.value))} />
+          <button className="month-btn" style={{ width: 40, height: 40, fontSize: 20, padding: 0 }} onClick={() => setYear(y => y + 1)}>&#8250;</button>
+        </div>
+        <div className="period-month-grid">
+          {MONTHS.map((m, i) => (
+            <button key={m} className={`month-btn ${month === i + 1 ? 'active' : ''}`} onClick={() => setMonth(i + 1)}>{m}</button>
+          ))}
+        </div>
+        <div className="picker-actions">
+          <button className="period-done-btn" onClick={() => { onConfirm(year, month); onClose(); }}>Done</button>
+          <button className="period-cancel-btn" onClick={onClose}>Cancel</button>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
 
 const GaugeChart = ({ percentage }) => {
   const r = 80;
@@ -57,13 +88,10 @@ export default function DeviceDetails() {
   const [selectedDeviceDetail, setSelectedDeviceDetail] = useState(null);
   const [health, setHealth] = useState(null);
   const [chartData, setChartData] = useState([]);
-  const [chartPeriod, setChartPeriod] = useState('Day');
-  const [selectedMonth, setSelectedMonth] = useState(() => {
-    const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-  });
-  const [selectedDay, setSelectedDay] = useState(new Date().getDate());
-  const [isPeriodModalOpen, setIsPeriodModalOpen] = useState(false);
+  const [chartPeriod, setChartPeriod] = useState('Week');
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [recommendation, setRecommendation] = useState(null);
 
   // Edit/Delete states
@@ -97,94 +125,49 @@ export default function DeviceDetails() {
     return payload || null;
   };
 
-  const normalizeChartHistory = (payload, period) => {
+  const normalizeChartData = (payload, period) => {
     if (!payload) return [];
-
-    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-    if (period === 'Day') {
-      // Check if we are viewing the current month/day to decide between Activity API and historical Month API
-      const now = new Date();
-      const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-      const isCurrentDay = (selectedMonth === currentMonth && Number(selectedDay) === now.getDate());
-
-      // If it's historical data or a specific day from Month API
-      if (payload.days) {
-        const targetDay = payload.days.find(d => Number(d.day) === Number(selectedDay));
-        if (targetDay && targetDay.readings) {
-          return targetDay.readings.map(r => ({
-            name: new Date(r.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
-            value: Number(r.power || 0)
-          }));
-        }
-      }
-
-      // Fallback to activity if it's the current day or if provided
-      const activity = payload.activity || payload.data?.activity || [];
-      if (activity.length === 0) return [];
-
-      return [...activity]
-        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
-        .map(item => ({
-          name: new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
-          value: Number(item.power || item.energy || 0)
-        }));
+    if (period === 'Day' && Array.isArray(payload?.days)) {
+      return payload.days.map(item => ({
+        name: String(item.day),
+        value: item.consumption ?? 0,
+        cost: item.cost ?? 0,
+      }));
     }
-
-    const days = payload.days || payload.data?.days || [];
-    if (days.length === 0) return [];
-
-    if (period === 'Week') {
-      let refDate = new Date();
-      if (selectedMonth) {
-        const parts = selectedMonth.split('-');
-        if (parts.length === 2) {
-          refDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, new Date().getDate());
-        }
-      }
-
-      const allWeekReadings = [];
-      for (let i = 6; i >= 0; i--) {
-        const d = new Date(refDate);
-        d.setDate(d.getDate() - i);
-        const dayNum = d.getDate();
-
-        const dayData = days.find(x => Number(x.day) === dayNum);
-        if (dayData && dayData.readings) {
-          allWeekReadings.push(...dayData.readings);
-        }
-      }
-
-      return allWeekReadings
-        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
-        .map(r => {
-          const dt = new Date(r.timestamp);
-          return {
-            name: `${dayNames[dt.getDay()]} ${dt.getHours()}:00`,
-            value: Number(r.power || r.energy || 0)
-          };
-        });
+    if (period === 'Week' && Array.isArray(payload?.weeks)) {
+      return payload.weeks.map(item => ({
+        name: `W${item.week}`,
+        value: item.consumption ?? 0,
+        cost: item.cost ?? 0,
+      }));
     }
-
-    if (period === 'Month') {
-      const allReadings = [];
-      days.forEach(d => {
-        if (d.readings && d.readings.length > 0) {
-          allReadings.push(...d.readings);
+    if (period === 'Month' && Array.isArray(payload?.months)) {
+      // Build a map from month key -> data
+      const dataMap = {};
+      payload.months.forEach(item => {
+        const idx = typeof item.month === 'number'
+          ? item.month - 1
+          : MONTHS.indexOf(item.month) !== -1
+            ? MONTHS.indexOf(item.month)
+            : Number(item.month) - 1;
+        if (idx >= 0 && idx < 12) {
+          dataMap[idx] = { value: item.consumption ?? 0, cost: item.cost ?? 0 };
         }
       });
-
-      return allReadings
-        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
-        .map(r => {
-          const dt = new Date(r.timestamp);
-          return {
-            name: `Day ${dt.getDate()}`,
-            value: Number(r.power || r.energy || 0)
-          };
-        });
+      // Always return all 12 months
+      return MONTHS.map((m, i) => ({
+        name: m,
+        value: dataMap[i]?.value ?? 0,
+        cost: dataMap[i]?.cost ?? 0,
+      }));
     }
-
+    if (period === 'Year' && Array.isArray(payload?.years)) {
+      return payload.years.map(item => ({
+        name: String(item.year),
+        value: item.consumption ?? 0,
+        cost: item.cost ?? 0,
+      }));
+    }
     return [];
   };
 
@@ -270,56 +253,38 @@ export default function DeviceDetails() {
   // --- Fetch Chart Data & Health ---
   useEffect(() => {
     let mounted = true;
-    const fetchHealthAndChart = async () => {
+    const fetchChartAndHealth = async () => {
       if (!deviceId || isEditing) return;
       try {
         setHealthLoading(true);
-        const now = new Date();
-        const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
-        // Determine which API to use
-        let readingsPromise;
-        const isCurrentDay = (selectedMonth === currentMonthStr && Number(selectedDay) === now.getDate());
-
-        if (chartPeriod === 'Day' && isCurrentDay) {
-          readingsPromise = deviceService.getActivity(deviceId);
+        // Fetch chart data from new report endpoints
+        let res;
+        if (chartPeriod === 'Day') {
+          res = await reportService.getDeviceDaily(deviceId, selectedYear, selectedMonth);
+        } else if (chartPeriod === 'Week') {
+          res = await reportService.getDeviceWeekly(deviceId, selectedYear, selectedMonth);
+        } else if (chartPeriod === 'Month') {
+          res = await reportService.getDeviceMonthly(deviceId, selectedYear, selectedMonth);
         } else {
-          readingsPromise = readingService.getMonthly(deviceId, selectedMonth);
+          res = await reportService.getDeviceYearly(deviceId, selectedYear);
         }
 
-        // Check if we should still try fetching health
-        let healthPromise = Promise.resolve(null);
+        const payload = res?.data?.data || res?.data;
+        if (mounted) setChartData(normalizeChartData(payload, chartPeriod));
+
+        // Fetch health (optional, don't fail if broken)
         if (!window.__healthEndpointBroken) {
-          healthPromise = deviceService.getHealth(deviceId).catch(e => {
-            console.warn('Health endpoint failed, disabling further health requests for this session.', e);
+          const healthRes = await deviceService.getHealth(deviceId).catch(e => {
             window.__healthEndpointBroken = true;
             return null;
           });
-        }
-
-        const [readingsRes, healthRes] = await Promise.all([
-          readingsPromise,
-          healthPromise
-        ]);
-
-        const readingsData = parseResponsePayload(readingsRes);
-        const healthData = parseResponsePayload(healthRes);
-
-        if (!mounted) return;
-
-        // Combine data
-        const combinedHealth = { ...readingsData, health: healthData };
-        setHealth(combinedHealth);
-
-        const normalized = normalizeChartHistory(readingsData, chartPeriod);
-        setChartData(normalized);
-
-        // EXTRA: Check if recommendation is bundled
-        const bundledRec = healthData?.recommendation || healthData?.tips ||
-          readingsData?.recommendation || readingsData?.tips;
-
-        if (bundledRec) {
-          setRecommendation({ recommendation: bundledRec });
+          const healthData = healthRes ? (healthRes?.data?.data || healthRes?.data) : null;
+          if (mounted && healthData) {
+            setHealth(healthData);
+            const rec = healthData?.recommendation || healthData?.tips;
+            if (rec) setRecommendation({ recommendation: rec });
+          }
         }
       } catch (err) {
         console.warn('Failed to load chart/health data:', err);
@@ -328,10 +293,9 @@ export default function DeviceDetails() {
       }
     };
 
-    fetchHealthAndChart();
-    const interval = setInterval(fetchHealthAndChart, 30000);
-    return () => { mounted = false; clearInterval(interval); };
-  }, [deviceId, chartPeriod, selectedMonth, selectedDay, isEditing]);
+    fetchChartAndHealth();
+    return () => { mounted = false; };
+  }, [deviceId, chartPeriod, selectedYear, selectedMonth, isEditing]);
 
   const handlePowerToggle = async () => {
     if (!selectedDeviceDetail) return;
@@ -698,148 +662,89 @@ export default function DeviceDetails() {
         </div>
 
         {/* CHART */}
-        <div className="report-chart-card full-chart">
-
-          <div className="chart-header">
-
-            <h3>
-              Device Performance
-            </h3>
-
-            <div className="chart-controls-wrapper" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '12px', width: '100%' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-                <div className="chart-filters">
-                  {['Day', 'Week', 'Month'].map((period) => (
-                    <button
-                      key={period}
-                      className={chartPeriod === period ? 'active' : ''}
-                      onClick={() => setChartPeriod(period)}
-                    >
-                      {period}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <button className="period-dropdown-btn" onClick={() => setIsPeriodModalOpen(true)}>
-                <div className="period-dropdown-left">
-                  <Calendar size={18} color="#facc15" />
-                  <span className="period-label">Period:</span>
-                </div>
-                <div className="period-dropdown-right">
-                  <span className="period-value">
-                    {chartPeriod === 'Day' ? `${selectedMonth} (Day ${selectedDay})` : selectedMonth}
-                  </span>
-                  <ChevronDown size={18} color="#94a3b8" />
-                </div>
+        <div className="report-chart-card full-chart" style={{ background: 'linear-gradient(145deg, #072a1c, #02120b)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: '20px', padding: '24px' }}>
+          <div className="chart-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <h3 style={{ margin: 0, color: '#fff' }}>Energy Consumption (kWh)</h3>
+              <button
+                onClick={() => setPickerOpen(true)}
+                style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.25)', color: '#22c55e', borderRadius: '8px', padding: '4px 12px', fontSize: '12px', fontWeight: 700, cursor: 'pointer', width: 'fit-content' }}
+              >
+                {MONTHS[selectedMonth - 1]} {selectedYear} ▾
               </button>
             </div>
-
+            <div className="time-toggles">
+              {['Day', 'Week', 'Month', 'Year'].map(p => (
+                <button
+                  key={p}
+                  className={`time-btn ${chartPeriod === p ? 'active' : ''}`}
+                  onClick={() => setChartPeriod(p)}
+                >{p}</button>
+              ))}
+            </div>
           </div>
 
-          <ResponsiveContainer width="100%" height={260}>
-
-            <AreaChart data={chartData}>
-
-              <defs>
-                <linearGradient
-                  id="powerFill"
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
+          {healthLoading ? (
+            <div style={{ height: '260px', display: 'grid', placeItems: 'center', color: '#94a3b8' }}>Loading...</div>
+          ) : chartData.length > 0 ? (
+            <div style={{ overflowX: chartPeriod === 'Day' ? 'auto' : 'visible', overflowY: 'visible' }}>
+              <ResponsiveContainer
+                width={chartPeriod === 'Day' ? Math.max(chartData.length * 32, 400) : '100%'}
+                height={260}
+                minWidth={0}
+              >
+                <BarChart
+                  data={chartData}
+                  margin={{ top: 10, right: 16, left: 10, bottom: 30 }}
                 >
-                  <stop
-                    offset="0%"
-                    stopColor="#facc15"
-                    stopOpacity={0.7}
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.08)" />
+                  <XAxis
+                    dataKey="name"
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fill: '#94a3b8', fontSize: 11 }}
+                    dy={10}
+                    interval={chartPeriod === 'Month' ? 1 : 0}
+                    angle={chartPeriod === 'Month' ? -35 : 0}
+                    textAnchor={chartPeriod === 'Month' ? 'end' : 'middle'}
                   />
-
-                  <stop
-                    offset="100%"
-                    stopColor="#facc15"
-                    stopOpacity={0}
+                  <YAxis
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fill: '#94a3b8', fontSize: 12 }}
+                    tickFormatter={(val) => val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val.toFixed(2)}
+                    width={55}
                   />
-                </linearGradient>
-              </defs>
-
-              <CartesianGrid
-                strokeDasharray="3 3"
-                stroke="#1e293b"
-              />
-
-              <XAxis
-                dataKey="name"
-                stroke="#94a3b8"
-              />
-
-              <YAxis stroke="#94a3b8" />
-
-              <Tooltip
-                formatter={(val) => [
-                  `${val} ${chartPeriod === 'Day' ? 'W' : 'kWh'}`,
-                  'Usage'
-                ]}
-                contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '8px' }}
-                itemStyle={{ color: '#facc15' }}
-              />
-
-              <Area
-                type="monotone"
-                dataKey="value"
-                stroke="#facc15"
-                fill="url(#powerFill)"
-                strokeWidth={3}
-              />
-
-            </AreaChart>
-
-          </ResponsiveContainer>
-
+                  <Tooltip
+                    cursor={{ fill: 'rgba(34,197,94,0.06)' }}
+                    contentStyle={{ background: '#02120b', border: '1px solid #22c55e', borderRadius: '8px', color: '#f8fafc' }}
+                    formatter={(val, name, props) => [
+                      `${Number(val).toFixed(2)} kWh`,
+                      `Cost: ${Number(props.payload.cost ?? 0).toFixed(2)} EGP`
+                    ]}
+                  />
+                  <Bar dataKey="value" radius={[8, 8, 8, 8]} barSize={16}>
+                    {chartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill="#22c55e" fillOpacity={entry.value > 0 ? 1 : 0.3} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <div style={{ height: '260px', display: 'grid', placeItems: 'center', color: '#94a3b8' }}>No data for this period</div>
+          )}
         </div>
 
       </div>
 
-      {/* BOTTOM SHEET MODAL FOR PERIOD SELECTION */}
-      {isPeriodModalOpen && (
-        <div className="bottom-sheet-overlay" onClick={() => setIsPeriodModalOpen(false)}>
-          <div className="bottom-sheet-content" onClick={(e) => e.stopPropagation()}>
-            <div className="bottom-sheet-header">
-              <h3>Select Period</h3>
-              <button className="close-sheet-btn" onClick={() => setIsPeriodModalOpen(false)}>✕</button>
-            </div>
-
-            <div className="bottom-sheet-body">
-              <div className="form-group full">
-                <label>Month</label>
-                <input
-                  type="month"
-                  value={selectedMonth}
-                  onChange={(e) => setSelectedMonth(e.target.value)}
-                />
-              </div>
-
-              {chartPeriod === 'Day' && (
-                <div className="form-group full" style={{ marginTop: '15px' }}>
-                  <label>Day</label>
-                  <select
-                    value={selectedDay}
-                    onChange={(e) => setSelectedDay(e.target.value)}
-                  >
-                    {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
-                      <option key={d} value={d}>Day {d}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
-            </div>
-
-            <button className="confirm-btn full-width" style={{ marginTop: '20px' }} onClick={() => setIsPeriodModalOpen(false)}>
-              Apply Changes
-            </button>
-          </div>
-        </div>
-      )}
+      <PeriodPicker
+        open={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        onConfirm={(y, m) => { setSelectedYear(y); setSelectedMonth(m); }}
+        initialYear={selectedYear}
+        initialMonth={selectedMonth}
+      />
 
     </div>
   );

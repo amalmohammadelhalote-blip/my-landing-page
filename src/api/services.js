@@ -111,4 +111,15 @@ export const authService = {
   }),
 };
 
+export const reportService = {
+  getWeekly: (year, month) => api.get('/reports/weekly', { params: { year, month } }),
+  getMonthly: (year, month) => api.get('/reports/monthly', { params: { year, month } }),
+  getYearly: (year) => api.get('/reports/yearly', { params: { year } }),
+  getTopDevices: (year, month) => api.get('/reports/top-devices', { params: { year, month } }),
+  getDeviceDaily: (deviceId, year, month) => api.get(`/reports/device/daily/${deviceId}`, { params: { year, month } }),
+  getDeviceWeekly: (deviceId, year, month) => api.get(`/reports/device/weekly/${deviceId}`, { params: { year, month } }),
+  getDeviceMonthly: (deviceId, year, month) => api.get(`/reports/device/monthly/${deviceId}`, { params: { year, month } }),
+  getDeviceYearly: (deviceId, year) => api.get(`/reports/device/yearly/${deviceId}`, { params: { year } }),
+};
+
 
