@@ -147,12 +147,13 @@ const Login = () => {
             {apiError && <span className="field-error">{apiError}</span>}
           </div>
 
-          <div className="form-footer">
-            <Link to="/forget-password">Forgot Password?</Link>
-            <Link to="/signup">Create Account ›</Link>
+          <div className="form-footer" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+              <Link to="/forget-password">Forgot Password?</Link>
+              <Link to="/signup">Create Account ›</Link>
+            </div>
+            <Link to="/" className="back-landing-link">← Back Landing</Link>
           </div>
-
-          <Link to="/" className="back-landing-link">← Back Landing</Link>
 
           <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}

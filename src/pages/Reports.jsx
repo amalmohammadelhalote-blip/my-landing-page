@@ -218,7 +218,7 @@ export default function Reports() {
           <div className="report-panel">
             <div className="chart-header-row">
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <h3>Energy cost over time</h3>
+                <h3>Energy consumption (Kwh)</h3>
                 <button
                   onClick={() => setBarPickerOpen(true)}
                   style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.25)', color: '#22c55e', borderRadius: '8px', padding: '4px 12px', fontSize: '12px', fontWeight: 700, cursor: 'pointer', width: 'fit-content' }}
@@ -261,10 +261,7 @@ export default function Reports() {
                       cursor={false}
                       contentStyle={{ background: '#08231b', border: '1px solid #22c55e', borderRadius: '12px', color: '#ffffff' }}
                       itemStyle={{ color: '#22c55e' }}
-                      formatter={(val, name, props) => [
-                        `${Number(val).toFixed(2)} kWh`,
-                        `Cost: ${Number(props.payload.cost ?? 0).toFixed(2)} EGP`
-                      ]}
+                      formatter={(val) => `${Number(val).toFixed(2)} kWh`}
                     />
                     <Bar dataKey="value" fill="#22c55e" radius={[8, 8, 0, 0]} />
                   </BarChart>
@@ -341,11 +338,11 @@ export default function Reports() {
                           <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                       </Pie>
-            <Tooltip
-              contentStyle={{ background: '#08231b', border: '1px solid #22c55e', borderRadius: '10px', color: '#ffffff' }}
-              itemStyle={{ color: '#22c55e' }}
-              formatter={(val, name) => [`${val}%`, name]}
-            />
+                      <Tooltip
+                        contentStyle={{ background: '#08231b', border: '1px solid #22c55e', borderRadius: '10px', color: '#ffffff' }}
+                        itemStyle={{ color: '#22c55e' }}
+                        formatter={(val, name) => [`${val}%`, name]}
+                      />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -362,7 +359,7 @@ export default function Reports() {
       <div className="report-panel report-panel-full">
         <div className="chart-header-row">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <h3>Energy consumption (Kwh)</h3>
+            <h3>Energy cost over time</h3>
             <button
               onClick={() => setLinePickerOpen(true)}
               style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.25)', color: '#22c55e', borderRadius: '8px', padding: '4px 12px', fontSize: '12px', fontWeight: 700, cursor: 'pointer', width: 'fit-content' }}
@@ -402,12 +399,9 @@ export default function Reports() {
                 <Tooltip
                   contentStyle={{ background: '#08231b', border: '1px solid #22c55e', borderRadius: '12px', color: '#ffffff' }}
                   itemStyle={{ color: '#22c55e' }}
-                  formatter={(val, name, props) => [
-                    `${Number(val).toFixed(2)} kWh`,
-                    `Cost: ${Number(props.payload.cost ?? 0).toFixed(2)} EGP`
-                  ]}
+                  formatter={(val) => `${Number(val).toFixed(2)} EGP`}
                 />
-                <Line type="monotone" dataKey="value" stroke="#22c55e" strokeWidth={3} dot={<CustomLineDot />} activeDot={{ r: 6, fill: '#22c55e' }} />
+                <Line type="monotone" dataKey="cost" stroke="#22c55e" strokeWidth={3} dot={<CustomLineDot />} activeDot={{ r: 6, fill: '#22c55e' }} />
               </LineChart>
             </ResponsiveContainer>
           ) : (
