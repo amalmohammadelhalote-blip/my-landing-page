@@ -702,7 +702,7 @@ export default function DeviceDetails() {
                     dataKey="name"
                     axisLine={false}
                     tickLine={false}
-                    tick={{ fill: '#94a3b8', fontSize: 11 }}
+                    tick={{ fill: '#ffffff', fontSize: 11 }}
                     dy={10}
                     interval={0}
                     angle={chartPeriod === 'Month' ? -35 : 0}
@@ -711,13 +711,14 @@ export default function DeviceDetails() {
                   <YAxis
                     axisLine={false}
                     tickLine={false}
-                    tick={{ fill: '#94a3b8', fontSize: 12 }}
+                    tick={{ fill: '#ffffff', fontSize: 12 }}
                     tickFormatter={(val) => val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val.toFixed(2)}
                     width={55}
                   />
                   <Tooltip
                     cursor={{ fill: 'rgba(34,197,94,0.06)' }}
-                    contentStyle={{ background: '#02120b', border: '1px solid #22c55e', borderRadius: '8px', color: '#f8fafc' }}
+                    contentStyle={{ background: '#02120b', border: '1px solid #22c55e', borderRadius: '8px', color: '#ffffff' }}
+                    itemStyle={{ color: '#22c55e' }}
                     formatter={(val, name, props) => [
                       `${Number(val).toFixed(2)} kWh`,
                       `Cost: ${Number(props.payload.cost ?? 0).toFixed(2)} EGP`

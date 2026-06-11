@@ -244,7 +244,7 @@ export default function Reports() {
                       dataKey="name"
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fill: '#3f5068ff', fontSize: 11 }}
+                      tick={{ fill: '#ffffff', fontSize: 11 }}
                       dy={10}
                       interval={0}
                       angle={periodBar === 'Month' ? -35 : 0}
@@ -253,12 +253,12 @@ export default function Reports() {
                     <YAxis
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fill: '#94a3b8', fontSize: 12 }}
+                      tick={{ fill: '#ffffff', fontSize: 12 }}
                       tickFormatter={(val) => val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val.toFixed(2)}
                       width={55}
                     />
                     <Tooltip
-                      contentStyle={{ background: '#08231b', border: '1px solid #22c55e', borderRadius: '12px', color: '#f8fafc' }}
+                      contentStyle={{ background: '#08231b', border: '1px solid #22c55e', borderRadius: '12px', color: '#ffffff' }}
                       itemStyle={{ color: '#22c55e' }}
                       formatter={(val, name, props) => [
                         `${Number(val).toFixed(2)} kWh`,
@@ -340,10 +340,11 @@ export default function Reports() {
                           <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                       </Pie>
-                      <Tooltip
-                        contentStyle={{ background: '#08231b', border: '1px solid #22c55e', borderRadius: '10px', color: '#f8fafc' }}
-                        formatter={(val, name) => [`${val}%`, name]}
-                      />
+            <Tooltip
+              contentStyle={{ background: '#08231b', border: '1px solid #22c55e', borderRadius: '10px', color: '#ffffff' }}
+              itemStyle={{ color: '#22c55e' }}
+              formatter={(val, name) => [`${val}%`, name]}
+            />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -384,7 +385,7 @@ export default function Reports() {
                   dataKey="name"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: '#94a3b8', fontSize: 11 }}
+                  tick={{ fill: '#ffffff', fontSize: 11 }}
                   dy={10}
                   interval={0}
                   angle={periodLine === 'Month' ? -35 : 0}
@@ -393,12 +394,12 @@ export default function Reports() {
                 <YAxis
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: '#94a3b8', fontSize: 12 }}
+                  tick={{ fill: '#ffffff', fontSize: 12 }}
                   tickFormatter={(val) => val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val.toFixed(2)}
                   width={55}
                 />
                 <Tooltip
-                  contentStyle={{ background: '#08231b', border: '1px solid #22c55e', borderRadius: '12px', color: '#f8fafc' }}
+                  contentStyle={{ background: '#08231b', border: '1px solid #22c55e', borderRadius: '12px', color: '#ffffff' }}
                   itemStyle={{ color: '#22c55e' }}
                   formatter={(val, name, props) => [
                     `${Number(val).toFixed(2)} kWh`,
