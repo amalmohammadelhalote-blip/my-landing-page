@@ -965,6 +965,11 @@ body {
     overflow: hidden;
   }
 
+  .ps-card > div:last-child {
+    flex: 1;
+    min-width: 0;
+  }
+
   .ps-card h3 {
     font-size: 14px;
     margin-bottom: 4px;
@@ -1942,6 +1947,11 @@ img {
   padding: 20px;
   border-radius: 16px;
   transition: 0.3s;
+}
+
+.ps-card > div:last-child {
+  flex: 1;
+  min-width: 0;
 }
 
 .ps-card:hover {
