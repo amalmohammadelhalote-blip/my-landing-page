@@ -704,7 +704,7 @@ export default function DeviceDetails() {
                     tickLine={false}
                     tick={{ fill: '#94a3b8', fontSize: 11 }}
                     dy={10}
-                    interval={chartPeriod === 'Month' ? 1 : 0}
+                    interval={0}
                     angle={chartPeriod === 'Month' ? -35 : 0}
                     textAnchor={chartPeriod === 'Month' ? 'end' : 'middle'}
                   />

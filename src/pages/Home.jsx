@@ -141,10 +141,21 @@ export default function Dashboard() {
           cost: item.cost ?? 0,
         }));
       } else if (period === 'Month' && Array.isArray(payload?.months)) {
-        normalized = payload.months.map(item => ({
-          name: item.month,               // "Jan", "Feb", ...
-          value: item.consumption ?? 0,
-          cost: item.cost ?? 0,
+        const dataMap = {};
+        payload.months.forEach(item => {
+          const idx = typeof item.month === 'number'
+            ? item.month - 1
+            : MONTHS.indexOf(item.month) !== -1
+              ? MONTHS.indexOf(item.month)
+              : Number(item.month) - 1;
+          if (idx >= 0 && idx < 12) {
+            dataMap[idx] = { value: item.consumption ?? 0, cost: item.cost ?? 0 };
+          }
+        });
+        normalized = MONTHS.map((m, i) => ({
+          name: m,
+          value: dataMap[i]?.value ?? 0,
+          cost: dataMap[i]?.cost ?? 0,
         }));
       } else if (period === 'Year' && Array.isArray(payload?.years)) {
         normalized = payload.years.map(item => ({
@@ -496,14 +507,14 @@ export default function Dashboard() {
                         tickLine={false}
                         tick={{ fill: '#94a3b8', fontSize: 11 }}
                         dy={10}
-                        interval={chartPeriod === 'Month' ? 1 : 0}
+                        interval={0}
                         angle={chartPeriod === 'Month' ? -35 : 0}
                         textAnchor={chartPeriod === 'Month' ? 'end' : 'middle'}
                       />
                       <YAxis
                         axisLine={false}
                         tickLine={false}
-                        tick={{ fill: '#94a3b8', fontSize: 12 }}
+                        tick={{ fill: '#94b8aa', fontSize: 12 }}
                         tickFormatter={(val) => val >= 1000 ? `${(val/1000).toFixed(1)}k` : val.toFixed(2)}
                         width={55}
                       />

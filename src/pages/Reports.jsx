@@ -5,7 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineCh
 import { readingService, homeService, deviceService, reportService } from '../api/services';
 import './Reports.css';
 
-const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 function PeriodPicker({ open, onClose, onConfirm, initialYear, initialMonth }) {
   const [year, setYear] = useState(initialYear);
@@ -17,7 +17,7 @@ function PeriodPicker({ open, onClose, onConfirm, initialYear, initialMonth }) {
       <div className="period-picker" onClick={e => e.stopPropagation()}>
         <h3>Select Period</h3>
         <div className="picker-top">
-          <button className="month-btn" style={{width:40,height:40,fontSize:20,padding:0}} onClick={() => setYear(y => y - 1)}>&#8249;</button>
+          <button className="month-btn" style={{ width: 40, height: 40, fontSize: 20, padding: 0 }} onClick={() => setYear(y => y - 1)}>&#8249;</button>
           <input
             className="period-year-input"
             type="number"
@@ -26,7 +26,7 @@ function PeriodPicker({ open, onClose, onConfirm, initialYear, initialMonth }) {
             max={2100}
             onChange={e => setYear(Number(e.target.value))}
           />
-          <button className="month-btn" style={{width:40,height:40,fontSize:20,padding:0}} onClick={() => setYear(y => y + 1)}>&#8250;</button>
+          <button className="month-btn" style={{ width: 40, height: 40, fontSize: 20, padding: 0 }} onClick={() => setYear(y => y + 1)}>&#8250;</button>
         </div>
         <div className="period-month-grid">
           {MONTHS.map((m, i) => (
@@ -108,7 +108,22 @@ export default function Reports() {
       return payload.weeks.map(item => ({ name: `W${item.week}`, value: item.consumption ?? 0, cost: item.cost ?? 0 }));
     }
     if (period === 'Month' && Array.isArray(payload?.months)) {
-      return payload.months.map(item => ({ name: item.month, value: item.consumption ?? 0, cost: item.cost ?? 0 }));
+      const dataMap = {};
+      payload.months.forEach(item => {
+        const idx = typeof item.month === 'number'
+          ? item.month - 1
+          : MONTHS.indexOf(item.month) !== -1
+            ? MONTHS.indexOf(item.month)
+            : Number(item.month) - 1;
+        if (idx >= 0 && idx < 12) {
+          dataMap[idx] = { value: item.consumption ?? 0, cost: item.cost ?? 0 };
+        }
+      });
+      return MONTHS.map((m, i) => ({
+        name: m,
+        value: dataMap[i]?.value ?? 0,
+        cost: dataMap[i]?.cost ?? 0,
+      }));
     }
     if (period === 'Year' && Array.isArray(payload?.years)) {
       return payload.years.map(item => ({ name: String(item.year), value: item.consumption ?? 0, cost: item.cost ?? 0 }));
@@ -194,10 +209,6 @@ export default function Reports() {
     <div className="report-page">
       <header className="top-header" style={{ marginBottom: '24px' }}>
         <h1>Reports</h1>
-        <div className="search-bar">
-          <Search size={18} />
-          <input type="text" placeholder="Search" />
-        </div>
       </header>
 
       {error && <p className="dashboard-error">{error}</p>}
@@ -233,9 +244,9 @@ export default function Reports() {
                       dataKey="name"
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fill: '#94a3b8', fontSize: 11 }}
+                      tick={{ fill: '#3f5068ff', fontSize: 11 }}
                       dy={10}
-                      interval={periodBar === 'Month' ? 1 : 0}
+                      interval={0}
                       angle={periodBar === 'Month' ? -35 : 0}
                       textAnchor={periodBar === 'Month' ? 'end' : 'middle'}
                     />
@@ -243,7 +254,7 @@ export default function Reports() {
                       axisLine={false}
                       tickLine={false}
                       tick={{ fill: '#94a3b8', fontSize: 12 }}
-                      tickFormatter={(val) => val >= 1000 ? `${(val/1000).toFixed(1)}k` : val.toFixed(2)}
+                      tickFormatter={(val) => val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val.toFixed(2)}
                       width={55}
                     />
                     <Tooltip
@@ -375,7 +386,7 @@ export default function Reports() {
                   tickLine={false}
                   tick={{ fill: '#94a3b8', fontSize: 11 }}
                   dy={10}
-                  interval={periodLine === 'Month' ? 1 : 0}
+                  interval={0}
                   angle={periodLine === 'Month' ? -35 : 0}
                   textAnchor={periodLine === 'Month' ? 'end' : 'middle'}
                 />
@@ -383,7 +394,7 @@ export default function Reports() {
                   axisLine={false}
                   tickLine={false}
                   tick={{ fill: '#94a3b8', fontSize: 12 }}
-                  tickFormatter={(val) => val >= 1000 ? `${(val/1000).toFixed(1)}k` : val.toFixed(2)}
+                  tickFormatter={(val) => val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val.toFixed(2)}
                   width={55}
                 />
                 <Tooltip
