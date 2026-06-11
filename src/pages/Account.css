@@ -58,7 +58,7 @@
 }
 
 .brand-logo-inner {
-  width: 80px;
+  width: 110px;
   display: block;
   margin: auto;
   margin-bottom: 10px;
@@ -132,9 +132,20 @@
   background: transparent;
   border: none;
   outline: none;
-  color: white;
+  color: #e2e8f0;
   padding: 14px 12px;
   font-size: 14px;
+}
+
+.input-icon input:-webkit-autofill,
+.input-icon input:-webkit-autofill:hover,
+.input-icon input:-webkit-autofill:focus,
+.input-icon input:-webkit-autofill:active {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: #e2e8f0 !important;
+  caret-color: #00ff9c;
+  transition: background-color 50000s ease-in-out 0s;
+  box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.04) inset !important;
 }
 
 .input-icon input::placeholder {

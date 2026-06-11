@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
 import { authService, homeService } from "../api/services";
 import techBackground from "../assets/background3.jpg";
 import roboticHand from "../assets/hand.png";
@@ -12,7 +12,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState("");
   const navigate = useNavigate();
 
   const extractToken = (payload) => {
@@ -27,24 +28,21 @@ const Login = () => {
   };
 
   const validateForm = () => {
+    const e = {};
     if (!email.trim()) {
-      setError("Email is required.");
-      return false;
+      e.email = "Email is required.";
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address.");
-      return false;
+    if (email.trim() && !emailRegex.test(email)) {
+      e.email = "Please enter a valid email address.";
     }
     if (!password) {
-      setError("Password is required.");
-      return false;
+      e.password = "Password is required.";
+    } else if (password.length < 6) {
+      e.password = "Password must be at least 6 characters long.";
     }
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long.");
-      return false;
-    }
-    return true;
+    setErrors(e);
+    return Object.keys(e).length === 0;
   };
 
   const handleSubmit = async (e) => {
@@ -52,13 +50,13 @@ const Login = () => {
     if (!validateForm()) return;
     
     setLoading(true);
-    setError("");
+    setApiError("");
     try {
       const response = await authService.login({ email, password });
       const token = extractToken(response?.data);
 
       if (!token) {
-        setError("⛔ You are not authorized to access this dashboard.");
+        setApiError("⛔ You are not authorized to access this dashboard.");
         return;
       }
 
@@ -75,7 +73,7 @@ const Login = () => {
         // Access denied — clear token and show error
         localStorage.removeItem("token");
         localStorage.removeItem("accessToken");
-        setError("⛔ You are not authorized to access this dashboard.");
+        setApiError("⛔ You are not authorized to access this dashboard.");
       }
 
     } catch (err) {
@@ -84,11 +82,11 @@ const Login = () => {
       const serverMsg = err?.response?.data?.message;
 
       if (status === 401 || status === 403) {
-        setError("⛔ You are not authorized to access this dashboard.");
+        setApiError("⛔ You are not authorized to access this dashboard.");
       } else if (serverMsg) {
-        setError(serverMsg);
+        setApiError(serverMsg);
       } else {
-        setError("Something went wrong. Please try again.");
+        setApiError("Something went wrong. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -100,20 +98,14 @@ const Login = () => {
       <img src={techBackground} className="tech-bg" alt="background" />
       <img src={roboticHand} className="robotic-hand" alt="robot hand" />
 
-      <button className="back-to-home" onClick={() => navigate("/")} aria-label="Back to home">
-        <ArrowLeft size={22} />
-      </button>
-
       <div className="auth-card">
         <img src={logo} className="brand-logo-inner" alt="logo" />
         <h2>Sign In</h2>
         <p>Streamline your industrial monitoring in real time.</p>
 
-        {error && <p className="error-msg">{error}</p>}
-
         <form onSubmit={handleSubmit} noValidate>
           <div className="input-box">
-            <label>EMAIL</label>
+            <label>Email</label>
             <div className="field-wrapper">
               <input
                 type="email"
@@ -121,15 +113,17 @@ const Login = () => {
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
-                  if (error) setError("");
+                  if (errors.email) setErrors(prev => ({ ...prev, email: "" }));
+                  if (apiError) setApiError("");
                 }}
               />
               <Mail className="icon-right" size={18} />
             </div>
+            {errors.email && <span className="field-error">{errors.email}</span>}
           </div>
 
           <div className="input-box">
-            <label>PASSWORD</label>
+            <label>Password</label>
             <div className="field-wrapper">
               <input
                 type={showPassword ? "text" : "password"}
@@ -137,7 +131,8 @@ const Login = () => {
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
-                  if (error) setError("");
+                  if (errors.password) setErrors(prev => ({ ...prev, password: "" }));
+                  if (apiError) setApiError("");
                 }}
               />
               <button
@@ -148,12 +143,16 @@ const Login = () => {
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
+            {errors.password && <span className="field-error">{errors.password}</span>}
+            {apiError && <span className="field-error">{apiError}</span>}
           </div>
 
           <div className="form-footer">
-            <a href="/forget-password">Forgot Password?</a>
-            <a href="/signup">Create Account ›</a>
+            <Link to="/forget-password">Forgot Password?</Link>
+            <Link to="/signup">Create Account ›</Link>
           </div>
+
+          <Link to="/" className="back-landing-link">← Back Landing</Link>
 
           <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}

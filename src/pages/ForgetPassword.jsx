@@ -75,11 +75,10 @@ const ForgetPassword = () => {
         <p className="subtitle">Enter your email to receive a reset code</p>
 
         {message && <p className="success-msg">{message}</p>}
-        {error && <p className="error-msg">{error}</p>}
 
         <form onSubmit={handleSubmit} noValidate>
           <div className="input-box">
-            <label>EMAIL</label>
+            <label>Email</label>
             <div className="field-wrapper">
               <input
                 type="email"
@@ -92,10 +91,11 @@ const ForgetPassword = () => {
               />
               <Mail className="icon-right" size={18} />
             </div>
+            {error && <span className="field-error">{error}</span>}
           </div>
 
           <div className="form-footer">
-            <Link to="/">← Back to Login</Link>
+            <Link to="/login">← Back to Login</Link>
             <Link to="/signup">Create Account</Link>
           </div>
 

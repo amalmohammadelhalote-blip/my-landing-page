@@ -116,7 +116,6 @@ return(
 <h2>Email Verification</h2>
 <p className="subtitle">Enter the 6-digit code sent to <strong>{email}</strong></p>
 
-{error && <p className="error-msg">{error}</p>}
 {successMsg && <p className="success-msg">{successMsg}</p>}
 
 <form onSubmit={handleSubmit} onPaste={handlePaste}>
@@ -137,6 +136,8 @@ className="otp-input"
 ))}
 
 </div>
+
+{error && <span className="field-error" style={{textAlign:'center',marginBottom:12}}>{error}</span>}
 
 <button
 type="submit"

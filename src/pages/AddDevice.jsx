@@ -4,6 +4,41 @@ import { Smartphone, ChevronDown, Bluetooth, Wifi, CheckCircle } from 'lucide-re
 import { deviceService, categoryService, locationService } from '../api/services';
 import './AddDevice.css';
 
+function CustomSelect({ value, options, onChange, placeholder }) {
+  const [open, setOpen] = useState(false);
+  const selected = options.find(o => (o._id || o.id || o.value) === value);
+
+  return (
+    <div className="custom-select-wrapper">
+      <div className="custom-select-header" onClick={() => setOpen(!open)} tabIndex={0} role="button" onKeyDown={e => { if (e.key === 'Enter') setOpen(!open); }}>
+        <span className={selected ? 'selected-text' : 'placeholder-text'}>{selected ? (selected.name || selected.label) : placeholder}</span>
+        <span className={`cs-arrow ${open ? 'open' : ''}`}></span>
+      </div>
+      {open && (
+        <>
+          <div className="cs-overlay" onClick={() => setOpen(false)} />
+          <div className="cs-dropdown">
+            {options.map(opt => {
+              const optVal = opt._id || opt.id || opt.value;
+              const isActive = optVal === value;
+              return (
+                <div
+                  key={optVal}
+                  className={`cs-option ${isActive ? 'active' : ''}`}
+                  onClick={() => { onChange(optVal); setOpen(false); }}
+                >
+                  <span>{opt.name || opt.label}</span>
+                  {isActive && <span className="cs-check">✓</span>}
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 const AddDevice = () => {
     const navigate = useNavigate();
     const [step, setStep] = useState('form'); // form, confirmation, connecting, success
@@ -42,6 +77,10 @@ const AddDevice = () => {
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSelectChange = (name, val) => {
+        setFormData({ ...formData, [name]: val });
     };
 
     const handleFormSubmit = (e) => {
@@ -233,22 +272,22 @@ const AddDevice = () => {
 
                 <div className="form-group">
                     <label>Location</label>
-                    <select name="location" required value={formData.location} onChange={handleChange}>
-                        <option value="">Select room</option>
-                        {locations.map(loc => (
-                            <option key={loc._id} value={loc._id}>{loc.name}</option>
-                        ))}
-                    </select>
+                    <CustomSelect
+                        value={formData.location}
+                        options={locations}
+                        onChange={val => handleSelectChange('location', val)}
+                        placeholder="Select room"
+                    />
                 </div>
 
                 <div className="form-group">
                     <label>Category</label>
-                    <select name="categoryId" required value={formData.categoryId} onChange={handleChange}>
-                        <option value="">select Category</option>
-                        {categories.map(cat => (
-                            <option key={cat._id} value={cat._id}>{cat.name}</option>
-                        ))}
-                    </select>
+                    <CustomSelect
+                        value={formData.categoryId}
+                        options={categories}
+                        onChange={val => handleSelectChange('categoryId', val)}
+                        placeholder="Select Category"
+                    />
                 </div>
 
                 <button type="submit" className="confirm-btn">

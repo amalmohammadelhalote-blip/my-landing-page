@@ -147,7 +147,6 @@ const SignUp = () => {
           <h2>Create <span>Account</span></h2>
           <p className="subtitle">Join the platform &amp; make the world greener</p>
 
-          {apiError && <p className="error-msg" style={{ width: '100%', marginBottom: '12px' }}>{apiError}</p>}
           {success && <p className="success-msg" style={{ width: '100%', marginBottom: '12px' }}>{success}</p>}
 
           <form onSubmit={handleSubmit} noValidate autoComplete="off">
@@ -270,6 +269,8 @@ const SignUp = () => {
               </div>
 
             </div>
+
+            {apiError && <p className="field-error" style={{ textAlign: 'center', marginBottom: '12px' }}>{apiError}</p>}
 
             {/* Password Strength removed per request */}
 

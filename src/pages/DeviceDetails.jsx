@@ -81,6 +81,41 @@ const ExpandableText = ({ text, limit = 4 }) => {
   );
 };
 
+function CustomSelect({ label, value, options, onChange, placeholder }) {
+  const [open, setOpen] = useState(false);
+  const selected = options.find(o => (o._id || o.id || o.value) === value);
+
+  return (
+    <div className="custom-select-wrapper">
+      <div className="custom-select-header" onClick={() => setOpen(!open)} tabIndex={0} role="button" onKeyDown={e => { if (e.key === 'Enter') setOpen(!open); }}>
+        <span className={selected ? 'selected-text' : 'placeholder-text'}>{selected ? (selected.name || selected.label) : placeholder}</span>
+        <span className={`cs-arrow ${open ? 'open' : ''}`}></span>
+      </div>
+      {open && (
+        <>
+          <div className="cs-overlay" onClick={() => setOpen(false)} />
+          <div className="cs-dropdown">
+            {options.map(opt => {
+              const optVal = opt._id || opt.id || opt.value;
+              const isActive = optVal === value;
+              return (
+                <div
+                  key={optVal}
+                  className={`cs-option ${isActive ? 'active' : ''}`}
+                  onClick={() => { onChange(optVal); setOpen(false); }}
+                >
+                  <span>{opt.name || opt.label}</span>
+                  {isActive && <span className="cs-check">✓</span>}
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 export default function DeviceDetails() {
   const { deviceId } = useParams();
   const navigate = useNavigate();
@@ -359,10 +394,6 @@ export default function DeviceDetails() {
             <button className="back-btn" onClick={() => setIsEditing(false)}>Back</button>
             <h1>Edit device</h1>
           </div>
-          <div className="search-bar">
-            <Search size={18} />
-            <input type="text" placeholder="Search" />
-          </div>
         </header>
 
         <div className="edit-form-container">
@@ -412,18 +443,22 @@ export default function DeviceDetails() {
 
             <div className="form-group full">
               <label>Select Location</label>
-              <select value={formData.location} onChange={e => setFormData({ ...formData, location: e.target.value })} required>
-                <option value="">Select Location</option>
-                {locations.map(loc => <option key={loc._id} value={loc._id}>{loc.name}</option>)}
-              </select>
+              <CustomSelect
+                value={formData.location}
+                options={locations}
+                onChange={val => setFormData({ ...formData, location: val })}
+                placeholder="Select Location"
+              />
             </div>
 
             <div className="form-group full">
               <label>Select Category</label>
-              <select value={formData.categoryId} onChange={e => setFormData({ ...formData, categoryId: e.target.value })} required>
-                <option value="">Select Category</option>
-                {categories.map(cat => <option key={cat._id} value={cat._id}>{cat.name}</option>)}
-              </select>
+              <CustomSelect
+                value={formData.categoryId}
+                options={categories}
+                onChange={val => setFormData({ ...formData, categoryId: val })}
+                placeholder="Select Category"
+              />
             </div>
 
             {error && <p className="error-txt">{error}</p>}
