@@ -89,7 +89,7 @@ export const userService = {
 
 export const authService = {
   login: (data) => api.post('/auth/login', data),
-  register: (data) => api.post('/auth/register', data),
+  register: (data) => api.post('/auth/signup', data),
   logout: () => api.post('/auth/logout'),
   refreshToken: () => api.post('/auth/refresh'),
   // --- MOCK AUTH FLOW FOR RESET PASSWORD ---

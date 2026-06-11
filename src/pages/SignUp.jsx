@@ -105,13 +105,15 @@ const SignUp = () => {
     if (!validate()) return;
     setLoading(true);
     try {
-      const { confirmPassword, ...payload } = formData;
+      const { ...payload } = formData;
+      if (payload.phone) payload.phone = String(payload.phone);
       const res = await authService.register(payload);
       if (res.data?.status === "success" || res.status === 201 || res.status === 200) {
         setSuccess("Account created successfully! Redirecting to login...");
         setTimeout(() => navigate("/login"), 2500);
       }
     } catch (err) {
+      console.log('Signup error full:', err?.response?.data);
       const status = err?.response?.status;
       const data = err?.response?.data;
       // Map server validation errors to fields if provided
