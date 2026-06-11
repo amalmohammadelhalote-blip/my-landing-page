@@ -74,7 +74,7 @@ export default function LandingPage() {
           ))}
 
           <div className="mobile-buttons">
-            <button className="btn-outline">Join waitlist</button>
+            <button className="btn-outline" onClick={() => scrollToSection("faq")}>Join waitlist</button>
             <button className="btn-gradient" onClick={() => navigate("/login")}>
               Live Dashboard ⚡
             </button>
@@ -82,7 +82,7 @@ export default function LandingPage() {
         </ul>
 
         <div className="nav-buttons">
-          <button className="btn-outline">Join waitlist</button>
+          <button className="btn-outline" onClick={() => scrollToSection("faq")}>Join waitlist</button>
           <button className="btn-gradient" onClick={() => navigate("/login")}>
             Live Dashboard ⚡
           </button>
@@ -132,7 +132,7 @@ export default function LandingPage() {
             <button className="btn-primary" onClick={() => scrollToSection("pricing")}>
               Get early access <FiArrowRight />
             </button>
-            <button className="btn-outline">See live dashboard</button>
+            <button className="btn-outline" onClick={() => navigate("/login")}>See live dashboard</button>
           </div>
           <p className="security-note">
             <BsBagFill className="lock-icon" color="green" />
@@ -573,7 +573,7 @@ export default function LandingPage() {
                 ))}
               </ul>
 
-              <button className="waitlist-btn">
+              <button className="waitlist-btn" onClick={() => scrollToSection("faq")}>
                 {plan.btnText}
               </button>
 
@@ -598,8 +598,10 @@ export default function LandingPage() {
         emailRef.current.focus();
         emailRef.current.reportValidity();
       } else {
-        // Handle form submission here
+        // هنا يتم الربط مع الـ API مستقبلاً
         console.log('Email submitted:', emailRef.current.value);
+        alert("Thank you! You have been added to our waitlist.");
+        emailRef.current.value = "";
       }
     };
 
@@ -666,7 +668,7 @@ export default function LandingPage() {
           <div className="faq-right">
             <div className="faq-signup">
               <h3>Want to pilot ECOSHID?</h3>
-              <p>
+              <p id="waitlist-form">
                 We are onboarding a limited number of homes and businesses
                 into our early-access program. Share your email and we’ll reach out with next steps.
               </p>
@@ -697,8 +699,8 @@ export default function LandingPage() {
           </p>
 
           <div className="faq-cta-actions">
-            <button className="faq-cta-btn">Request Access</button>
-            <button className="faq-ct-btn">View Demo</button>
+            <button className="faq-cta-btn" onClick={() => scrollToSection("faq")}>Request Access</button>
+            <button className="faq-ct-btn" onClick={() => navigate("/login")}>View Demo</button>
           </div>
 
           <div className="faq-cta-tags">

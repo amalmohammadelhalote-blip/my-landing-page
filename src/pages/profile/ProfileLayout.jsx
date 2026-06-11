@@ -14,10 +14,6 @@ export default function ProfileLayout() {
     <div className={`profile-page profile-app ${isMenuPage ? 'profile-app--menu' : 'profile-app--sub'}`}>
       <header className="top-header profile-app__desktop-header">
         <h1>Settings</h1>
-        <div className="search-bar">
-          <Search size={18} />
-          <input type="text" placeholder="Search" />
-        </div>
       </header>
 
       <div className="settings-container profile-app__shell">

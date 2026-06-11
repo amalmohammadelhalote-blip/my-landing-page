@@ -351,7 +351,7 @@ const Devices = () => {
                 Location
               </button>
               <button
-                className={filter === 'Category' ? 'btn-dark' : 'btn-outline'}
+              className={filter === 'Category' ? 'btn-yellow' : 'btn-outline'}
                 onClick={() => {
                   setFilter('Category');
                   setActiveSubFilter('All devices');

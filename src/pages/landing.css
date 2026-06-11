@@ -623,13 +623,12 @@ body {
 
   /* ===== HERO MOBILE ===== */
   .hero {
-    padding: 80px 16px 32px;
+    padding: 100px 20px 40px;
     grid-template-columns: 1fr;
     text-align: center;
-    gap: 24px;
+    gap: 40px;
     overflow: hidden;
     width: 100%;
-    max-width: 100vw;
   }
 
   .hero::before {
@@ -645,26 +644,27 @@ body {
   }
 
   .badge {
-    font-size: 12px;
-    padding: 5px 14px;
+    font-size: 11px;
+    padding: 4px 12px;
+    margin-bottom: 20px;
   }
 
   .hero h1 {
-    font-size: 28px;
+    font-size: 32px;
     line-height: 1.2;
     margin-bottom: 16px;
   }
 
   .hero p {
-    font-size: 14px;
+    font-size: 15px;
     max-width: 100%;
-    margin: 0 auto 16px;
+    margin: 0 auto 20px;
   }
 
   .hero h5 {
-    font-size: 14px;
+    font-size: 13px;
     max-width: 100%;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
   }
 
   .stats {
@@ -675,11 +675,10 @@ body {
   }
 
   .stats div {
-    width: 100%;
-    max-width: 100%;
+    width: fit-content;
     font-size: 13px;
     justify-content: center;
-    padding: 10px 14px;
+    padding: 8px 16px;
   }
 
   .hero-buttons {
@@ -691,9 +690,10 @@ body {
   .btn-primary,
   .btn-outline {
     width: 100%;
+    display: flex;
     justify-content: center;
     text-align: center;
-    padding: 14px 18px;
+    padding: 12px 20px;
     font-size: 14px;
   }
 
@@ -708,6 +708,8 @@ body {
   .main-glass-card {
     padding: 14px;
     border-radius: 18px;
+    padding: 16px 12px;
+    border-radius: 24px;
     margin: 0 auto;
     width: 100%;
     max-width: 100%;
@@ -733,11 +735,18 @@ body {
     flex-direction: column;
     align-items: stretch;
     gap: 14px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
   }
 
   .main-glass-card .gauge-shell {
     width: 90px;
     height: 90px;
+    width: 85px;
+    height: 85px;
     align-self: center;
   }
 
@@ -758,15 +767,19 @@ body {
   .main-glass-card .consumption-mini-card {
     padding: 12px;
     font-size: 12px;
+    padding: 10px;
+    font-size: 11px;
   }
 
   .main-glass-card .risk-header h4,
   .main-glass-card .tips-header h4 {
     font-size: 13px;
+    font-size: 12px;
   }
 
   .main-glass-card .live-tag {
     font-size: 11px;
+    font-size: 10px;
     padding: 3px 8px;
   }
 
@@ -787,6 +800,7 @@ body {
 
   .main-glass-card .main-value {
     font-size: 20px;
+    font-size: 18px;
   }
 
   .main-glass-card .consumption-title {
@@ -894,11 +908,12 @@ body {
 
   /* ===== PROBLEM SECTION ===== */
   .ps-section {
-    padding: 50px 16px;
+    padding: 60px 20px;
   }
 
   .ps-container {
     flex-direction: column;
+    gap: 60px;
     gap: 40px;
     width: 100%;
     box-sizing: border-box;
@@ -917,21 +932,21 @@ body {
     font-size: 11px;
     padding: 5px 12px;
     margin-bottom: 12px;
-    display: inline-block;
+    display: inline-flex;
   }
 
   .ps-left h1,
   .ps-right h1 {
-    font-size: 24px;
-    line-height: 1.3;
-    text-align: left;
+    font-size: 28px;
+    line-height: 1.2;
+    text-align: center;
     margin-bottom: 12px;
   }
 
   .ps-text {
     font-size: 14px;
-    text-align: left;
-    margin-bottom: 20px;
+    text-align: center;
+    margin-bottom: 30px;
     line-height: 1.7;
   }
 
@@ -959,10 +974,10 @@ body {
   .ps-card {
     padding: 14px;
     gap: 12px;
-    align-items: flex-start;
-    width: 100%;
+    align-items: center;
+    background: rgba(3, 13, 11, 0.6);
     box-sizing: border-box;
-    overflow: hidden;
+    border: 1px solid rgba(255, 91, 91, 0.2);
   }
 
   .ps-card > div:last-child {
