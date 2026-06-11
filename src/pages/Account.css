@@ -27,6 +27,17 @@
   opacity: .35;
 }
 
+.robotic-hand {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 45%;
+  z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: lighten;
+  opacity: 0.9;
+}
+
 .signup-card {
   width: 1100px;
   max-width: 95%;

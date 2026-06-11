@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import techBackground from "../assets/background5.jpg";
+import techBackground from "../assets/background3.jpg";
+import roboticHand from "../assets/hand.png";
 import logo from "../assets/logo.png";
 import { User, Mail, Phone, Lock, MapPin, Calendar, Eye, EyeOff } from "lucide-react";
 import { authService } from "../api/services";
@@ -139,6 +140,7 @@ const SignUp = () => {
   return (
     <div className="signup-page">
       <img src={techBackground} className="tech-bg" alt="background" />
+      <img src={roboticHand} className="robotic-hand" alt="robot hand" />
       <div className="signup-card">
         <div className="card-right">
           <img src={logo} className="brand-logo-inner" alt="logo" />

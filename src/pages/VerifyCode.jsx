@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import techBackground from "../assets/background4.jpg";
+import techBackground from "../assets/background3.jpg";
+import roboticHand from "../assets/hand.png";
 import logo from "../assets/logo.png";
 import { authService } from "../api/services";
 import "./login.css";
@@ -108,6 +109,7 @@ return(
 <div className="login-container">
 
 <img src={techBackground} className="tech-bg" alt="background"/>
+<img src={roboticHand} className="robotic-hand" alt="robot hand" />
 
 <div className="auth-card">
 <img src={logo} className="brand-logo-inner" alt="logo"/>

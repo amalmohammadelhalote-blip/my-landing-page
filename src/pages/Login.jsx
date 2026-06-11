@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { authService, homeService } from "../api/services";
 import techBackground from "../assets/background3.jpg";
@@ -99,6 +99,10 @@ const Login = () => {
     <div className="login-container">
       <img src={techBackground} className="tech-bg" alt="background" />
       <img src={roboticHand} className="robotic-hand" alt="robot hand" />
+
+      <button className="back-to-home" onClick={() => navigate("/")} aria-label="Back to home">
+        <ArrowLeft size={22} />
+      </button>
 
       <div className="auth-card">
         <img src={logo} className="brand-logo-inner" alt="logo" />
