@@ -415,13 +415,13 @@ export default function Dashboard() {
         <>
           <section className="stats-row">
             <div className="stat-card">
-              <span>Total device</span> <h2>{stats.total}</h2>
+              <span>Total</span> <h2>{dashboardData?.summary?.totalDevices ?? stats.total}</h2>
             </div>
             <div className="stat-card">
-              <span>Active device</span> <h2>{stats.active}</h2>
+              <span>Online</span> <h2>{dashboardData?.summary?.onlineDevices ?? stats.active}</h2>
             </div>
             <div className="stat-card">
-              <span>Offline device</span> <h2 className="yellow-text">{stats.offline}</h2>
+              <span>Offline</span> <h2 className="yellow-text">{dashboardData?.summary?.offlineDevices ?? stats.offline}</h2>
             </div>
           </section>
 
@@ -573,7 +573,7 @@ export default function Dashboard() {
                         <p>{locationMap[device.location] || locationMap[device.location?._id] || device.location?.name || device.location || 'Unknown'}</p>
                       </div>
                       <div className="switch-container">
-                        <span className="status-label">{currentStatus}</span>
+                        <span className={`status-badge ${currentStatus}`}>{currentStatus}</span>
                         <div
                           className={`custom-switch ${currentStatus}`}
                           onClick={(e) => {
