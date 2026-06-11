@@ -519,7 +519,7 @@ export default function Dashboard() {
                         width={55}
                       />
                       <Tooltip
-                        cursor={{ fill: 'rgba(34,197,94,0.06)' }}
+                        cursor={false}
                         contentStyle={{ background: '#02120b', border: '1px solid #22c55e', borderRadius: '8px', color: '#ffffff' }}
                         itemStyle={{ color: '#22c55e' }}
                         formatter={(val, name, props) => [

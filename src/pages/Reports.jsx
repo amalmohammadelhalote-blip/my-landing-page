@@ -258,6 +258,7 @@ export default function Reports() {
                       width={55}
                     />
                     <Tooltip
+                      cursor={false}
                       contentStyle={{ background: '#08231b', border: '1px solid #22c55e', borderRadius: '12px', color: '#ffffff' }}
                       itemStyle={{ color: '#22c55e' }}
                       formatter={(val, name, props) => [
