@@ -113,7 +113,7 @@ export const authService = {
 
 export const reportService = {
   getWeekly: (year, month) => api.get('/reports/weekly', { params: { year, month } }),
-  getMonthly: (year, month) => api.get('/reports/monthly', { params: { year, month } }),
+  getMonthly: (year, month) => api.get('/reports/monthly', { params: { year } }),
   getYearly: (year) => api.get('/reports/yearly', { params: { year } }),
   getTopDevices: (year, month) => api.get('/reports/top-devices', { params: { year, month } }),
   getDeviceDaily: (deviceId, year, month) => api.get(`/reports/device/daily/${deviceId}`, { params: { year, month } }),

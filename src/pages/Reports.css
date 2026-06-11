@@ -731,3 +731,103 @@ body {
   .month-btn { height: 50px; font-size: 13px; }
   .period-done-btn { padding: 13px; font-size: 15px; }
 }
+
+/* Device filter dropdown */
+.device-filter-wrap {
+  position: relative;
+}
+
+.cs-wrapper-sm {
+  position: relative;
+  width: 200px;
+}
+
+.cs-header-sm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  user-select: none;
+}
+
+.cs-header-sm:hover {
+  border-color: rgba(34,197,94,0.4);
+}
+
+.cs-placeholder-sm {
+  color: rgba(255,255,255,0.4);
+  font-size: 13px;
+}
+
+.cs-text-sm {
+  color: #fff;
+  font-size: 13px;
+}
+
+.cs-arrow-sm {
+  color: #22c55e;
+  transition: transform 0.25s;
+  flex-shrink: 0;
+}
+
+.cs-arrow-sm.open {
+  transform: rotate(180deg);
+}
+
+.cs-overlay-sm {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+}
+
+.cs-dropdown-sm {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #0f0f0f;
+  border: 1px solid rgba(34,197,94,0.25);
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.cs-opt-sm {
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #cbd5e1;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.cs-opt-sm:hover {
+  background: rgba(34,197,94,0.12);
+  color: #fff;
+}
+
+.cs-opt-sm.active {
+  background: rgba(34,197,94,0.15);
+  color: #22c55e;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .top-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .cs-wrapper-sm {
+    width: 100%;
+  }
+}

@@ -740,7 +740,7 @@ export default function DeviceDetails() {
                     tick={{ fill: '#ffffff', fontSize: 11 }}
                     dy={10}
                     interval={0}
-                    angle={chartPeriod === 'Month' ? -35 : 0}
+                    angle={chartPeriod === 'Month' ? -65 : 0}
                     textAnchor={chartPeriod === 'Month' ? 'end' : 'middle'}
                   />
                   <YAxis

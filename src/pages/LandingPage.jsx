@@ -74,7 +74,6 @@ export default function LandingPage() {
           ))}
 
           <div className="mobile-buttons">
-            <button className="btn-outline" onClick={() => scrollToSection("faq")}>Join waitlist</button>
             <button className="btn-gradient" onClick={() => navigate("/login")}>
               Live Dashboard ⚡
             </button>
@@ -82,7 +81,6 @@ export default function LandingPage() {
         </ul>
 
         <div className="nav-buttons">
-          <button className="btn-outline" onClick={() => scrollToSection("faq")}>Join waitlist</button>
           <button className="btn-gradient" onClick={() => navigate("/login")}>
             Live Dashboard ⚡
           </button>

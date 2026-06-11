@@ -808,6 +808,8 @@ body {
   .main-glass-card .right-column {
     width: 100%;
     gap: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 
   .main-glass-card .list-row {
@@ -894,7 +896,7 @@ body {
   }
 
   .ps-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
     width: 100%;
   }
@@ -989,6 +991,22 @@ body {
     padding: 50px 16px;
   }
 
+  .features-section {
+    padding: 40px 16px;
+  }
+
+  .features-pill {
+    font-size: 16px;
+  }
+
+  .features-main-title {
+    font-size: 22px;
+  }
+
+  .features-subtitle {
+    font-size: 13px;
+  }
+
   .features-grid-layout,
   .use-grid-layout,
   .how-it-works-grid {
@@ -996,84 +1014,557 @@ body {
     gap: 14px;
   }
 
+  .feature-card-item {
+    padding: 14px;
+  }
+
+  .feature-item-title {
+    font-size: 13px;
+  }
+
+  .feature-item-desc {
+    font-size: 12px;
+  }
+
+  .how-it-works-section {
+    padding: 30px 0;
+    margin-top: 30px;
+  }
+
+  .how-it-works-intro {
+    margin-bottom: 30px;
+  }
+
+  .how-it-works-card {
+    padding: 14px;
+    min-height: auto;
+  }
+
+  .how-it-works-step {
+    font-size: 20px;
+  }
+
+  .use-section {
+    padding: 30px 16px;
+  }
+
+  .why-section {
+    padding: 40px 0;
+  }
+
+  .why-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .why-left .why-desc {
+    font-size: 13px;
+  }
+
+  .why-features li {
+    gap: 10px;
+  }
+
+  .why-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .why-text p {
+    font-size: 13px;
+  }
+
+  .why-right .numbers-panel {
+    padding: 16px;
+  }
+
+  .numbers-intro {
+    font-size: 16px;
+  }
+
+  .numbers-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .num-value {
+    font-size: 16px;
+  }
+
+  .pricing-container {
+    padding: 40px 16px;
+  }
+
+  .pricing-header {
+    margin-bottom: 20px;
+  }
+
+  .badge-pricing {
+    font-size: 14px;
+  }
+
   .pricing-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
 
+  .pricing-card {
+    padding: 16px;
+  }
+
+  .faq-section {
+    padding: 40px 16px;
+  }
+
   .faq-container {
     grid-template-columns: 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+
+  .faq-header {
+    margin-bottom: 30px;
+  }
+
+  .faq-tag {
+    font-size: 18px;
+  }
+
+  .faq-title {
+    font-size: 1.4rem;
+  }
+
+  .faq-signup {
+    padding: 18px;
+    position: static;
+  }
+
+  .faq-cta {
+    padding: 30px 20px;
+    margin-top: 30px;
+  }
+
+  .faq-cta-title {
+    font-size: 1.2rem;
+  }
+
+  .faq-cta-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .faq-cta-btn {
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+  }
+
+  .faq-cta-tags {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  footer {
+    padding: 20px 16px;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .footer-links {
+    justify-content: center;
   }
 }
 
 /* ==================== EXTRA SMALL (360px and below) ==================== */
 @media (max-width: 360px) {
   .hero {
-    padding: 70px 12px 30px;
-    gap: 24px;
+    padding: 60px 12px 24px;
+    gap: 20px;
   }
 
   .hero h1 {
-    font-size: 22px;
+    font-size: 20px;
+    margin-bottom: 10px;
   }
 
   .hero h5,
   .hero p {
-    font-size: 13px;
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 4px 10px;
+    margin-bottom: 12px;
+  }
+
+  .stats {
+    margin-bottom: 20px;
   }
 
   .stats div {
-    font-size: 12px;
-    padding: 8px 12px;
+    font-size: 11px;
+    padding: 6px 10px;
+    max-width: 100%;
+  }
+
+  .hero-buttons {
+    gap: 8px;
+  }
+
+  .btn-primary,
+  .btn-outline {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .security-note {
+    font-size: 11px;
   }
 
   .main-glass-card {
-    padding: 12px;
-    border-radius: 18px;
+    padding: 10px;
+    border-radius: 16px;
+  }
+
+  .main-glass-card .content-layout {
+    gap: 12px;
+  }
+
+  .main-glass-card .top-row {
+    gap: 8px;
   }
 
   .main-glass-card .top-row h3 {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .main-glass-card .main-value {
-    font-size: 17px;
+    font-size: 16px;
   }
 
   .main-glass-card .gauge-shell {
-    width: 76px;
-    height: 76px;
+    width: 68px;
+    height: 68px;
   }
 
   .main-glass-card .gauge-inner {
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
   }
 
   .main-glass-card .gauge-inner strong {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+  }
+
+  .main-glass-card .gauge-inner span {
+    font-size: 0.5rem;
+  }
+
+  .main-glass-card .stats-body {
+    gap: 10px;
+  }
+
+  .main-glass-card .consumption-mini-card {
+    padding: 10px;
+    font-size: 11px;
+  }
+
+  .main-glass-card .consumption-title {
+    font-size: 12px;
+  }
+
+  .main-glass-card .grid-status-pill {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .main-glass-card .metric-row {
+    font-size: 11px;
+  }
+
+  .main-glass-card .info-card {
+    padding: 10px;
+    font-size: 11px;
+  }
+
+  .main-glass-card .right-column {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .main-glass-card .risk-header h4,
+  .main-glass-card .tips-header h4 {
+    font-size: 12px;
+  }
+
+  .main-glass-card .live-tag {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  .main-glass-card .ai-status-button {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+
+  .main-glass-card .list-row {
+    font-size: 11px;
+  }
+
+  .main-glass-card .status-medium {
+    font-size: 12px;
+  }
+
+  .main-glass-card .metric-label,
+  .main-glass-card .metric-value {
+    font-size: 10px;
   }
 
   .ps-section {
-    padding: 40px 12px;
+    padding: 30px 12px;
+  }
+
+  .ps-container {
+    gap: 24px;
+  }
+
+  .ps-badge {
+    font-size: 10px;
+    padding: 4px 10px;
+    margin-bottom: 8px;
   }
 
   .ps-left h1,
   .ps-right h1 {
-    font-size: 20px;
+    font-size: 18px;
+    margin-bottom: 8px;
   }
 
   .ps-text {
-    font-size: 13px;
+    font-size: 12px;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  .ps-problem-box {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .ps-problem-box h4 {
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+
+  .ps-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .ps-card {
     padding: 12px;
     gap: 10px;
+    border-radius: 12px;
   }
 
   .ps-card h3 {
     font-size: 13px;
+  }
+
+  .ps-card p {
+    font-size: 11px;
+  }
+
+  .icon {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+
+  .ps-solution-box {
+    padding: 12px;
+    margin-top: 14px;
+    border-radius: 14px;
+  }
+
+  .ps-solution-box h4 {
+    font-size: 13px;
+  }
+
+  .ps-solution-box p {
+    font-size: 12px;
+  }
+
+  .ps-features {
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .ps-features div {
+    font-size: 12px;
+    padding: 10px 12px;
+    gap: 8px;
+    border-radius: 10px;
+  }
+
+  /* Remaining sections */
+  .features-section {
+    padding: 30px 12px;
+  }
+
+  .features-pill {
+    font-size: 14px;
+  }
+
+  .features-main-title {
+    font-size: 18px;
+  }
+
+  .features-subtitle {
+    font-size: 12px;
+  }
+
+  .feature-card-item {
+    padding: 12px;
+  }
+
+  .feature-item-title {
+    font-size: 12px;
+  }
+
+  .feature-item-desc {
+    font-size: 11px;
+  }
+
+  .how-it-works-section {
+    padding: 20px 0;
+    margin-top: 20px;
+  }
+
+  .how-it-works-card {
+    padding: 12px;
+  }
+
+  .how-it-works-step {
+    font-size: 18px;
+  }
+
+  .how-it-works-title {
+    font-size: 13px;
+  }
+
+  .use-section {
+    padding: 24px 12px;
+  }
+
+  .why-section {
+    padding: 30px 0;
+  }
+
+  .why-grid {
+    gap: 20px;
+  }
+
+  .why-left .why-desc {
+    font-size: 12px;
+  }
+
+  .why-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .why-text p {
+    font-size: 12px;
+  }
+
+  .why-right .numbers-panel {
+    padding: 14px;
+  }
+
+  .numbers-intro {
+    font-size: 14px;
+  }
+
+  .numbers-grid {
+    gap: 8px;
+  }
+
+  .num-item {
+    padding: 10px;
+  }
+
+  .num-value {
+    font-size: 14px;
+  }
+
+  .pricing-container {
+    padding: 30px 12px;
+  }
+
+  .badge-pricing {
+    font-size: 12px;
+  }
+
+  .pricing-card {
+    padding: 14px;
+  }
+
+  .faq-section {
+    padding: 30px 12px;
+  }
+
+  .faq-container {
+    gap: 24px;
+    margin-bottom: 30px;
+  }
+
+  .faq-tag {
+    font-size: 16px;
+  }
+
+  .faq-title {
+    font-size: 1.2rem;
+  }
+
+  .faq-question {
+    font-size: 0.75rem;
+  }
+
+  .faq-item {
+    padding: 12px;
+  }
+
+  .faq-signup {
+    padding: 16px;
+  }
+
+  .faq-cta {
+    padding: 24px 16px;
+    margin-top: 24px;
+  }
+
+  .faq-cta-title {
+    font-size: 1.1rem;
+  }
+
+  .faq-cta-actions {
+    flex-direction: column;
+  }
+
+  footer {
+    padding: 16px 12px;
+  }
+
+  section {
+    padding: 30px 12px;
   }
 }
 

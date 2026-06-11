@@ -114,25 +114,16 @@ const SignUp = () => {
       }
     } catch (err) {
       console.log('Signup error full:', err?.response?.data);
-      const status = err?.response?.status;
       const data = err?.response?.data;
-      // Map server validation errors to fields if provided
-      if (data && typeof data === 'object' && data.errors) {
-        // assume errors is an object like { field: ['msg'] }
+      if (data?.errors && typeof data.errors === 'object') {
         const mapped = {};
         Object.keys(data.errors).forEach(k => {
           const v = data.errors[k];
           mapped[k] = Array.isArray(v) ? v[0] : v;
         });
         setErrors(prev => ({ ...prev, ...mapped }));
-      } else if (status === 409) {
-        // conflict - map to email/username if message contains text
-        if (data?.message && /email/i.test(data.message)) setErrors(prev => ({ ...prev, email: data.message }));
-        else setApiError("This email or username is already registered. Please try a different one.");
-      } else if (data?.message) {
-        setApiError(data.message);
       } else {
-        setApiError("Something went wrong. Please try again.");
+        setApiError(data?.message || data?.error || data?.msg || data?.detail || "Something went wrong. Please try again.");
       }
     } finally {
       setLoading(false);

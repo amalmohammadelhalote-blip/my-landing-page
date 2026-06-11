@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { Search, Lightbulb, Zap, Clock } from 'lucide-react';
+import { Search, Lightbulb, Zap, Clock, ChevronDown } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, Tooltip } from 'recharts';
 import { readingService, homeService, deviceService, reportService } from '../api/services';
 import './Reports.css';
@@ -65,6 +65,8 @@ export default function Reports() {
   const [error, setError] = useState('');
   const [dashboardData, setDashboardData] = useState(null);
   const [devices, setDevices] = useState([]);
+  const [selectedDevice, setSelectedDevice] = useState('');
+  const [deviceSelectOpen, setDeviceSelectOpen] = useState(false);
 
   const [barPickerOpen, setBarPickerOpen] = useState(false);
   const [barYear, setBarYear] = useState(new Date().getFullYear());
@@ -167,9 +169,15 @@ export default function Reports() {
     try {
       setLoading(true);
       let res;
-      if (period === 'Week') res = await reportService.getWeekly(year, month);
-      else if (period === 'Month') res = await reportService.getMonthly(year, month);
-      else res = await reportService.getYearly(year);
+      if (selectedDevice) {
+        if (period === 'Week') res = await reportService.getDeviceWeekly(selectedDevice, year, month);
+        else if (period === 'Month') res = await reportService.getDeviceMonthly(selectedDevice, year, month);
+        else res = await reportService.getDeviceYearly(selectedDevice, year);
+      } else {
+        if (period === 'Week') res = await reportService.getWeekly(year, month);
+        else if (period === 'Month') res = await reportService.getMonthly(year, month);
+        else res = await reportService.getYearly(year);
+      }
       const rData = res?.data?.data || res?.data;
       setBarData(normalizeChartData(rData, period));
     } catch (err) { console.error('Bar data fetch failed', err); setBarData([]); }
@@ -179,9 +187,15 @@ export default function Reports() {
   const fetchLineData = async (period, year, month) => {
     try {
       let res;
-      if (period === 'Week') res = await reportService.getWeekly(year, month);
-      else if (period === 'Month') res = await reportService.getMonthly(year, month);
-      else res = await reportService.getYearly(year);
+      if (selectedDevice) {
+        if (period === 'Week') res = await reportService.getDeviceWeekly(selectedDevice, year, month);
+        else if (period === 'Month') res = await reportService.getDeviceMonthly(selectedDevice, year, month);
+        else res = await reportService.getDeviceYearly(selectedDevice, year);
+      } else {
+        if (period === 'Week') res = await reportService.getWeekly(year, month);
+        else if (period === 'Month') res = await reportService.getMonthly(year, month);
+        else res = await reportService.getYearly(year);
+      }
       const rData = res?.data?.data || res?.data;
       setLineData(normalizeChartData(rData, period));
     } catch (err) { console.error('Line data fetch failed', err); setLineData([]); }
@@ -195,7 +209,7 @@ export default function Reports() {
 
   useEffect(() => {
     fetchBarData(periodBar, barYear, barMonth);
-  }, [periodBar, barYear, barMonth]);
+  }, [periodBar, barYear, barMonth, selectedDevice]);
 
   useEffect(() => {
     fetchTopDevices(breakdownYear, breakdownMonth);
@@ -203,12 +217,31 @@ export default function Reports() {
 
   useEffect(() => {
     fetchLineData(periodLine, lineYear, lineMonth);
-  }, [periodLine, lineYear, lineMonth]);
+  }, [periodLine, lineYear, lineMonth, selectedDevice]);
 
   return (
     <div className="report-page">
       <header className="top-header" style={{ marginBottom: '24px' }}>
         <h1>Reports</h1>
+        <div className="device-filter-wrap">
+          <div className="cs-wrapper-sm">
+            <div className="cs-header-sm" onClick={() => setDeviceSelectOpen(o => !o)} tabIndex={0} role="button" onKeyDown={e => { if (e.key === 'Enter') setDeviceSelectOpen(o => !o); }}>
+              <span className={selectedDevice ? 'cs-text-sm' : 'cs-placeholder-sm'}>{selectedDevice ? (devices.find(d => d._id === selectedDevice)?.name || 'Device') : 'All Devices'}</span>
+              <ChevronDown size={14} className={`cs-arrow-sm ${deviceSelectOpen ? 'open' : ''}`} />
+            </div>
+            {deviceSelectOpen && (
+              <>
+                <div className="cs-overlay-sm" onClick={() => setDeviceSelectOpen(false)} />
+                <div className="cs-dropdown-sm">
+                  <div className={`cs-opt-sm ${!selectedDevice ? 'active' : ''}`} onClick={() => { setSelectedDevice(''); setDeviceSelectOpen(false); }}>All Devices</div>
+                  {devices.map(d => (
+                    <div key={d._id} className={`cs-opt-sm ${selectedDevice === d._id ? 'active' : ''}`} onClick={() => { setSelectedDevice(d._id); setDeviceSelectOpen(false); }}>{d.name}</div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
       </header>
 
       {error && <p className="dashboard-error">{error}</p>}
@@ -247,7 +280,7 @@ export default function Reports() {
                       tick={{ fill: '#ffffff', fontSize: 11 }}
                       dy={10}
                       interval={0}
-                      angle={periodBar === 'Month' ? -35 : 0}
+                      angle={periodBar === 'Month' ? -65 : 0}
                       textAnchor={periodBar === 'Month' ? 'end' : 'middle'}
                     />
                     <YAxis
@@ -386,7 +419,7 @@ export default function Reports() {
                   tick={{ fill: '#ffffff', fontSize: 11 }}
                   dy={10}
                   interval={0}
-                  angle={periodLine === 'Month' ? -35 : 0}
+                  angle={periodLine === 'Month' ? -65 : 0}
                   textAnchor={periodLine === 'Month' ? 'end' : 'middle'}
                 />
                 <YAxis
