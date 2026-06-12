@@ -12,7 +12,7 @@ export default function ProfilePrivacy() {
           <div className="privacy-policy-header__titles">
             <h2>Privacy Policy</h2>
             <div className="last-update">
-              <Calendar size={14} /> Last Updated: April 2026
+              <Calendar size={14} />  Updated: April 2026
             </div>
           </div>
         </div>
