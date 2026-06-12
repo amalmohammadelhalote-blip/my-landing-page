@@ -1050,7 +1050,14 @@ body {
   }
 
   .how-it-works-intro {
+    text-align: left;
     margin-bottom: 30px;
+    width: 100%;
+  }
+
+  .how-it-works-section .features-main-title {
+    max-width: 100%;
+    margin: 10px 0;
   }
 
   .how-it-works-card {
@@ -1060,6 +1067,13 @@ body {
 
   .how-it-works-step {
     font-size: 20px;
+  }
+
+  .features-intro,
+  .use-intro,
+  .how-it-works-intro {
+    text-align: left;
+    width: 100%;
   }
 
   .use-section {
@@ -1490,6 +1504,18 @@ body {
     margin-top: 20px;
   }
 
+  .features-intro,
+  .use-intro,
+  .how-it-works-intro {
+    text-align: left;
+    width: 100%;
+  }
+
+  .how-it-works-section .features-main-title {
+    max-width: 100%;
+    margin: 10px 0;
+  }
+
   .how-it-works-card {
     padding: 12px;
   }
@@ -1677,6 +1703,13 @@ body {
   .ps-grid {
     grid-template-columns: 1fr;
     gap: clamp(14px, 3vw, 20px);
+  }
+
+  .features-intro,
+  .use-intro,
+  .how-it-works-intro {
+    text-align: left;
+    width: 100%;
   }
 
   .features-grid-layout,
