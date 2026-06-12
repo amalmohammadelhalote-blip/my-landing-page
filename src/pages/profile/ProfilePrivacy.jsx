@@ -15,9 +15,6 @@ export default function ProfilePrivacy() {
               <Calendar size={14} /> Last Updated: April 2026
             </div>
           </div>
-          <button type="button" className="all-link privacy-download-btn">
-            Download PDF
-          </button>
         </div>
 
         <div className="policy-text">

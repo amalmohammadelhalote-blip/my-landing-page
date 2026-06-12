@@ -313,8 +313,8 @@ input:checked+.slider:before {
 /* Header row: title + download btn */
 .privacy-policy-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   gap: 16px;
   margin-bottom: 32px;
   flex-wrap: wrap;
@@ -325,6 +325,7 @@ input:checked+.slider:before {
 .privacy-policy-header__titles {
   flex: 1;
   min-width: 0;
+  text-align: center;
 }
 
 .privacy-download-btn {
@@ -1181,11 +1182,12 @@ input:checked+.slider:before {
 }
 
 .help-center-intro {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
+  text-align: center;
 }
 
 .help-center-intro h2 {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   font-size: 1.35rem;
   color: #fff;
 }
@@ -1248,6 +1250,7 @@ input:checked+.slider:before {
   .profile-help-page.profile-sub-page {
     padding: 0 12px 24px;
     max-width: 100%;
+    min-height: auto;
   }
 
   .profile-help-page .help-center-content {
@@ -1274,8 +1277,12 @@ input:checked+.slider:before {
     margin-left: auto;
   }
 
+  .help-center-intro {
+    margin-bottom: 12px;
+  }
+
   .help-center-intro h2 {
-    font-size: 1.2rem;
+    display: none;
   }
 }
 
@@ -1347,6 +1354,7 @@ input:checked+.slider:before {
 .privacy-policy-header__titles {
   flex: 1;
   min-width: 0;
+  text-align: center;
 }
 
 .privacy-download-btn {
@@ -1397,10 +1405,12 @@ input:checked+.slider:before {
     padding-bottom: 14px;
   }
 
-  .privacy-policy-content h2,
-  .profile-privacy-content h2 {
-    font-size: 1.35rem;
-    margin-bottom: 6px;
+  .privacy-policy-header .privacy-policy-header__titles h2 {
+    display: none;
+  }
+
+  .privacy-policy-header .last-update {
+    justify-content: center;
   }
 
   .privacy-download-btn {

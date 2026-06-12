@@ -4,7 +4,7 @@ import ProfileMobileHeader from './ProfileMobileHeader';
 
 export default function ProfileHelp() {
   return (
-    <div className="profile-sub-page profile-sub-page--scroll profile-help-page">
+    <div className="profile-sub-page profile-help-page">
       <ProfileMobileHeader title="Help center" />
 
       <div className="help-center-content settings-content profile-help-content">
