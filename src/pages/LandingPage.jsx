@@ -186,6 +186,7 @@ export default function LandingPage() {
                   <div className="gauge-progress"></div>
                   <div className="gauge-inner">
                     <strong>70%</strong>
+                    <span>Plan used</span>
                   </div>
                   <div className="gauge-pill">
                     <span className="gauge-pill-dot"></span>
