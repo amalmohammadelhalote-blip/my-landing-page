@@ -74,12 +74,7 @@ body {
   padding: 0 28px;
 }
 
-.report-page .top-header {
-  padding: 20px 0;
-  margin-bottom: 24px;
-  background: none;
-  border-bottom: none;
-}
+
 
 .report-grid {
   display: grid;
@@ -577,7 +572,7 @@ body {
   .top-header {
     flex-direction: column;
     gap: 12px;
-    align-items: flex-start;
+    align-items: center;
     padding: 10px 0;
   }
 

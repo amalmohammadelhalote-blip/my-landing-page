@@ -1037,11 +1037,11 @@ body {
   }
 
   .feature-item-title {
-    font-size: 13px;
+    font-size: 17px;
   }
 
   .feature-item-desc {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .how-it-works-section {
@@ -1478,7 +1478,7 @@ body {
   }
 
   .feature-item-title {
-    font-size: 12px;
+    font-size: 17px;
   }
 
   .feature-item-desc {
@@ -2708,20 +2708,20 @@ img {
 }
 
 .feature-item-title {
-  font-size: 12px;
+  font-size: 17px;
   margin: 0;
 }
 
 .feature-item-desc {
   color: #9ca3af;
-  font-size: 11px;
+  font-size: 12px;
   margin-top: auto;
 }
 
 /* How It Works Section */
 .how-it-works-section {
   margin-top: 40px;
-  padding: 40px 15%;
+  padding: 40px 0;
   border-top: 1px solid rgba(16, 185, 129, 0.1);
 }
 
@@ -2775,7 +2775,7 @@ img {
 
 .how-it-works-desc {
   color: #9ca3af;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.6;
   margin-top: auto;
 }
@@ -2906,7 +2906,7 @@ img {
 
 .numbers-intro {
   color: var(--text-gray);
-  font-size: 20px;
+  font-size: 14px;
   line-height: 1.4;
 }
 

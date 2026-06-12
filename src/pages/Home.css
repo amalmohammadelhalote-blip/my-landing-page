@@ -375,8 +375,8 @@
   }
 
   .stats-row {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
     margin-bottom: 16px;
   }
 
@@ -581,8 +581,8 @@
   }
 
   .stats-row {
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
     margin-bottom: 18px;
   }
 

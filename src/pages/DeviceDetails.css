@@ -73,7 +73,7 @@ body {
   max-width: 1280px;
   margin: 0 auto;
   min-height: calc(100vh - 72px);
-  padding: 28px;
+  padding: 0 28px 28px;
 }
 
 .device-layout{
@@ -1082,7 +1082,7 @@ body {
   }
 
   .report-page {
-    padding: 16px;
+    padding: 0 16px 16px;
     max-width: 100%;
   }
 
@@ -1119,6 +1119,8 @@ body {
 
   .report-page .top-header h1 {
     font-size: 22px;
+    text-align: center;
+    width: 100%;
   }
 
   .report-page .search-bar {
