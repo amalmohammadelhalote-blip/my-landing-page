@@ -32,7 +32,7 @@ body {
   padding: 24px 28px;
   background: linear-gradient(180deg, rgba(7, 48, 26, 0.95), rgba(1, 10, 5, 0.98));
   border-bottom: 1px solid rgba(34, 197, 94, 0.12);
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .top-header h1 {
@@ -80,6 +80,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  margin-top: 10px;
   margin-bottom: 30px;
   gap: 16px;
 }
@@ -531,7 +532,7 @@ body {
     gap: 12px;
     align-items: stretch;
     padding: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
   }
 
   .top-header h1 {

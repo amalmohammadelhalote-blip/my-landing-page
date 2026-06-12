@@ -221,7 +221,7 @@ export default function Reports() {
 
   return (
     <div className="report-page">
-      <header className="top-header" style={{ marginBottom: '24px' }}>
+      <header className="top-header" style={{ marginBottom: '0' }}>
         <h1>Reports</h1>
       </header>
 
