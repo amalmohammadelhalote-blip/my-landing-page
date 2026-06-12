@@ -710,7 +710,7 @@ body {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .main-glass-card .content-layout {
@@ -1280,12 +1280,15 @@ body {
   }
 
   .main-glass-card .gauge-pill {
-    position: relative;
-    bottom: auto;
+    position: absolute;
+    bottom: -20px;
     right: auto;
-    margin-top: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
     padding: 2px 8px;
     font-size: 0.5rem;
+    z-index: 2;
   }
 
   .main-glass-card .stats-body {
