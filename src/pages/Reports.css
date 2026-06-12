@@ -71,7 +71,14 @@ body {
 .report-page {
   width: 100%;
   min-height: calc(100vh - 72px);
-  padding: 28px;
+  padding: 0 28px;
+}
+
+.report-page .top-header {
+  padding: 20px 0;
+  margin-bottom: 24px;
+  background: none;
+  border-bottom: none;
 }
 
 .report-grid {

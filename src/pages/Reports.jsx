@@ -223,25 +223,6 @@ export default function Reports() {
     <div className="report-page">
       <header className="top-header" style={{ marginBottom: '24px' }}>
         <h1>Reports</h1>
-        <div className="device-filter-wrap">
-          <div className="cs-wrapper-sm">
-            <div className="cs-header-sm" onClick={() => setDeviceSelectOpen(o => !o)} tabIndex={0} role="button" onKeyDown={e => { if (e.key === 'Enter') setDeviceSelectOpen(o => !o); }}>
-              <span className={selectedDevice ? 'cs-text-sm' : 'cs-placeholder-sm'}>{selectedDevice ? (devices.find(d => d._id === selectedDevice)?.name || 'Device') : 'All Devices'}</span>
-              <ChevronDown size={14} className={`cs-arrow-sm ${deviceSelectOpen ? 'open' : ''}`} />
-            </div>
-            {deviceSelectOpen && (
-              <>
-                <div className="cs-overlay-sm" onClick={() => setDeviceSelectOpen(false)} />
-                <div className="cs-dropdown-sm">
-                  <div className={`cs-opt-sm ${!selectedDevice ? 'active' : ''}`} onClick={() => { setSelectedDevice(''); setDeviceSelectOpen(false); }}>All Devices</div>
-                  {devices.map(d => (
-                    <div key={d._id} className={`cs-opt-sm ${selectedDevice === d._id ? 'active' : ''}`} onClick={() => { setSelectedDevice(d._id); setDeviceSelectOpen(false); }}>{d.name}</div>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        </div>
       </header>
 
       {error && <p className="dashboard-error">{error}</p>}

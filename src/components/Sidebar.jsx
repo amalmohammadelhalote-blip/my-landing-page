@@ -64,10 +64,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             <span>My Profile</span>
           </NavLink>
           
-          <div className="sidebar-nav-item settings-disabled">
-            <Settings size={20} />
-            <span>Settings</span>
-          </div>
+          
 
           <NavLink 
             to="/logout" 

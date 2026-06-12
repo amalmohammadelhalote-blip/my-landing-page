@@ -130,6 +130,19 @@
   display: inline-block;
 }
 
+.api-error-msg {
+  color: #ff1a1a;
+  font-weight: 600;
+  text-align: left;
+  font-size: 13px;
+  margin: 16px 0;
+  padding: 10px 14px;
+  background: rgba(239, 68, 68, 0.08);
+  border-radius: 10px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
 .input-icon input,
 .input-icon select {
   flex: 1;

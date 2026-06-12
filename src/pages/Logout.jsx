@@ -58,13 +58,13 @@ export default function Logout() {
         </div>
         
         <h3 style={{ fontSize: '22px', marginBottom: '12px', color: '#fff' }}>Confirm Log Out</h3>
-        <p style={{ color: '#94a3b8', marginBottom: '32px', fontSize: '15px', lineHeight: '1.5' }}>
+        <p style={{ color: '#b8a894', marginBottom: '32px', fontSize: '15px', lineHeight: '1.5' }}>
           Are you sure you want to log out? You will need to enter your credentials to access the dashboard again.
         </p>
 
         <div className="delete-actions" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <button 
-            className="delete-confirm-btn" 
+            className="delete-cancel-btn delete-cancel-btn--danger" 
             onClick={handleConfirmLogout}
             disabled={isLoggingOut}
             style={{ width: '100%', margin: 0 }}

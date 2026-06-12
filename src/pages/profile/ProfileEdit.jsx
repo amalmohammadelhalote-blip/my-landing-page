@@ -18,13 +18,15 @@ export default function ProfileEdit() {
 
   useEffect(() => {
     if (!profile) return;
+    const rawDob = profile.dob || profile.date_of_birth || '';
+    const formattedDob = rawDob ? rawDob.split('T')[0] : '';
     setFormData({
       name: profile.name || '',
       username: profile.username || '',
       email: profile.email || '',
       phone: profile.phone || '',
       address: profile.address || '',
-      dob: profile.dob || profile.date_of_birth || '06 / 10 / 2003',
+      dob: formattedDob,
     });
   }, [profile]);
 
@@ -76,7 +78,7 @@ export default function ProfileEdit() {
             />
           </div>
           <div className="setting-field">
-            <label>Adress</label>
+            <label>Address</label>
             <input
               type="text"
               value={formData.address}

@@ -60,10 +60,20 @@ function App() {
             <Route path="delete" element={<ProfileDelete />} />
             <Route path="privacy" element={<ProfilePrivacy />} />
             <Route path="help" element={<ProfileHelp />} />
-            <Route path="logout" element={<ProfileLogoutPage />} />
           </Route>
 
         </Route>
+
+        
+        {/* standalone logout inside dashboard (no profile layout) */}
+        <Route
+          path="/dashboard/profile/logout"
+          element={
+            <ProtectedRoute>
+              <ProfileLogoutPage />
+            </ProtectedRoute>
+          }
+        />
 
         {/* auth */}
         <Route path="/logout" element={<Logout />} />

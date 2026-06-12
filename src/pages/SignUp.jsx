@@ -115,13 +115,18 @@ const SignUp = () => {
     } catch (err) {
       console.log('Signup error full:', err?.response?.data);
       const data = err?.response?.data;
-      if (data?.errors && typeof data.errors === 'object') {
-        const mapped = {};
-        Object.keys(data.errors).forEach(k => {
-          const v = data.errors[k];
-          mapped[k] = Array.isArray(v) ? v[0] : v;
-        });
-        setErrors(prev => ({ ...prev, ...mapped }));
+      if (data?.errors) {
+        if (Array.isArray(data.errors)) {
+          const msgs = data.errors.map(e => e?.msg || e?.message || e).filter(Boolean);
+          setApiError(msgs.map(m => `* ${m}`).join('\n'));
+        } else if (typeof data.errors === 'object') {
+          const mapped = {};
+          Object.keys(data.errors).forEach(k => {
+            const v = data.errors[k];
+            mapped[k] = Array.isArray(v) ? v[0] : v;
+          });
+          setErrors(prev => ({ ...prev, ...mapped }));
+        }
       } else {
         setApiError(data?.message || data?.error || data?.msg || data?.detail || "Something went wrong. Please try again.");
       }
@@ -269,7 +274,7 @@ const SignUp = () => {
               {loading ? "Creating..." : "Create Account →"}
             </button>
             
-            {apiError && <p className="field-error" style={{ display: 'block', textAlign: 'center', marginTop: '12px', marginBottom: '12px' }}>{apiError}</p>}
+            {apiError && <p className="api-error-msg">{apiError}</p>}
             
             <div className="login-link">Already have an account? <Link to="/login">Login</Link></div>
           </form>

@@ -895,35 +895,40 @@ body {
   }
 
   .ps-problem-box {
-    padding: 16px;
-    border-radius: 16px;
+    background: radial-gradient(circle at center top, rgba(255, 91, 91, 0.14), rgb(7, 20, 16));
+    padding: 30px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
     width: 100%;
     box-sizing: border-box;
   }
 
   .ps-problem-box h4 {
-    font-size: 14px;
-    text-align: center;
-    margin-bottom: 16px;
-    padding: 0;
+    margin-bottom: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #d1d5db;
+    padding: 6px 10px;
+    text-align: left;
   }
 
   .ps-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
     width: 100%;
   }
 
   .ps-card {
     display: flex;
     flex-direction: column;
-    padding: 14px;
     gap: 10px;
+    background: rgba(3, 13, 11, 0.9);
+    padding: 16px;
+    border-radius: 14px;
+    transition: 0.3s;
     align-items: flex-start;
-    background: rgba(3, 13, 11, 0.8);
     box-sizing: border-box;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
     width: 100%;
   }
 
@@ -932,27 +937,26 @@ body {
     min-width: 0;
   }
 
+  .ps-card:hover {
+    transform: translateY(-6px);
+    background: #1f2937;
+  }
+
   .ps-card h3 {
     font-size: 14px;
     margin-bottom: 4px;
+    color: #fff;
   }
 
   .ps-card p {
     font-size: 12px;
-    line-height: 1.5;
     color: #9ca3af;
-  }
-
-  .ps-card:hover {
-    transform: none;
-    background: rgba(3, 13, 11, 0.8);
+    line-height: 1.4;
   }
 
   .icon {
     width: 36px;
     height: 36px;
-    font-size: 16px;
-    flex-shrink: 0;
     border-radius: 10px;
   }
 
@@ -1379,37 +1383,44 @@ body {
   }
 
   .ps-problem-box {
-    padding: 12px;
-    border-radius: 14px;
-  }
-
-  .ps-problem-box {
-    padding: 12px;
+    padding: 14px;
     border-radius: 14px;
   }
 
   .ps-problem-box h4 {
-    font-size: 12px;
     margin-bottom: 12px;
+    font-size: 13px;
+    padding: 4px 6px;
+    text-align: left;
   }
 
   .ps-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .ps-card {
-    padding: 10px;
-    gap: 6px;
-    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 8px;
+    border-radius: 12px;
   }
 
   .ps-card h3 {
     font-size: 13px;
+    margin-bottom: 3px;
   }
 
   .ps-card p {
     font-size: 11px;
+    line-height: 1.3;
+  }
+
+  .icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
   }
 
   .icon {
