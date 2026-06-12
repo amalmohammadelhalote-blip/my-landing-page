@@ -7,6 +7,7 @@ import ForgetPassword from "./pages/ForgetPassword";
 import VerifyCode from "./pages/VerifyCode";
 import ResetPassword from "./pages/ResetPassword";
 import Logout from "./pages/Logout";
+import OfflinePage from "./components/OfflinePage";
 
 // الجديد
 import DashboardLayout from "./Layout/DashboardLayout";
@@ -28,6 +29,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 function App() {
   return (
     <Router>
+      <OfflinePage />
       <Routes>
 
         {/* صفحات عادية */}
