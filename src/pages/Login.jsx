@@ -77,16 +77,23 @@ const Login = () => {
       }
 
     } catch (err) {
-      console.log(err);
+      console.log('Login error:', err?.response?.data);
+      const data = err?.response?.data;
       const status = err?.response?.status;
-      const serverMsg = err?.response?.data?.message;
 
       if (status === 401 || status === 403) {
         setApiError("⛔ You are not authorized to access this dashboard.");
-      } else if (serverMsg) {
-        setApiError(serverMsg);
+      } else if (data?.errors) {
+        if (Array.isArray(data.errors)) {
+          const msgs = data.errors.map(e => e?.msg || e?.message || e).filter(Boolean);
+          setApiError(msgs.map(m => `* ${m}`).join('\n'));
+        } else if (data?.message) {
+          setApiError(data.message);
+        } else {
+          setApiError("Something went wrong. Please try again.");
+        }
       } else {
-        setApiError("Something went wrong. Please try again.");
+        setApiError(data?.message || data?.error || data?.msg || data?.detail || "Something went wrong. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -146,7 +153,6 @@ const Login = () => {
               </button>
             </div>
             {errors.password && <span className="field-error">{errors.password}</span>}
-            {apiError && <span className="field-error">{apiError}</span>}
           </div>
 
           <div className="form-footer" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
@@ -160,6 +166,7 @@ const Login = () => {
           <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}
           </button>
+          {apiError && <p className="api-error-msg">{apiError}</p>}
         </form>
       </div>
     </div>

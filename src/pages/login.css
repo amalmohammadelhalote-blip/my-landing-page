@@ -303,6 +303,19 @@ body {
   box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1) !important;
 }
 
+.api-error-msg {
+  color: #ef4444 !important;
+  font-weight: 600 !important;
+  text-align: left !important;
+  font-size: 13px !important;
+  margin: 16px 0 !important;
+  padding: 10px 14px !important;
+  background: rgba(239, 68, 68, 0.1) !important;
+  border-radius: 10px !important;
+  line-height: 1.6 !important;
+  white-space: pre-line !important;
+}
+
 .field-error {
   color: #ff5252;
   font-size: 12px;
