@@ -388,6 +388,9 @@ const Devices = () => {
                     if (e.key === 'Enter') navigate(`/dashboard/devices/${device._id || device.id}`);
                   }}
                 >
+                  <div className="card-top-icons">
+                    <Bluetooth size={28} className={`bt-icon ${status === 'ON' ? 'on' : 'off'}`} />
+                  </div>
                   <div className="device-details">
                     <h4>{device.name || 'Smart TV'}</h4>
                     <span className="kwh-text">{getConsumptionText(device)}</span>
