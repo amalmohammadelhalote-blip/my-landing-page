@@ -109,6 +109,7 @@ const Login = () => {
             <div className="field-wrapper">
               <input
                 type="email"
+                className={errors.email ? "input-error" : ""}
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => {
@@ -127,6 +128,7 @@ const Login = () => {
             <div className="field-wrapper">
               <input
                 type={showPassword ? "text" : "password"}
+                className={errors.password ? "input-error" : ""}
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => {

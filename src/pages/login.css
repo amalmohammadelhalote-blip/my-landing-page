@@ -123,6 +123,11 @@ body {
   box-shadow: 0 0 6px var(--neon-green);
 }
 
+.field-wrapper input.input-error {
+  border-color: #ff4d4d !important;
+  box-shadow: 0 0 6px rgba(255, 77, 77, 0.6) !important;
+}
+
 .field-wrapper input:-webkit-autofill,
 .field-wrapper input:-webkit-autofill:hover,
 .field-wrapper input:-webkit-autofill:focus,

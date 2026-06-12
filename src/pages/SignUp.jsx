@@ -263,13 +263,14 @@ const SignUp = () => {
 
             </div>
 
-            {apiError && <p className="field-error" style={{ textAlign: 'center', marginBottom: '12px' }}>{apiError}</p>}
-
             {/* Password Strength removed per request */}
 
             <button className="create-btn" type="submit" disabled={loading}>
               {loading ? "Creating..." : "Create Account →"}
             </button>
+            
+            {apiError && <p className="field-error" style={{ display: 'block', textAlign: 'center', marginTop: '12px', marginBottom: '12px' }}>{apiError}</p>}
+            
             <div className="login-link">Already have an account? <Link to="/login">Login</Link></div>
           </form>
         </div>
