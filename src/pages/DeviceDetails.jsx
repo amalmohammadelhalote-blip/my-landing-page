@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Search, Bluetooth, Lightbulb, Zap, Plug, Timer, Coins, Power, Edit, Trash2 } from 'lucide-react';
+import { Bluetooth, Lightbulb, Zap, Plug, Timer, Coins, Power, Edit, Trash2 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
 import ReactMarkdown from 'react-markdown';
 import { deviceService, categoryService, locationService, reportService } from '../api/services';
@@ -503,11 +503,6 @@ export default function DeviceDetails() {
       {/* HEADER */}
       <header className="top-header">
         <h1>Device Details</h1>
-
-        <div className="search-bar">
-          <Search size={18} />
-          <input type="text" placeholder="Search" />
-        </div>
       </header>
 
       {/* CONTENT */}
