@@ -82,6 +82,7 @@ const ForgetPassword = () => {
             <div className="field-wrapper">
               <input
                 type="email"
+                className={error ? "input-error" : ""}
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => {
