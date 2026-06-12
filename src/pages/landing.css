@@ -1499,7 +1499,8 @@ body {
   }
 
   .how-it-works-title {
-    font-size: 13px;
+    font-size: 19px;
+    line-height: 1.4;
   }
 
   .use-section {
@@ -2771,10 +2772,11 @@ img {
 }
 
 .how-it-works-title {
-  font-size: 14px;
+  font-size: 19px;
   font-weight: 600;
   color: white;
   margin: 0;
+  line-height: 1.4;
 }
 
 .how-it-works-desc {
