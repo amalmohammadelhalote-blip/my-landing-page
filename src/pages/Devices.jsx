@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Bluetooth } from 'lucide-react';
+import { Search, Tv, Bluetooth } from 'lucide-react';
+import EmptyState from '../components/EmptyState';
 import { categoryService, deviceService, locationService, readingService } from '../api/services';
 import "./Devices.css";
 import "./AddDevice.css";
@@ -338,53 +339,98 @@ const Devices = () => {
       ) : null}
 
       {!loading && (
-        <div className="devices-full-grid">
-          {renderedDevices.map((device) => {
-            const status = device?.status || (device?.isOn ? 'ON' : 'OFF');
-            return (
-              <div
-                className="device-item-card"
-                key={device._id || device.id}
-                onClick={() => navigate(`/dashboard/devices/${device._id || device.id}`)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') navigate(`/dashboard/devices/${device._id || device.id}`);
+        <>
+          <div className="filter-section">
+            <div className="main-toggle-filters">
+              <button
+                className={filter === 'Location' ? 'btn-yellow' : 'btn-outline'}
+                onClick={() => {
+                  setFilter('Location');
+                  setActiveSubFilter('All devices');
                 }}
               >
-                <div className="card-top-icons">
-                  <Bluetooth size={28} className={`bt-icon ${status === 'ON' ? 'on' : 'off'}`} />
-                </div>
-                <div className="device-details">
-                  <h4>{device.name || 'Smart TV'}</h4>
-                  <span className="kwh-text">{getConsumptionText(device)}</span>
-                </div>
-                <div className="device-divider" />
-                <div className="card-footer-switch">
-                  <div
-                    className={`ui-switch ${status === 'ON' ? 'is-on' : ''}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleDevice(device._id, status);
-                    }}
-                  >
-                    <div className="switch-thumb" />
+                Location
+              </button>
+              <button
+              className={filter === 'Category' ? 'btn-yellow' : 'btn-outline'}
+                onClick={() => {
+                  setFilter('Category');
+                  setActiveSubFilter('All devices');
+                }}
+              >
+                Category
+              </button>
+            </div>
+
+            <div className="sub-filters-row">
+              {visibleFilters.map((f) => (
+                <span
+                  key={f}
+                  className={`filter-chip ${activeSubFilter === f ? 'active' : ''}`}
+                  onClick={() => setActiveSubFilter(f)}
+                >
+                  {f}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="devices-full-grid">
+            {renderedDevices.map((device) => {
+              const status = device?.status || (device?.isOn ? 'ON' : 'OFF');
+              return (
+                <div
+                  className="device-item-card"
+                  key={device._id || device.id}
+                  onClick={() => navigate(`/dashboard/devices/${device._id || device.id}`)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') navigate(`/dashboard/devices/${device._id || device.id}`);
+                  }}
+                >
+                  <div className="card-top-icons">
+                    <Bluetooth size={28} className={`bt-icon ${status === 'ON' ? 'on' : 'off'}`} />
                   </div>
-                  <span className={`status-txt ${status === 'ON' ? 'on' : 'off'}`}>
-                    {status === 'ON' ? 'ON' : 'OFF'}
-                  </span>
+                  <div className="device-details">
+                    <h4>{device.name || 'Smart TV'}</h4>
+                    <span className="kwh-text">{getConsumptionText(device)}</span>
+                    <p className="loc-text">
+                      {locationMap[device.location] || locationMap[device.location?._id] || device.location?.name || device.location || 'Unknown'}
+                    </p>
+                  </div>
+                  <div className="device-divider" />
+                  <div className="card-footer-switch">
+                    <div
+                      className={`ui-switch ${status === 'ON' ? 'is-on' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleDevice(device._id, status);
+                      }}
+                    >
+                      <div className="switch-thumb" />
+                    </div>
+                    <span className={`status-txt ${status === 'ON' ? 'on' : 'off'}`}>
+                      {status === 'ON' ? 'ON' : 'OFF'}
+                    </span>
+                  </div>
                 </div>
+              );
+            })}
+            {renderedDevices.length === 0 && devices.length > 0 && (
+              <div className="no-results-message" style={{ gridColumn: '1/-1', textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
+                <p>No devices found for this filter.</p>
               </div>
-            );
-          })}
-        </div>
+            )}
+          </div>
+        </>
       )}
 
       {!loading && !devices.length && (
         <div className="empty-state">
            <img src={noDeviceImg} alt="No devices" className="illustration" />
            <h2>No device connect</h2>
-           <button className="confirm-btn" onClick={() => navigate('/dashboard/devices/add')}>
+           <button className="confirm-btn btn-primary" onClick={() => navigate('/dashboard/devices/add')}>
               Add New device
            </button>
         </div>
