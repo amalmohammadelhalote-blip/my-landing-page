@@ -459,8 +459,9 @@ export default function DeviceDetails() {
 
             {error && <p className="error-txt">{error}</p>}
 
-            <button type="submit" className="confirm-btn" disabled={isSubmitting}>
-              {isSubmitting ? 'Saving...' : 'Confirm changes'}
+            <button type="submit" className="confirm-btn" disabled={isSubmitting}
+              style={{ background: 'linear-gradient(to right, #16a34a, #29e96f)', boxShadow: '0 5px 15px rgba(34, 197, 94, 0.4)' }}>
+              {isSubmitting ? 'Saving...' : 'Edit device'}
             </button>
           </form>
         </div>
