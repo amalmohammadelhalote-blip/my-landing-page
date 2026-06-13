@@ -1700,6 +1700,17 @@ body {
     padding: clamp(60px, 12vh, 100px) clamp(20px, 5vw, 32px);
   }
 
+  .use-section {
+    padding: clamp(50px, 10vh, 80px) clamp(20px, 5vw, 32px);
+  }
+
+  .features-grid-layout,
+  .use-grid-layout,
+  .how-it-works-grid {
+    grid-template-columns: 1fr;
+    gap: clamp(14px, 3vw, 20px);
+  }
+
   .ps-grid {
     grid-template-columns: 1fr;
     gap: clamp(14px, 3vw, 20px);
@@ -1714,13 +1725,6 @@ body {
   .how-it-works-intro {
     text-align: left;
     width: 100%;
-  }
-
-  .features-grid-layout,
-  .use-grid-layout,
-  .how-it-works-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: clamp(14px, 3vw, 20px);
   }
 
   .why-grid {
@@ -3605,4 +3609,141 @@ footer {
   display: flex;
   gap: 0.8rem;
   flex-wrap: wrap;
+}
+
+/* ===== MOBILE OVERRIDES (placed after all base styles to win cascade) ===== */
+
+@media (max-width: 480px) {
+  .ps-section {
+    padding: 50px 16px;
+  }
+  .features-section {
+    padding: 40px 16px;
+  }
+  .use-section {
+    padding: 30px 16px;
+  }
+  .pricing-container {
+    padding: 40px 16px;
+  }
+  .faq-section {
+    padding: 40px 16px;
+  }
+  .features-intro,
+  .use-intro,
+  .how-it-works-intro {
+    text-align: left;
+    width: 100%;
+  }
+  .pricing-header {
+    max-width: 100%;
+    margin: 0 0 20px;
+  }
+  .pricing-header h1 {
+    text-align: left;
+  }
+  .pricing-header p {
+    text-align: left;
+    max-width: 100%;
+    margin: 0;
+  }
+  .faq-header {
+    text-align: left;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 640px) {
+  .features-section {
+    padding: 60px 24px;
+  }
+  .use-section {
+    padding: 50px 24px;
+  }
+  .pricing-container {
+    padding: 50px 24px;
+  }
+  .faq-section {
+    padding: 50px 24px;
+  }
+  .features-intro,
+  .use-intro,
+  .how-it-works-intro {
+    text-align: left;
+    width: 100%;
+  }
+  .pricing-header {
+    max-width: 100%;
+    margin: 0 0 20px;
+  }
+  .faq-header {
+    text-align: left;
+    max-width: 100%;
+  }
+  .features-grid-layout,
+  .use-grid-layout,
+  .how-it-works-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .ps-section {
+    padding: 80px 40px;
+  }
+  .features-section {
+    padding: 60px 40px;
+  }
+  .use-section {
+    padding: 50px 40px;
+  }
+  .pricing-container {
+    padding: 60px 40px;
+  }
+  .faq-section {
+    padding: 60px 40px;
+  }
+  .features-intro,
+  .use-intro,
+  .how-it-works-intro {
+    text-align: left;
+    width: 100%;
+  }
+  .pricing-header {
+    max-width: 100%;
+    margin: 0 0 30px;
+  }
+  .faq-header {
+    text-align: left;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .features-section {
+    padding: 80px 60px;
+  }
+  .use-section {
+    padding: 70px 60px;
+  }
+  .pricing-container {
+    padding: 80px 60px;
+  }
+  .faq-section {
+    padding: 80px 60px;
+  }
+  .features-intro,
+  .use-intro,
+  .how-it-works-intro {
+    text-align: left;
+    width: 100%;
+  }
+  .pricing-header {
+    max-width: 100%;
+    margin: 0 0 30px;
+  }
+  .faq-header {
+    text-align: left;
+    max-width: 100%;
+  }
 }
