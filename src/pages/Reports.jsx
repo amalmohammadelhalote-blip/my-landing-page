@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Search, Lightbulb, Zap, Clock, ChevronDown } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, Tooltip } from 'recharts';
 import { readingService, homeService, deviceService, reportService } from '../api/services';
+import EmptyState from '../components/EmptyState';
 import './Reports.css';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -227,7 +228,11 @@ export default function Reports() {
 
       {error && <p className="dashboard-error">{error}</p>}
 
-      <div className="report-grid">
+      {!loading && !devices.length && <EmptyState type="report" />}
+
+      {!loading && devices.length > 0 && (
+        <>
+        <div className="report-grid">
         <div className="report-left">
           <div className="report-panel">
             <div className="chart-header-row">
@@ -423,6 +428,8 @@ export default function Reports() {
           )}
         </div>
       </div>
+        </>
+      )}
 
       <PeriodPicker
         open={barPickerOpen}

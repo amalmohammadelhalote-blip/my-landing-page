@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { Search, Zap, Thermometer, Lightbulb, Bluetooth, Coins } from 'lucide-react';
+import EmptyState from '../components/EmptyState';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
 import { deviceService, homeService, normalizeListResponse, locationService, readingService, reportService } from '../api/services';
 import './Home.css';
@@ -411,7 +412,9 @@ export default function Dashboard() {
         </div>
       ) : null}
 
-      {!loading && (
+      {!loading && !devices.length && <EmptyState type="device" />}
+
+      {!loading && devices.length > 0 && (
         <>
           <section className="stats-row">
             <div className="stat-card">

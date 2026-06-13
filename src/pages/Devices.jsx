@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Tv, Bluetooth } from 'lucide-react';
+import EmptyState from '../components/EmptyState';
 import { categoryService, deviceService, locationService, readingService } from '../api/services';
 import "./Devices.css";
 import "./AddDevice.css";
-import noDeviceImg from "../assets/no-device.png";
 
 const Devices = () => {
   const navigate = useNavigate();
@@ -425,15 +425,7 @@ const Devices = () => {
         </>
       )}
 
-      {!loading && !devices.length && (
-        <div className="empty-state">
-           <img src={noDeviceImg} alt="No devices" className="illustration" />
-           <h2>No device connect</h2>
-           <button className="confirm-btn btn-primary" onClick={() => navigate('/dashboard/devices/add')}>
-              Add New device
-           </button>
-        </div>
-      )}
+      {!loading && !devices.length && <EmptyState type="device" />}
     </div>
   );
 };
