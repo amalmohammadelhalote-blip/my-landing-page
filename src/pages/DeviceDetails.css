@@ -41,6 +41,20 @@ body {
   font-weight: 700;
 }
 
+.edit-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.edit-header h1 {
+  text-align: center;
+}
+
+.edit-header .back-btn {
+  justify-self: start;
+}
+
 .search-bar {
   display: flex;
   align-items: center;

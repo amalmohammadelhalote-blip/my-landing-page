@@ -387,15 +387,13 @@ export default function DeviceDetails() {
   if (isEditing) {
     return (
       <div className="report-page edit-page-mode">
-        <header className="top-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-            <button className="back-btn" onClick={() => setIsEditing(false)}>Back</button>
-            <h1>Edit device</h1>
-          </div>
+        <header className="top-header edit-header">
+          <button className="back-btn" onClick={() => setIsEditing(false)}>Back</button>
+          <h1>Edit device</h1>
+          <div />
         </header>
 
         <div className="edit-form-container">
-          <h2>Edit device</h2>
           <form onSubmit={handleEditSubmit} className="edit-form">
             <div className="form-group full">
               <label>Device name</label>

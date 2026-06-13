@@ -1845,6 +1845,21 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .features-section {
+    padding: 60px 40px;
+  }
+
+  .use-section {
+    padding: 50px 40px;
+  }
+
+  .features-intro,
+  .use-intro,
+  .how-it-works-intro {
+    text-align: left;
+    width: 100%;
+  }
+
   /* Other Sections */
   .features-grid-layout,
   .use-grid-layout,
@@ -1894,6 +1909,21 @@ body {
 
   section {
     padding: 100px 60px;
+  }
+
+  .features-section {
+    padding: 80px 60px;
+  }
+
+  .use-section {
+    padding: 70px 60px;
+  }
+
+  .features-intro,
+  .use-intro,
+  .how-it-works-intro {
+    text-align: left;
+    width: 100%;
   }
 
   /* Problem Section Small Desktop Fix */
