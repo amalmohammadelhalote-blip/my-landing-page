@@ -224,7 +224,7 @@ const AddDevice = () => {
                     <input
                         type="number"
                         name="maxPower"
-                        placeholder="e.g. 2000"
+                        placeholder="Enter Max power"
                         value={formData.maxPower}
                         onChange={handleChange}
                     />
@@ -236,6 +236,7 @@ const AddDevice = () => {
                         <input
                             type="number"
                             name="maxVolt"
+                            placeholder="Enter Max volt"
                             value={formData.maxVolt}
                             onChange={handleChange}
                         />
@@ -245,6 +246,7 @@ const AddDevice = () => {
                         <input
                             type="number"
                             name="minVolt"
+                            placeholder="Enter Min volt"
                             value={formData.minVolt}
                             onChange={handleChange}
                         />
@@ -257,6 +259,7 @@ const AddDevice = () => {
                         <input
                             type="number"
                             name="maxCurrent"
+                            placeholder="Enter Max current"
                             value={formData.maxCurrent}
                             onChange={handleChange}
                         />
@@ -266,6 +269,7 @@ const AddDevice = () => {
                         <input
                             type="number"
                             name="minCurrent"
+                            placeholder="Enter Min current"
                             value={formData.minCurrent}
                             onChange={handleChange}
                         />
@@ -292,8 +296,9 @@ const AddDevice = () => {
                     />
                 </div>
 
-                <button type="submit" className="confirm-btn">
-                    Confirm changes
+                <button type="submit" className="confirm-btn"
+                  style={{ background: 'linear-gradient(to right, #16a34a, #29e96f)', boxShadow: '0 5px 15px rgba(34, 197, 94, 0.4)' }}>
+                    Add new device
                 </button>
             </form>
         </div>
