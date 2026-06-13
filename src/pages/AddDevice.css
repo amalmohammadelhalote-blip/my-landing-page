@@ -6,13 +6,13 @@
 }
 
 .add-device-header {
-  text-align: left;
+  text-align: center;
   margin-bottom: 30px;
 }
 
 .add-device-header h1 {
   font-size: 24px;
-  color: #fff;
+  color: #22c55e;
   font-weight: 600;
 }
 
@@ -82,7 +82,7 @@
 
 .confirm-btn {
   margin-top: 20px;
-  background: linear-gradient(90deg, #22c55e, #16a34a);
+  background: #22c55e;
   color: white;
   border: none;
   border-radius: 999px;

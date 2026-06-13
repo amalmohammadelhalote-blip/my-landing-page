@@ -51,10 +51,10 @@ const AddDevice = () => {
         name: '',
         description: '',
         maxPower: '',
-        maxVolt: '220',
-        minVolt: '110',
-        maxCurrent: '10',
-        minCurrent: '1',
+        maxVolt: '',
+        minVolt: '',
+        maxCurrent: '',
+        minCurrent: '',
         location: '',
         categoryId: ''
     });
@@ -93,10 +93,10 @@ const AddDevice = () => {
             name: '',
             description: '',
             maxPower: '',
-            maxVolt: '220',
-            minVolt: '110',
-            maxCurrent: '10',
-            minCurrent: '1',
+            maxVolt: '',
+            minVolt: '',
+            maxCurrent: '',
+            minCurrent: '',
             location: '',
             categoryId: ''
         });
@@ -115,8 +115,10 @@ const AddDevice = () => {
                 description: formData.description,
                 maxPower: Number(formData.maxPower),
                 thresholds: {
-                    voltage: { min: Number(formData.minVolt), max: Number(formData.maxVolt) },
-                    current: { min: Number(formData.minCurrent), max: Number(formData.maxCurrent) }
+                    maxVoltage: Number(formData.maxVolt),
+                    minVoltage: Number(formData.minVolt),
+                    maxCurrent: Number(formData.maxCurrent),
+                    minCurrent: Number(formData.minCurrent)
                 },
                 location: formData.location,
                 categoryId: formData.categoryId,

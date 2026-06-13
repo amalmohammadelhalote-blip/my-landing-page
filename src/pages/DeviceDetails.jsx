@@ -218,10 +218,8 @@ export default function DeviceDetails() {
         location: formData.location,
         categoryId: formData.categoryId,
         thresholds: {
-          maxVolt: Number(formData.maxVolt),
-          minVolt: Number(formData.minVolt),
-          maxCurrent: Number(formData.maxCurrent),
-          minCurrent: Number(formData.minCurrent),
+          voltage: { min: Number(formData.minVolt), max: Number(formData.maxVolt) },
+          current: { min: Number(formData.minCurrent), max: Number(formData.maxCurrent) }
         }
       };
       await deviceService.update(deviceId, payload);
@@ -269,10 +267,10 @@ export default function DeviceDetails() {
         setFormData({
           name: devData?.name || '',
           description: devData?.description || '',
-          maxVolt: devData?.thresholds?.maxVolt || '',
-          minVolt: devData?.thresholds?.minVolt || '',
-          maxCurrent: devData?.thresholds?.maxCurrent || '',
-          minCurrent: devData?.thresholds?.minCurrent || '',
+          maxVolt: devData?.thresholds?.voltage?.max ?? devData?.thresholds?.maxVolt ?? '',
+          minVolt: devData?.thresholds?.voltage?.min ?? devData?.thresholds?.minVolt ?? '',
+          maxCurrent: devData?.thresholds?.current?.max ?? devData?.thresholds?.maxCurrent ?? '',
+          minCurrent: devData?.thresholds?.current?.min ?? devData?.thresholds?.minCurrent ?? '',
           location: devData?.location?._id || devData?.location || '',
           categoryId: devData?.categoryId?._id || devData?.categoryId || ''
         });
