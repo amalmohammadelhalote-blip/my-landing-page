@@ -2535,27 +2535,26 @@ img {
 }
 
 .ps-card {
-  display: flex;
-  gap: 15px;
   background: rgba(3, 13, 11, 0.9);
-  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 16px;
   border-radius: 16px;
-  transition: 0.3s;
-}
-
-.ps-card>div:last-child {
-  flex: 1;
-  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 120px;
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
 }
 
 .ps-card:hover {
   transform: translateY(-6px);
-  background: #1f2937;
+  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.28);
 }
 
 .ps-card h3 {
   font-size: 16px;
-  margin-bottom: 6px;
+  margin: 0;
   color: #fff;
 }
 
@@ -2563,6 +2562,7 @@ img {
   font-size: 13px;
   color: #9ca3af;
   line-height: 1.4;
+  margin: 0;
 }
 
 /* ICON STYLES */
@@ -3617,6 +3617,9 @@ footer {
   .ps-section {
     padding: 50px 16px;
   }
+  .ps-grid {
+    grid-template-columns: 1fr;
+  }
   .features-section {
     padding: 40px 16px;
   }
@@ -3654,6 +3657,9 @@ footer {
 }
 
 @media (min-width: 481px) and (max-width: 640px) {
+  .ps-grid {
+    grid-template-columns: 1fr;
+  }
   .features-section {
     padding: 60px 24px;
   }
