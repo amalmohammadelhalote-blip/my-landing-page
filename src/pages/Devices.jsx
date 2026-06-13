@@ -384,7 +384,7 @@ const Devices = () => {
         <div className="empty-state">
            <img src={noDeviceImg} alt="No devices" className="illustration" />
            <h2>No device connect</h2>
-           <button className="confirm-btn btn-primary" onClick={() => navigate('/dashboard/devices/add')}>
+           <button className="confirm-btn" onClick={() => navigate('/dashboard/devices/add')}>
               Add New device
            </button>
         </div>

@@ -198,13 +198,18 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 40px 0;
+  padding: 0;
+  height: calc(100vh - 100px);
+  overflow: hidden;
 }
 
 .illustration {
-  width: 100%;
-  max-width: 500px;
-  margin-bottom: 20px;
+  width: auto;
+  max-width: none;
+  max-height: 70%;
+  margin-bottom: 10px;
+  object-fit: contain;
+  border-radius: 50%;
 }
 
 .empty-state h2 {

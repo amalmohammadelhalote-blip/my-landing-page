@@ -606,6 +606,7 @@ export default function Dashboard() {
           </div>
         </>
       )}
+      {!loading && !devices.length && <EmptyState type="device" />}
       <PeriodPicker
         open={pickerOpen}
         onClose={() => setPickerOpen(false)}

@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { Search, Lightbulb, Zap, Clock, ChevronDown } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, Tooltip } from 'recharts';
 import { readingService, homeService, deviceService, reportService } from '../api/services';
-import EmptyState from '../components/EmptyState';
+import noDeviceImg from "../assets/no-device.png";
 import './Reports.css';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -57,6 +58,7 @@ const CustomLineDot = (props) => {
 };
 
 export default function Reports() {
+  const navigate = useNavigate();
   const [periodBar, setPeriodBar] = useState('Month');
   const [periodLine, setPeriodLine] = useState('Month');
   const [barData, setBarData] = useState([]);
@@ -228,7 +230,15 @@ export default function Reports() {
 
       {error && <p className="dashboard-error">{error}</p>}
 
-      {!loading && !devices.length && <EmptyState type="report" />}
+      {!loading && !devices.length && (
+        <div className="empty-state">
+           <img src={noDeviceImg} alt="No devices" className="illustration" />
+           <h2>No reports available</h2>
+           <button className="confirm-btn" onClick={() => navigate('/dashboard/devices/add')}>
+              Add New device
+           </button>
+        </div>
+      )}
 
       {!loading && devices.length > 0 && (
         <>
