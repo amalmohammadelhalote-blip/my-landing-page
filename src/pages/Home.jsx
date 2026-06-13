@@ -2,10 +2,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { Search, Zap, Thermometer, Lightbulb, Bluetooth, Coins } from 'lucide-react';
-import EmptyState from '../components/EmptyState';
+import noDeviceImg from "../assets/no-device.png";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
 import { deviceService, homeService, normalizeListResponse, locationService, readingService, reportService } from '../api/services';
 import './Home.css';
+import './AddDevice.css';
 
 const getPeriodChartData = (period) => [];
 
@@ -412,7 +413,15 @@ export default function Dashboard() {
         </div>
       ) : null}
 
-      {!loading && !devices.length && <EmptyState type="device" />}
+      {!loading && !devices.length && (
+        <div className="empty-state">
+           <img src={noDeviceImg} alt="No devices" className="illustration" />
+           <h2>No device connect</h2>
+           <button className="confirm-btn" onClick={() => navigate('/dashboard/devices/add')}>
+              Add New device
+           </button>
+        </div>
+      )}
 
       {!loading && devices.length > 0 && (
         <>
@@ -606,7 +615,6 @@ export default function Dashboard() {
           </div>
         </>
       )}
-      {!loading && !devices.length && <EmptyState type="device" />}
       <PeriodPicker
         open={pickerOpen}
         onClose={() => setPickerOpen(false)}

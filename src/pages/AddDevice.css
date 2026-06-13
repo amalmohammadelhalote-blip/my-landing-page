@@ -502,4 +502,17 @@
     width: 80px;
     height: 88px;
   }
+
+  .empty-state {
+    height: calc(100vh - 80px);
+  }
+
+  .illustration {
+    max-height: 55%;
+    border-radius: 0;
+  }
+
+  .empty-state h2 {
+    font-size: 18px;
+  }
 }
