@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import techBackground from "../assets/background3.jpg";
 import roboticHand from "../assets/hand.png";
 import logo from "../assets/logo.png";
-import { User, Mail, Phone, Lock, MapPin, Calendar, Eye, EyeOff } from "lucide-react";
+import { User, Mail, Phone, Lock, MapPin, Eye, EyeOff, Mars, Venus } from "lucide-react";
 import { authService } from "../api/services";
+import DatePicker from "../components/DatePicker";
 import "./Account.css";
 
 const SignUp = () => {
@@ -28,7 +29,6 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [showGender, setShowGender] = useState(false);
 
   const validate = () => {
     const e = {};
@@ -72,7 +72,6 @@ const SignUp = () => {
       else if (!emailRegex.test(value)) fieldErrors.email = 'Please enter a valid email.';
     }
     if (name === 'address' && !value.trim()) fieldErrors.address = 'Address is required.';
-    if (name === 'date_of_birth' && !value) fieldErrors.date_of_birth = 'Date of birth is required.';
     if (name === 'phone') {
       if (!value.trim()) fieldErrors.phone = 'Phone number is required.';
       else if (!/^\d{10,11}$/.test(value)) fieldErrors.phone = 'Phone must be 10–11 digits.';
@@ -161,9 +160,16 @@ const SignUp = () => {
 
               {/* Date of Birth */}
               <div>
-                <div className={`input-icon ${errors.date_of_birth ? 'input-error' : ''}`}>
-                  <Calendar size={16} style={{ marginLeft: 12, color: '#0cdf3b', flexShrink: 0 }} />
-                  <input autoComplete="off" type="date" name="date_of_birth" value={formData.date_of_birth} onChange={handleChange} onBlur={handleBlur} aria-invalid={errors.date_of_birth ? true : false} aria-describedby={errors.date_of_birth ? 'date_of_birth-error' : undefined} />
+                <div className={`input-icon dob-input-icon ${errors.date_of_birth ? 'input-error' : ''}`}>
+                  <DatePicker
+                    value={formData.date_of_birth}
+                    onChange={(val) => {
+                      setFormData(prev => ({ ...prev, date_of_birth: val }));
+                      if (errors.date_of_birth) setErrors(prev => ({ ...prev, date_of_birth: "" }));
+                      if (apiError) setApiError("");
+                    }}
+                    error={errors.date_of_birth}
+                  />
                 </div>
                 {errors.date_of_birth && <span id="date_of_birth-error" className="field-error">{errors.date_of_birth}</span>}
               </div>
@@ -204,41 +210,25 @@ const SignUp = () => {
                 {errors.phone && <span id="phone-error" className="field-error">{errors.phone}</span>}
               </div>
 
-              {/* Gender (collapsed until clicked) */}
+              {/* Gender - Segmented Control */}
               <div>
-                <div className="input-icon" style={{ padding: 8, gap: 8 }}>
-                  <User size={16} style={{ marginLeft: 12, color: '#0cdf3b', flexShrink: 0 }} />
-
-                  <div className="gender-wrapper">
-                    <div
-                      className="gender-selected"
-                      role="button"
-                      tabIndex={0}
-                      aria-haspopup="listbox"
-                      onClick={() => setShowGender(s => !s)}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setShowGender(s => !s); }}
-                    >
-                      <span className="label-text">{formData.gender === 'male' ? 'Male' : 'Female'}</span>
-                      <span className={`chev ${showGender ? 'open' : ''}`}></span>
-                    </div>
-
-                    {showGender && (
-                      <div className="gender-toggle" role="listbox" aria-label="Gender options">
-                        <label className={`gender-option ${formData.gender === 'male' ? 'selected' : ''}`}>
-                          <input type="radio" name="gender" value="male" checked={formData.gender === 'male'} onChange={(e) => { setFormData(prev => ({ ...prev, gender: e.target.value })); setShowGender(false); }} />
-                          <span className="label-text">Male</span>
-                          <span className="radio-indicator" aria-hidden></span>
-                        </label>
-
-                        <label className={`gender-option ${formData.gender === 'female' ? 'selected' : ''}`}>
-                          <input type="radio" name="gender" value="female" checked={formData.gender === 'female'} onChange={(e) => { setFormData(prev => ({ ...prev, gender: e.target.value })); setShowGender(false); }} />
-                          <span className="label-text">Female</span>
-                          <span className="radio-indicator" aria-hidden></span>
-                        </label>
-                      </div>
-                    )}
-                  </div>
-
+                <div className="gender-segmented">
+                  <button
+                    type="button"
+                    className={`seg-option ${formData.gender === 'male' ? 'active' : ''}`}
+                    onClick={() => setFormData(prev => ({ ...prev, gender: 'male' }))}
+                  >
+                    <Mars size={18} />
+                    <span>Male</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={`seg-option ${formData.gender === 'female' ? 'active' : ''}`}
+                    onClick={() => setFormData(prev => ({ ...prev, gender: 'female' }))}
+                  >
+                    <Venus size={18} />
+                    <span>Female</span>
+                  </button>
                 </div>
               </div>
 
