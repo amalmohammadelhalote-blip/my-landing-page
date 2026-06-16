@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Search, Zap } from 'lucide-react';
+import { Zap } from 'lucide-react';
 import noNotificationsImg from "../assets/no notifications.png";
 import { notificationService, normalizeListResponse } from '../api/services';
 import './Notifications.css';
@@ -27,8 +27,6 @@ export default function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [search, setSearch] = useState('');
-
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
@@ -45,15 +43,6 @@ export default function Notifications() {
     fetchNotifications();
   }, []);
 
-  const filtered = notifications.filter((n) => {
-    if (!search) return true;
-    const q = search.toLowerCase();
-    return (
-      (n.title || '').toLowerCase().includes(q) ||
-      (n.body || '').toLowerCase().includes(q)
-    );
-  });
-
   if (loading) {
     return (
       <div className="profile-sub-page">
@@ -69,29 +58,20 @@ export default function Notifications() {
     <div className="profile-sub-page">
       <div className="notif-header">
         <h1 className="notif-title">Notifications</h1>
-        <div className="notif-search">
-          <Search size={18} />
-          <input
-            type="text"
-            placeholder="Search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
       </div>
 
       {error && <p className="dashboard-error">{error}</p>}
 
-      {!error && filtered.length === 0 && (
+      {!error && notifications.length === 0 && (
         <div className="empty-state">
           <img src={noNotificationsImg} alt="No notifications" className="illustration notif-illustration" />
           <h2>No notifications yet</h2>
         </div>
       )}
 
-      {!error && filtered.length > 0 && (
+      {!error && notifications.length > 0 && (
         <div className="notif-list">
-          {filtered.map((n) => (
+          {notifications.map((n) => (
             <div key={n._id} className="notif-card">
               <div className="notif-card-left">
                 <div className="notif-icon">

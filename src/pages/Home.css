@@ -748,7 +748,7 @@
   }
 }
 
-/* ───── Mobile: title above, search+bell below ───── */
+/* ───── Mobile ───── */
 @media (max-width: 768px) {
   .top-header {
     flex-direction: column !important;

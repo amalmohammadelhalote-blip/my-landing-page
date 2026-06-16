@@ -1,11 +1,7 @@
 /* ───── Notifications Header ───── */
 .notif-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  text-align: center;
   margin-bottom: 28px;
-  flex-wrap: wrap;
 }
 
 .notif-title {
@@ -13,37 +9,6 @@
   font-weight: 700;
   color: #fff;
   margin: 0;
-  white-space: nowrap;
-}
-
-.notif-search {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 999px;
-  padding: 10px 18px;
-  min-width: 240px;
-  max-width: 100%;
-}
-
-.notif-search svg {
-  color: #64748b;
-  flex-shrink: 0;
-}
-
-.notif-search input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: #e2e8f0;
-  font-size: 14px;
-  outline: none;
-}
-
-.notif-search input::placeholder {
-  color: #64748b;
 }
 
 /* ───── Loading ───── */
