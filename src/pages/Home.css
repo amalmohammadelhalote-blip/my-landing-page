@@ -748,11 +748,25 @@
   }
 }
 
-/* ───── Header actions (search + bell) ───── */
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* ───── Mobile: title above, search+bell below ───── */
+@media (max-width: 768px) {
+  .top-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .header-actions {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 10px !important;
+  }
+
+  .search-bar {
+    flex: 1 !important;
+    min-width: 0 !important;
+    width: auto !important;
+  }
 }
 
 /* ───── Notification Bell Button (Home header) ───── */
