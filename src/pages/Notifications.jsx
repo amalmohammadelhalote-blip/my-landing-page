@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Zap } from 'lucide-react';
 import noNotificationsImg from "../assets/no notifications.png";
 import { notificationService, normalizeListResponse } from '../api/services';
+import ProfileMobileHeader from './profile/ProfileMobileHeader';
 import './Notifications.css';
 
 const timeAgo = (dateStr) => {
@@ -46,9 +47,7 @@ export default function Notifications() {
   if (loading) {
     return (
       <div className="profile-sub-page">
-        <div className="notif-header">
-          <h1 className="notif-title">Notifications</h1>
-        </div>
+        <ProfileMobileHeader title="Notifications" />
         <div className="notif-loading">Loading...</div>
       </div>
     );
@@ -56,9 +55,7 @@ export default function Notifications() {
 
   return (
     <div className="profile-sub-page">
-      <div className="notif-header">
-        <h1 className="notif-title">Notifications</h1>
-      </div>
+      <ProfileMobileHeader title="Notifications" />
 
       {error && <p className="dashboard-error">{error}</p>}
 
