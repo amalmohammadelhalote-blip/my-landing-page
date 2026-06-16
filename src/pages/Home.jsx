@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
-import { Search, Zap, Thermometer, Lightbulb, Bluetooth, Coins } from 'lucide-react';
+import { Search, Bell, Zap, Thermometer, Lightbulb, Bluetooth, Coins } from 'lucide-react';
 import noDeviceImg from "../assets/no-device.png";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
 import { deviceService, homeService, normalizeListResponse, locationService, readingService, reportService } from '../api/services';
@@ -380,14 +380,19 @@ export default function Dashboard() {
     <>
       <header className="top-header">
         <h1>Home</h1>
-        <div className="search-bar">
-          <Search size={18} />
-          <input
-            type="text"
-            placeholder="Search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        <div className="header-actions">
+          <div className="search-bar">
+            <Search size={18} />
+            <input
+              type="text"
+              placeholder="Search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <button className="notif-bell-btn" onClick={() => navigate('/dashboard/profile/notifications')} type="button">
+            <Bell size={20} />
+          </button>
         </div>
       </header>
 

@@ -11,8 +11,9 @@ const extractArrayPayload = (payload) => {
   if (Array.isArray(payload?.docs)) return payload.docs;
   if (Array.isArray(payload?.items)) return payload.items;
   if (Array.isArray(payload?.data)) return payload.data;
+  if (Array.isArray(payload?.notifications)) return payload.notifications;
 
-  const keys = ['devices', 'results', 'docs', 'items', 'data'];
+  const keys = ['devices', 'results', 'docs', 'items', 'data', 'notifications'];
   for (const key of keys) {
     const nested = payload[key];
     const extracted = extractArrayPayload(nested);
@@ -109,6 +110,11 @@ export const authService = {
   resetPassword: (data) => new Promise((res) => {
     setTimeout(() => res({ data: { status: "success" } }), 1000);
   }),
+};
+
+export const notificationService = {
+  registerToken: (data) => api.post('/notifications/register-token', data),
+  getMyNotifications: () => api.get('/notifications/my-notifications'),
 };
 
 export const reportService = {

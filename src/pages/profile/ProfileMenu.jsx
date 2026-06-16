@@ -17,6 +17,7 @@ const NOTIFICATIONS_KEY = 'ecoshid_notifications';
 const NAV_ITEMS = [
   { key: 'edit', path: '/dashboard/profile/edit', label: 'Edit profile', icon: User },
   { key: 'password', path: '/dashboard/profile/password', label: 'Change password', icon: Lock },
+  { key: 'notifications', path: '/dashboard/profile/notifications', label: 'Notifications', icon: Bell },
   { key: 'delete', path: '/dashboard/profile/delete', label: 'Delete account', icon: Trash2, danger: true },
   { key: 'privacy', path: '/dashboard/profile/privacy', label: 'Privacy policy', icon: Shield },
   { key: 'help', path: '/dashboard/profile/help', label: 'Help center', icon: HelpCircle },

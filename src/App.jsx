@@ -22,6 +22,7 @@ import ProfilePrivacy from "./pages/profile/ProfilePrivacy";
 import ProfileHelp from "./pages/profile/ProfileHelp";
 import ProfileLogoutPage from "./pages/profile/ProfileLogout";
 import AddDevice from "./pages/AddDevice";
+import Notifications from "./pages/Notifications";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
             <Route path="delete" element={<ProfileDelete />} />
             <Route path="privacy" element={<ProfilePrivacy />} />
             <Route path="help" element={<ProfileHelp />} />
+            <Route path="notifications" element={<Notifications />} />
           </Route>
 
         </Route>
