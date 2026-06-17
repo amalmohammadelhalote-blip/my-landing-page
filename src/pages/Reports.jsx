@@ -65,7 +65,9 @@ export default function Reports() {
   const [barData, setBarData] = useState([]);
   const [lineData, setLineData] = useState([]);
   const [pieData, setPieData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [barLoading, setBarLoading] = useState(false);
+  const [lineLoading, setLineLoading] = useState(false);
   const [error, setError] = useState('');
   const [dashboardData, setDashboardData] = useState(null);
   const [devices, setDevices] = useState([]);
@@ -171,7 +173,7 @@ export default function Reports() {
 
   const fetchBarData = async (period, year, month) => {
     try {
-      setLoading(true);
+      setBarLoading(true);
       let res;
       if (selectedDevice) {
         if (period === 'Week') res = await reportService.getDeviceWeekly(selectedDevice, year, month);
@@ -185,11 +187,12 @@ export default function Reports() {
       const rData = res?.data?.data || res?.data;
       setBarData(normalizeChartData(rData, period));
     } catch (err) { console.error('Bar data fetch failed', err); setBarData([]); }
-    finally { setLoading(false); }
+    finally { setBarLoading(false); }
   };
 
   const fetchLineData = async (period, year, month) => {
     try {
+      setLineLoading(true);
       let res;
       if (selectedDevice) {
         if (period === 'Week') res = await reportService.getDeviceWeekly(selectedDevice, year, month);
@@ -203,12 +206,14 @@ export default function Reports() {
       const rData = res?.data?.data || res?.data;
       setLineData(normalizeChartData(rData, period));
     } catch (err) { console.error('Line data fetch failed', err); setLineData([]); }
+    finally { setLineLoading(false); }
   };
 
   useEffect(() => {
     fetchDashboardStats();
     fetchDevices();
     fetchTopDevices(breakdownYear, breakdownMonth);
+    setInitialLoading(false);
   }, []);
 
   useEffect(() => {
@@ -231,7 +236,7 @@ export default function Reports() {
 
       {error && <p className="dashboard-error">{error}</p>}
 
-      {!loading && !devices.length && (
+      {!initialLoading && !devices.length && (
         <div className="empty-state">
            <img src={noDeviceImg} alt="No devices" className="illustration" />
            <h2>No reports available</h2>
@@ -241,7 +246,7 @@ export default function Reports() {
         </div>
       )}
 
-      {!loading && devices.length > 0 && (
+      {!initialLoading && devices.length > 0 && (
         <>
         <div className="report-grid">
         <div className="report-left">
@@ -264,7 +269,7 @@ export default function Reports() {
             </div>
 
             <div className="report-chart-card" style={{ marginTop: '18px' }}>
-              {loading ? (
+              {barLoading ? (
                 <div className="skeleton skeleton-chart" style={{ height: '100%' }} />
               ) : barData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={280} minWidth={0}>
