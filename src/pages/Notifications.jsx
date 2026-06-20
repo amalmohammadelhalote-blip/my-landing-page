@@ -62,9 +62,19 @@ export default function Notifications() {
     setPushEnabled(next);
     localStorage.setItem('ecoshid_notifications_enabled', String(next));
     if (next) {
-      enableNotifications();
-    } else {
-      disableNotifications();
+      try {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          const { getFcmToken } = await import('../firebase');
+          const token = await getFcmToken();
+          if (token) {
+            const { notificationService } = await import('../api/services');
+            await notificationService.registerToken({ token });
+          }
+        }
+      } catch (err) {
+        console.warn('Push notification setup failed (non-blocking):', err);
+      }
     }
   };
 
