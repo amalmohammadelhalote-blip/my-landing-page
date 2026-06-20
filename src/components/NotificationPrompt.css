@@ -1,0 +1,189 @@
+/* ───── Notification Prompt Modal Overlay ───── */
+.notif-prompt-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ───── Notification Prompt Card ───── */
+.notif-prompt-card {
+  background: linear-gradient(135deg, rgba(13, 33, 23, 0.95), rgba(2, 10, 6, 0.98));
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 28px;
+  padding: 32px;
+  width: 420px;
+  max-width: 90%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(34, 197, 94, 0.1);
+  animation: scaleIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ───── Close Button ───── */
+.notif-prompt-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.notif-prompt-close:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+/* ───── Icon Pulse Animation ───── */
+.notif-prompt-icon-container {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notif-prompt-pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.2);
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+.notif-prompt-icon {
+  color: #22c55e;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.4));
+}
+
+/* ───── Title & Description ───── */
+.notif-prompt-title {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 12px;
+  letter-spacing: -0.5px;
+}
+
+.notif-prompt-desc {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+/* ───── Features List ───── */
+.notif-prompt-features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.notif-prompt-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #e2e8f0;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.feature-icon {
+  color: #facc15;
+}
+
+/* ───── Action Buttons ───── */
+.notif-prompt-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notif-btn-allow {
+  background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+}
+
+.notif-btn-allow:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+}
+
+.notif-btn-skip {
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  padding: 12px;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.notif-btn-skip:hover {
+  background: rgba(148, 163, 184, 0.05);
+  color: #fff;
+  border-color: rgba(148, 163, 184, 0.3);
+}
+
+/* ───── Keyframes ───── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0.2;
+  }
+}

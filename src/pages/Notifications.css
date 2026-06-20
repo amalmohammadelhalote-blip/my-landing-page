@@ -17,6 +17,105 @@
   padding: 60px 0;
   color: #94a3b8;
   font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.notif-loading p {
+  margin: 0;
+}
+
+.notif-loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(34, 197, 94, 0.15);
+  border-top-color: #22c55e;
+  border-radius: 50%;
+  animation: spinNotif 0.8s linear infinite;
+}
+
+@keyframes spinNotif {
+  to { transform: rotate(360deg); }
+}
+
+/* ───── Push Notification Toggle ───── */
+.notif-push-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 18px 22px;
+  margin-bottom: 24px;
+  transition: all 0.25s ease;
+}
+
+.notif-push-toggle:hover {
+  border-color: rgba(34, 197, 94, 0.15);
+}
+
+.notif-push-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #22c55e;
+}
+
+.notif-push-info h4 {
+  margin: 0 0 2px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.notif-push-info p {
+  margin: 0;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* ───── Toggle Button ───── */
+.notif-toggle-btn {
+  width: 52px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 3px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.notif-toggle-btn.active {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: rgba(34, 197, 94, 0.4);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
+}
+
+.notif-toggle-handle {
+  display: block;
+  width: 22px;
+  height: 22px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.notif-toggle-btn.active .notif-toggle-handle {
+  transform: translateX(24px);
+}
+
+/* ───── Empty State Description ───── */
+.empty-state-desc {
+  color: #64748b;
+  font-size: 14px;
+  margin: 8px 0 0;
 }
 
 /* ───── Notifications List ───── */
@@ -128,4 +227,9 @@
   .notif-illustration {
     width: 250px;
   }
+
+  .notif-push-toggle {
+    padding: 14px 16px;
+  }
 }
+

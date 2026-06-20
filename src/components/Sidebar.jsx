@@ -1,10 +1,14 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
-import { Home, BarChart2, Smartphone, Settings, LogOut, User, X } from "lucide-react";
+import { Home, BarChart2, Smartphone, Settings, LogOut, User, Bell, X } from "lucide-react";
 import logo from "../assets/logo.png";
+import { useNotification } from '../context/NotificationContext';
 import "./Sidebar.css";
 
 const Sidebar = ({ isOpen, onClose }) => {
+  const notificationCtx = useNotification?.() || {};
+  const { unreadCount = 0 } = notificationCtx;
+
   return (
     <>
       {/* Mobile Overlay */}
@@ -51,6 +55,22 @@ const Sidebar = ({ isOpen, onClose }) => {
             <Smartphone size={20} />
             <span>Devices</span>
           </NavLink>
+
+          <NavLink 
+            to="/dashboard/profile/notifications" 
+            className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+            onClick={onClose}
+          >
+            <div className="sidebar-bell-wrapper">
+              <Bell size={20} />
+              {unreadCount > 0 && (
+                <span className="sidebar-bell-badge">
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </span>
+              )}
+            </div>
+            <span>Notifications</span>
+          </NavLink>
         </nav>
 
         {/* Sidebar Footer (Profile, Settings, Logout) */}
@@ -63,7 +83,6 @@ const Sidebar = ({ isOpen, onClose }) => {
             <User size={20} />
             <span>My Profile</span>
           </NavLink>
-          
           
 
           <NavLink 

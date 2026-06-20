@@ -24,6 +24,9 @@ import ProfileLogoutPage from "./pages/profile/ProfileLogout";
 import AddDevice from "./pages/AddDevice";
 import Notifications from "./pages/Notifications";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { NotificationProvider } from "./context/NotificationContext";
+import NotificationPrompt from "./components/NotificationPrompt";
+import NotificationToast from "./components/NotificationToast";
 
 function App() {
   return (
@@ -38,12 +41,16 @@ function App() {
         <Route path="/verify-code" element={<VerifyCode />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* dashboard */}
+        {/* dashboard – wrapped with NotificationProvider */}
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <DashboardLayout />
+              <NotificationProvider>
+                <NotificationPrompt />
+                <NotificationToast />
+                <DashboardLayout />
+              </NotificationProvider>
             </ProtectedRoute>
           }
         >

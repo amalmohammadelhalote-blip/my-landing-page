@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Zap } from 'lucide-react';
+import { Zap, Bell, BellOff } from 'lucide-react';
 import noNotificationsImg from "../assets/no notifications.png";
-import { notificationService, normalizeListResponse } from '../api/services';
+import { useNotification } from '../context/NotificationContext';
 import ProfileMobileHeader from './profile/ProfileMobileHeader';
 import './Notifications.css';
 
@@ -25,30 +25,56 @@ const timeAgo = (dateStr) => {
 };
 
 export default function Notifications() {
-  const [notifications, setNotifications] = useState([]);
+  const {
+    notifications,
+    fetchNotifications,
+    clearUnread,
+    enableNotifications,
+    disableNotifications,
+    isNotificationSupported
+  } = useNotification();
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [pushEnabled, setPushEnabled] = useState(
+    localStorage.getItem('ecoshid_notifications_enabled') === 'true'
+  );
+
   useEffect(() => {
-    const fetchNotifications = async () => {
+    // Clear unread badge when user opens this page
+    clearUnread();
+
+    const loadNotifications = async () => {
       try {
         setLoading(true);
-        const res = await notificationService.getMyNotifications();
-        const data = normalizeListResponse(res);
-        setNotifications(data);
+        await fetchNotifications();
       } catch (err) {
         setError(err?.response?.data?.message || 'Failed to load notifications');
       } finally {
         setLoading(false);
       }
     };
-    fetchNotifications();
+    loadNotifications();
   }, []);
+
+  const handleTogglePush = async () => {
+    if (pushEnabled) {
+      await disableNotifications();
+      setPushEnabled(false);
+    } else {
+      const success = await enableNotifications();
+      setPushEnabled(success);
+    }
+  };
 
   if (loading) {
     return (
       <div className="profile-sub-page">
         <ProfileMobileHeader title="Notifications" />
-        <div className="notif-loading">Loading...</div>
+        <div className="notif-loading">
+          <div className="notif-loading-spinner" />
+          <p>Loading notifications...</p>
+        </div>
       </div>
     );
   }
@@ -57,12 +83,32 @@ export default function Notifications() {
     <div className="profile-sub-page">
       <ProfileMobileHeader title="Notifications" />
 
+      {/* Push Notification Toggle */}
+      {isNotificationSupported && (
+        <div className="notif-push-toggle">
+          <div className="notif-push-info">
+            {pushEnabled ? <Bell size={20} /> : <BellOff size={20} />}
+            <div>
+              <h4>Push Notifications</h4>
+              <p>{pushEnabled ? 'You will receive push alerts' : 'Push alerts are disabled'}</p>
+            </div>
+          </div>
+          <button
+            className={`notif-toggle-btn ${pushEnabled ? 'active' : ''}`}
+            onClick={handleTogglePush}
+          >
+            <span className="notif-toggle-handle" />
+          </button>
+        </div>
+      )}
+
       {error && <p className="dashboard-error">{error}</p>}
 
       {!error && notifications.length === 0 && (
         <div className="empty-state">
           <img src={noNotificationsImg} alt="No notifications" className="illustration notif-illustration" />
           <h2>No notifications yet</h2>
+          <p className="empty-state-desc">When you receive alerts about your devices, they'll appear here.</p>
         </div>
       )}
 
@@ -89,3 +135,4 @@ export default function Notifications() {
     </div>
   );
 }
+
