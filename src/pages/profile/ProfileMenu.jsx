@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { useProfile } from './useProfile';
 
-const NOTIFICATIONS_KEY = 'ecoshid_notifications';
+const NOTIFICATIONS_KEY = 'ecoshid_notifications_enabled';
 
 const NAV_ITEMS = [
   { key: 'edit', path: '/dashboard/profile/edit', label: 'Edit profile', icon: User },
