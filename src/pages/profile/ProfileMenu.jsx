@@ -88,9 +88,8 @@ export default function ProfileMenu() {
               <Bell size={20} />
               Notifications
             </span>
-            <label className="switch">
-              <input type="checkbox" checked={notifications} onChange={toggleNotifications} />
-              <span className="slider round" />
+            <label className="switch-mobile" onClick={toggleNotifications}>
+              <span className={`slider${notifications ? ' checked' : ''}`} />
             </label>
           </div>
 
@@ -132,9 +131,8 @@ export default function ProfileMenu() {
             <div className="toggle-label">
               <Bell size={18} /> Notifications
             </div>
-            <label className="switch">
-              <input type="checkbox" checked={notifications} onChange={toggleNotifications} />
-              <span className="slider round" />
+            <label className="switch" onClick={toggleNotifications}>
+              <span className={`slider${notifications ? ' checked' : ''}`} />
             </label>
           </div>
         </nav>

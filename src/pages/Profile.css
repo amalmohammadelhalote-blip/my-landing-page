@@ -124,17 +124,13 @@
 }
 
 /* Premium Industrial Toggle */
-.switch {
+.switch,
+.switch-mobile {
   position: relative;
   display: inline-block;
   width: 48px;
   height: 24px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+  flex-shrink: 0;
 }
 
 .slider {
@@ -163,12 +159,12 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-input:checked+.slider {
+.slider.checked {
   background-color: rgba(34, 197, 94, 0.2);
   border-color: rgba(34, 197, 94, 0.4);
 }
 
-input:checked+.slider:before {
+.slider.checked:before {
   transform: translateX(23px);
   background-color: #22c55e;
   box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);

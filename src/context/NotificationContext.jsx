@@ -68,6 +68,12 @@ export const NotificationProvider = ({ children }) => {
   const registerTokenToBackend = async (token) => {
     // Prevent duplicate registrations for the same token
     if (lastRegisteredToken.current === token) return;
+    // Skip API call if token is empty (disabling)
+    if (!token) {
+      lastRegisteredToken.current = '';
+      tokenRegistered.current = false;
+      return;
+    }
 
     try {
       await notificationService.registerToken({ token });
