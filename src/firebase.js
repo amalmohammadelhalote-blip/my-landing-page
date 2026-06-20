@@ -11,21 +11,41 @@ const firebaseConfig = {
   measurementId: "G-R5MY5F9NGF"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase Cloud Messaging (only if supported in browser environment)
 let messaging = null;
-try {
-  messaging = getMessaging(app);
-} catch (err) {
-  console.warn("Firebase Messaging is not supported in this browser:", err);
-}
+let swRegistration = null;
+
+// Register the Firebase service worker once
+const registerServiceWorker = async () => {
+  if (swRegistration) return swRegistration;
+  if (!('serviceWorker' in navigator)) return null;
+  try {
+    swRegistration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+    return swRegistration;
+  } catch (err) {
+    console.warn('Firebase SW registration failed:', err);
+    return null;
+  }
+};
+
+const initMessaging = async () => {
+  if (messaging) return messaging;
+  try {
+    await registerServiceWorker();
+    messaging = getMessaging(app);
+    return messaging;
+  } catch (err) {
+    console.warn('Firebase Messaging init failed:', err);
+    return null;
+  }
+};
 
 export const getFcmToken = async () => {
-  if (!messaging) return null;
+  const msg = await initMessaging();
+  if (!msg) return null;
   try {
-    const token = await getToken(messaging, {
+    const token = await getToken(msg, {
       vapidKey: "BABaiwokAUZB1M8x6JbxfH1jPwTrXsq7E2xU4-c595aAVVgvNflsl4TsE-ieDjW-i9B6lIJrRxPhDskyfL-CNYM"
     });
     return token;
