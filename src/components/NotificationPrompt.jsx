@@ -10,8 +10,13 @@ export default function NotificationPrompt() {
 
   const handleAllow = async () => {
     localStorage.setItem('ecoshid_notifications_prompted', 'true');
+    localStorage.setItem('ecoshid_notifications_enabled', 'true');
     setPromptOpen(false);
-    await enableNotifications();
+    if ('Notification' in window && Notification.permission === 'default') {
+      try {
+        await Notification.requestPermission();
+      } catch (_) {}
+    }
   };
 
   const handleDecline = () => {
