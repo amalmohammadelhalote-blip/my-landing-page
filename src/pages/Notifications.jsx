@@ -58,12 +58,13 @@ export default function Notifications() {
   }, []);
 
   const handleTogglePush = async () => {
-    if (pushEnabled) {
-      setPushEnabled(false);
-      disableNotifications();
-    } else {
-      const success = await enableNotifications();
-      setPushEnabled(success);
+    const next = !pushEnabled;
+    setPushEnabled(next);
+    localStorage.setItem('ecoshid_notifications_enabled', String(next));
+    if (next && 'Notification' in window && Notification.permission === 'default') {
+      try {
+        await Notification.requestPermission();
+      } catch (_) {}
     }
   };
 
