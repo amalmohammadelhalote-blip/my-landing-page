@@ -16,6 +16,7 @@ export const NotificationProvider = ({ children }) => {
   const lastFetchedIds = useRef(new Set());
   
   const tokenRegistered = useRef(false);
+  const lastRegisteredToken = useRef(null);
 
   // Check if browser notifications are supported
   const isNotificationSupported = 'Notification' in window && 'serviceWorker' in navigator;
@@ -65,9 +66,13 @@ export const NotificationProvider = ({ children }) => {
 
   // Register Token to Backend
   const registerTokenToBackend = async (token) => {
+    // Prevent duplicate registrations for the same token
+    if (lastRegisteredToken.current === token) return;
+
     try {
       await notificationService.registerToken({ token });
       console.log("Successfully registered FCM token to backend.");
+      lastRegisteredToken.current = token;
       tokenRegistered.current = true;
     } catch (err) {
       console.error("Failed to register FCM token to backend:", err);

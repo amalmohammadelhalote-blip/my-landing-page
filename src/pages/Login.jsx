@@ -118,6 +118,7 @@ const Login = () => {
                 type="email"
                 className={errors.email ? "input-error" : ""}
                 placeholder="Enter your email"
+                autoComplete="email"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
