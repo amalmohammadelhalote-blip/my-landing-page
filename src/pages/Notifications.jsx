@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Zap, Bell, BellOff } from 'lucide-react';
 import noNotificationsImg from "../assets/no notifications.png";
 import { useNotification } from '../context/NotificationContext';
-import { getFcmToken } from '../firebase';
-import { notificationService } from '../api/services';
 import ProfileMobileHeader from './profile/ProfileMobileHeader';
 import './Notifications.css';
 
@@ -60,21 +58,12 @@ export default function Notifications() {
   }, []);
 
   const handleTogglePush = async () => {
-    const next = !pushEnabled;
-    setPushEnabled(next);
-    localStorage.setItem('ecoshid_notifications_enabled', String(next));
-    if (next) {
-      const permission = await Notification.requestPermission();
-      if (permission === 'granted') {
-        const token = await getFcmToken();
-        if (token) {
-          try {
-            await notificationService.registerToken({ token });
-          } catch (err) {
-            console.warn('Token registration on backend failed:', err);
-          }
-        }
-      }
+    if (pushEnabled) {
+      setPushEnabled(false);
+      disableNotifications();
+    } else {
+      const success = await enableNotifications();
+      setPushEnabled(success);
     }
   };
 
