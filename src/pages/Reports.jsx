@@ -210,10 +210,15 @@ export default function Reports() {
   };
 
   useEffect(() => {
-    fetchDashboardStats();
-    fetchDevices();
-    fetchTopDevices(breakdownYear, breakdownMonth);
-    setInitialLoading(false);
+    const init = async () => {
+      await Promise.all([
+        fetchDashboardStats(),
+        fetchDevices(),
+        fetchTopDevices(breakdownYear, breakdownMonth),
+      ]);
+      setInitialLoading(false);
+    };
+    init();
   }, []);
 
   useEffect(() => {
