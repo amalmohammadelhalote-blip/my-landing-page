@@ -390,7 +390,7 @@ export default function Dashboard() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <button className="notif-bell-btn" onClick={() => navigate('/dashboard/profile/notifications')} type="button">
+          <button className="notif-bell-btn desktop-bell" onClick={() => navigate('/dashboard/profile/notifications')} type="button">
             <Bell size={20} />
           </button>
         </div>
