@@ -2,13 +2,14 @@ import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDYmcHb00xGY0WMOZ03ofUrFxhF7Qir-rQ",
-  authDomain: "ecoshid-3b22c.firebaseapp.com",
-  projectId: "ecoshid-3b22c",
-  storageBucket: "ecoshid-3b22c.firebasestorage.app",
-  messagingSenderId: "840010788462",
-  appId: "1:840010788462:web:0d9f434ec7033b9769c07f",
-  measurementId: "G-R5MY5F9NGF"
+  apiKey: "AIzaSyADFXd6TwkXpSe2nVB5kVeI7td7uzMqkGA",
+  authDomain: "ecoshid-328fd.firebaseapp.com",
+  databaseURL: "https://ecoshid-328fd-default-rtdb.firebaseio.com",
+  projectId: "ecoshid-328fd",
+  storageBucket: "ecoshid-328fd.firebasestorage.app",
+  messagingSenderId: "624103429256",
+  appId: "1:624103429256:web:d9f20611bededdc4e9bb3d",
+  measurementId: "G-T18TTWGC96"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -46,7 +47,7 @@ export const getFcmToken = async () => {
   if (!msg) return null;
   try {
     const token = await getToken(msg, {
-      vapidKey: "BABaiwokAUZB1M8x6JbxfH1jPwTrXsq7E2xU4-c595aAVVgvNflsl4TsE-ieDjW-i9B6lIJrRxPhDskyfL-CNYM"
+      vapidKey: "BFkuhgYWS_Nosmw4_2Q9FZ1UYwJephZ4UiK1rWTDwsRce75j6KmOjfmqRfBq__l8Eg48AOGyA7DSlEBx9k0dA1M"
     });
     return token;
   } catch (error) {

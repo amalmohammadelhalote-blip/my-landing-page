@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Zap, Bell, BellOff } from 'lucide-react';
 import noNotificationsImg from "../assets/no notifications.png";
 import { useNotification } from '../context/NotificationContext';
+import { getFcmToken } from '../firebase';
+import { notificationService } from '../api/services';
 import ProfileMobileHeader from './profile/ProfileMobileHeader';
 import './Notifications.css';
 
@@ -29,8 +31,6 @@ export default function Notifications() {
     notifications,
     fetchNotifications,
     clearUnread,
-    enableNotifications,
-    disableNotifications,
     isNotificationSupported
   } = useNotification();
 
@@ -61,9 +61,13 @@ export default function Notifications() {
     const next = !pushEnabled;
     setPushEnabled(next);
     localStorage.setItem('ecoshid_notifications_enabled', String(next));
-    if (next && 'Notification' in window && Notification.permission === 'default') {
+    if (next) {
+      if ('Notification' in window && Notification.permission === 'default') {
+        try { await Notification.requestPermission(); } catch (_) {}
+      }
       try {
-        await Notification.requestPermission();
+        const token = await getFcmToken();
+        if (token) await notificationService.registerToken({ token });
       } catch (_) {}
     }
   };

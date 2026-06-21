@@ -1,9 +1,25 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { notificationService, normalizeListResponse } from '../api/services';
+import { getFcmToken } from '../firebase';
 
 const NotificationContext = createContext();
 
 export const useNotification = () => useContext(NotificationContext);
+
+let fcmTokenRef = null;
+
+const registerFcmToken = async () => {
+  try {
+    const token = await getFcmToken();
+    if (!token) return null;
+    fcmTokenRef = token;
+    await notificationService.registerToken({ token });
+    return token;
+  } catch (err) {
+    console.warn('FCM registration failed:', err);
+    return null;
+  }
+};
 
 export const NotificationProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
@@ -71,6 +87,7 @@ export const NotificationProvider = ({ children }) => {
       const permission = await Notification.requestPermission();
       if (permission === 'granted') {
         localStorage.setItem('ecoshid_notifications_enabled', 'true');
+        registerFcmToken();
         return true;
       }
     } catch (err) {
@@ -90,21 +107,25 @@ export const NotificationProvider = ({ children }) => {
     localStorage.setItem('ecoshid_notifications_last_viewed', String(Date.now()));
   };
 
-  // Check on load if we need to prompt the user
+  // Check on load if we need to prompt the user + register FCM if already enabled
   useEffect(() => {
-    const checkPermissionState = async () => {
-      const token = localStorage.getItem('token') || localStorage.getItem('accessToken');
-      if (!token) return;
+    const init = async () => {
+      const authToken = localStorage.getItem('token') || localStorage.getItem('accessToken');
+      if (!authToken) return;
 
       const prompted = localStorage.getItem('ecoshid_notifications_prompted') === 'true';
       const enabled = localStorage.getItem('ecoshid_notifications_enabled');
+
+      if (enabled === 'true') {
+        registerFcmToken();
+      }
 
       if (!prompted && enabled === null) {
         setPromptOpen(true);
       }
     };
 
-    checkPermissionState();
+    init();
   }, []);
 
   // Poll notifications periodically

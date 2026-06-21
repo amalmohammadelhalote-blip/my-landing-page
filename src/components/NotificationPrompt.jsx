@@ -1,10 +1,12 @@
 import React from 'react';
 import { Bell, ShieldAlert, Sparkles, X } from 'lucide-react';
 import { useNotification } from '../context/NotificationContext';
+import { getFcmToken } from '../firebase';
+import { notificationService } from '../api/services';
 import './NotificationPrompt.css';
 
 export default function NotificationPrompt() {
-  const { promptOpen, setPromptOpen, enableNotifications } = useNotification();
+  const { promptOpen, setPromptOpen } = useNotification();
 
   if (!promptOpen) return null;
 
@@ -13,10 +15,12 @@ export default function NotificationPrompt() {
     localStorage.setItem('ecoshid_notifications_enabled', 'true');
     setPromptOpen(false);
     if ('Notification' in window && Notification.permission === 'default') {
-      try {
-        await Notification.requestPermission();
-      } catch (_) {}
+      try { await Notification.requestPermission(); } catch (_) {}
     }
+    try {
+      const token = await getFcmToken();
+      if (token) await notificationService.registerToken({ token });
+    } catch (_) {}
   };
 
   const handleDecline = () => {
