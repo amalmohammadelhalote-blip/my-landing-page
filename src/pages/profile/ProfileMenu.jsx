@@ -127,23 +127,7 @@ export default function ProfileMenu() {
             </button>
           ))}
 
-          <div className="settings-nav-item toggle-item">
-            <div className="toggle-label">
-              <Bell size={18} /> Notifications
-            </div>
-            <label className="switch" onClick={toggleNotifications}>
-              <span className={`slider${notifications ? ' checked' : ''}`} />
-            </label>
-          </div>
         </nav>
-
-        <button
-          type="button"
-          className={`settings-logout-btn ${isActive('/dashboard/profile/logout') ? 'active' : ''}`}
-          onClick={() => navigate('/dashboard/profile/logout')}
-        >
-          <LogOut size={18} /> Log out
-        </button>
       </aside>
     </>
   );

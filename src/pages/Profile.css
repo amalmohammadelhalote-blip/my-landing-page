@@ -107,15 +107,6 @@
   font-weight: 700;
 }
 
-.settings-nav-item.toggle-item {
-  justify-content: space-between;
-  cursor: default;
-  margin-top: 10px;
-  padding-top: 20px;
-  border-top: var(--setting-border);
-  border-radius: 0;
-}
-
 .toggle-label {
   display: flex;
   align-items: center;
@@ -168,28 +159,6 @@
   transform: translateX(23px);
   background-color: #22c55e;
   box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
-}
-
-.settings-logout-btn {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 20px;
-  background: rgba(239, 68, 68, 0.05);
-  border: 1px solid rgba(239, 68, 68, 0.1);
-  border-radius: 16px;
-  color: #fca5a5;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: auto;
-  transition: all 0.2s;
-}
-
-.settings-logout-btn:hover {
-  background: #ef4444;
-  color: #fff;
-  box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);
 }
 
 /* Settings Content Container */

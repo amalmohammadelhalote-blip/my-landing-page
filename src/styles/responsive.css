@@ -518,8 +518,9 @@
   .main-content,
   .devices-page {
     padding: 32px;
-    max-width: 1600px;
-    margin: 0 auto;
+    max-width: none;
+    margin-left: 260px;
+    width: calc(100% - 260px);
   }
 
   /* Devices Grid */

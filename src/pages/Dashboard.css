@@ -32,7 +32,9 @@ body {
   min-width: 0;
   padding: 0 40px 40px;
   background: #04120a;
-  margin-left: 250px; /* Offset for fixed sidebar on desktop */
+  margin-left: 260px; /* Offset for fixed sidebar on desktop */
+  width: calc(100% - 260px);
+  box-sizing: border-box;
 }
 
 .mobile-top-bar {
@@ -871,10 +873,10 @@ body {
     flex-direction: row;
   }
 
-  .sidebar {
-    width: 250px;
-    min-width: 250px;
-    max-width: 250px;
+  .sidebar-comp {
+    width: 260px;
+    min-width: 260px;
+    max-width: 260px;
     position: sticky;
     top: 0;
     height: 100vh;
@@ -888,10 +890,10 @@ body {
 }
 
 @media (max-width: 900px) {
-  .sidebar {
-    width: 240px;
-    min-width: 240px;
-    max-width: 240px;
+  .sidebar-comp {
+    width: 260px;
+    min-width: 260px;
+    max-width: 260px;
   }
 
   .main-content {
