@@ -121,25 +121,35 @@ export default function Notifications() {
         <div className="notif-list">
           {notifications.map((n) => {
             const textToTest = (n.title + ' ' + (n.body || '')).toLowerCase();
-            let severity = n.severity || n.type;
             
-            if (!severity) {
-              if (/critical|danger|emergency|hazard|fault|failed|failure/i.test(textToTest)) {
-                severity = 'critical';
-              } else if (/warning|alert|abnormal|outside|threshold|limit|high/i.test(textToTest)) {
-                severity = 'warning';
-              } else {
-                severity = 'info';
-              }
+            // Only accept known severity values from backend, otherwise detect from text
+            const KNOWN_SEVERITIES = ['info', 'warning', 'critical', 'error', 'alert'];
+            const rawSeverity = (n.severity || n.type || '').toLowerCase();
+            
+            let severity;
+            if (KNOWN_SEVERITIES.includes(rawSeverity)) {
+              severity = rawSeverity;
+            } else if (/critical|danger|emergency|hazard|fault|failed|failure|abnormal|outside|threshold|exceed/i.test(textToTest)) {
+              severity = 'critical';
+            } else if (/warning|alert|limit|high/i.test(textToTest)) {
+              severity = 'warning';
+            } else {
+              severity = 'info';
+            }
+
+            // Pick icon by severity
+            let NotifIcon = Bell;
+            if (severity === 'critical' || severity === 'error') {
+              NotifIcon = AlertOctagon;
+            } else if (severity === 'warning' || severity === 'alert') {
+              NotifIcon = AlertTriangle;
             }
 
             return (
             <div key={n._id} className={`notif-card notif-card--${severity}`}>
               <div className="notif-card-left">
                 <div className={`notif-icon notif-icon--${severity}`}>
-                  {severity === 'critical' ? <AlertOctagon size={26} /> :
-                   severity === 'warning' || severity === 'alert' ? <AlertTriangle size={26} /> :
-                   <Bell size={26} />}
+                  <NotifIcon size={26} />
                 </div>
               </div>
               <div className="notif-card-content">
