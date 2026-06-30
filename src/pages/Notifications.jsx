@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Zap, Bell, BellOff } from 'lucide-react';
+import { Bell, BellOff, AlertTriangle, AlertOctagon } from 'lucide-react';
 import noNotificationsImg from "../assets/no notifications.png";
 import { useNotification } from '../context/NotificationContext';
 import { getFcmToken } from '../firebase';
@@ -119,11 +119,27 @@ export default function Notifications() {
 
       {!error && notifications.length > 0 && (
         <div className="notif-list">
-          {notifications.map((n) => (
-            <div key={n._id} className="notif-card">
+          {notifications.map((n) => {
+            const textToTest = (n.title + ' ' + (n.body || '')).toLowerCase();
+            let severity = n.severity || n.type;
+            
+            if (!severity) {
+              if (/critical|danger|emergency|hazard|fault|failed|failure/i.test(textToTest)) {
+                severity = 'critical';
+              } else if (/warning|alert|abnormal|outside|threshold|limit|high/i.test(textToTest)) {
+                severity = 'warning';
+              } else {
+                severity = 'info';
+              }
+            }
+
+            return (
+            <div key={n._id} className={`notif-card notif-card--${severity}`}>
               <div className="notif-card-left">
-                <div className="notif-icon">
-                  <Zap size={26} />
+                <div className={`notif-icon notif-icon--${severity}`}>
+                  {severity === 'critical' ? <AlertOctagon size={26} /> :
+                   severity === 'warning' || severity === 'alert' ? <AlertTriangle size={26} /> :
+                   <Bell size={26} />}
                 </div>
               </div>
               <div className="notif-card-content">
@@ -134,10 +150,10 @@ export default function Notifications() {
                 <span className="notif-card-time">{timeAgo(n.sentAt || n.createdAt)}</span>
               </div>
             </div>
-          ))}
+          );
+        })}
         </div>
       )}
     </div>
   );
 }
-

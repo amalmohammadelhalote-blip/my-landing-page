@@ -139,16 +139,47 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 18px;
-  background: linear-gradient(90deg, rgba(34, 197, 94, 0.25), rgba(16, 185, 129, 0.08));
+  background: linear-gradient(90deg, rgba(34, 197, 94, 0.12), rgba(16, 185, 129, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 24px;
   padding: 24px;
   transition: all 0.25s ease;
   cursor: default;
 }
 
+.notif-card--info {
+  background: linear-gradient(90deg, rgba(34, 197, 94, 0.12), rgba(16, 185, 129, 0.04));
+  border: 1px solid rgba(34, 197, 94, 0.15);
+}
+.notif-card--warning {
+  background: linear-gradient(90deg, rgba(234, 179, 8, 0.12), rgba(202, 138, 4, 0.04));
+  border: 1px solid rgba(234, 179, 8, 0.15);
+}
+.notif-card--critical,
+.notif-card--error {
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.12), rgba(220, 38, 38, 0.04));
+  border: 1px solid rgba(239, 68, 68, 0.15);
+}
+.notif-card--alert {
+  background: linear-gradient(90deg, rgba(249, 115, 22, 0.12), rgba(234, 88, 12, 0.04));
+  border: 1px solid rgba(249, 115, 22, 0.15);
+}
+
 .notif-card:hover {
   transform: translateY(-2px);
+}
+.notif-card--info:hover {
   box-shadow: 0 8px 30px rgba(34, 197, 94, 0.15);
+}
+.notif-card--warning:hover {
+  box-shadow: 0 8px 30px rgba(234, 179, 8, 0.15);
+}
+.notif-card--critical:hover,
+.notif-card--error:hover {
+  box-shadow: 0 8px 30px rgba(239, 68, 68, 0.15);
+}
+.notif-card--alert:hover {
+  box-shadow: 0 8px 30px rgba(249, 115, 22, 0.15);
 }
 
 /* ───── Icon ───── */
@@ -160,13 +191,24 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ef4444, #f97316);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   color: #fff;
 }
+
+.notif-icon--info { background: linear-gradient(135deg, #22c55e, #16a34a); }
+.notif-icon--warning { background: linear-gradient(135deg, #eab308, #ca8a04); }
+.notif-icon--critical { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.notif-icon--error { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.notif-icon--alert { background: linear-gradient(135deg, #f97316, #ea580c); }
+
+.notif-card--info { border-left: 4px solid #22c55e; }
+.notif-card--warning { border-left: 4px solid #eab308; }
+.notif-card--critical { border-left: 4px solid #ef4444; }
+.notif-card--error { border-left: 4px solid #ef4444; }
+.notif-card--alert { border-left: 4px solid #f97316; }
 
 /* ───── Content ───── */
 .notif-card-content {
